@@ -175,7 +175,8 @@
           [ngClass]="{
             red: requestToPay.state === 'FAILED',
             green: requestToPay.state === 'ACCEPTED',
-            orange: requestToPay.state === 'IN_PROGRESS'
+            orange: requestToPay.state === 'IN_PROGRESS',
+            blue: requestToPay.state === 'NOT_AUTOSAVED'
           }"
         >
           {{ requestToPay.state }}

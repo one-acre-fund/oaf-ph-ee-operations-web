@@ -1,6 +1,9 @@
 # Release Notes
 
 ## Version 1.1.0
+        * [SER-2991] - Add support for filtering NOT_AUTOSAVED incoming request to pay.
+
+## Version 1.1.0
         * [SER-2909] - Add support for filtering payments by paybill short code and till number.
         * [SER-2925] - Create UI for exporting incoming transactions.
 
