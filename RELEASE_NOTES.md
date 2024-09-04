@@ -1,6 +1,9 @@
 # Release Notes
 
-## Version 1.1.0
+## Version 1.1.2
+        * [SER-2070] - Show action logs
+
+## Version 1.1.1
         * [SER-2991] - Add support for filtering NOT_AUTOSAVED incoming request to pay.
 
 ## Version 1.1.0
