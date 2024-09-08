@@ -1,10 +1,12 @@
 /** Angular Imports */
-import { Component, OnInit, ViewChild } from "@angular/core";
-import { MatDialog } from "@angular/material/dialog";
-import { MatPaginator } from "@angular/material/paginator";
+
+import { Component, OnInit, ViewChild, AfterViewInit } from "@angular/core";
+import { MatLegacyDialog as MatDialog } from "@angular/material/legacy-dialog";
+import { MatLegacyPaginator as MatPaginator } from "@angular/material/legacy-paginator";
 import { MatSort } from "@angular/material/sort";
-import { FormControl } from "@angular/forms";
-import { ActivatedRoute } from "@angular/router";
+import { MatLegacyTableDataSource as MatTableDataSource } from "@angular/material/legacy-table";
+import { UntypedFormControl } from "@angular/forms";
+import { Router, ActivatedRoute } from "@angular/router";
 import { requestInterface } from "./incoming-request-to-pay-interface";
 import {
   tap,
@@ -30,25 +32,25 @@ export class IncomingRequestToPayComponent implements OnInit {
   minDate = new Date(2000, 0, 1);
   /** Maximum transaction date allowed. */
   maxDate = new Date();
-  payeePartyId = new FormControl();
-  payerPartyId = new FormControl();
-  payerDfspId = new FormControl();
-  payerDfspName = new FormControl();
-  status = new FormControl();
-  amount = new FormControl();
-  currencyCode = new FormControl();
+  payeePartyId = new UntypedFormControl();
+  payerPartyId = new UntypedFormControl();
+  payerDfspId = new UntypedFormControl();
+  payerDfspName = new UntypedFormControl();
+  status = new UntypedFormControl();
+  amount = new UntypedFormControl();
+  currencyCode = new UntypedFormControl();
   filteredCurrencies: any;
   filteredDfspEntries: any;
   currenciesData: any;
   dfspEntriesData: DfspEntry[];
   transactionStatusData = statuses;
   /** Transaction date from form control. */
-  transactionDateFrom = new FormControl();
+  transactionDateFrom = new UntypedFormControl();
   /** Transaction date to form control. */
-  transactionDateTo = new FormControl();
+  transactionDateTo = new UntypedFormControl();
   /** Transaction ID form control. */
-  transactionId = new FormControl();
-  externalId = new FormControl();
+  transactionId = new UntypedFormControl();
+  externalId = new UntypedFormControl();
   csvExport: [];
   csvName: string;
   lengthElement: number;

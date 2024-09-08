@@ -1,7 +1,7 @@
 /** Angular Imports */
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 
 /** Custom Services */
 import { UsersService } from '../users.service';
@@ -255,6 +255,7 @@ export class ViewUserComponent implements OnInit {
     });
 
   }
+
 
   reloadCurrentUserData() {
     this.usersService.getUser(this.userData.id).subscribe((res) => {
