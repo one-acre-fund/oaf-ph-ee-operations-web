@@ -1,21 +1,26 @@
 /** Angular Routes */
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 
 /** rxjs Imports */
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { RequestPays } from '../model/requestPay.model'
 import {RequestPayDetails} from '../model/requestPay-details.model'
+
+import { Dates } from "../../../core/utils/dates";
+import { PaymenthubService } from 'app/payment-hub/paymenthub.service';
 @Injectable({
   providedIn: 'root'
 })
 export class RequestToPayService {
+  private readonly exportUrl = "/api/v1/transactionRequests";
+  private readonly fileNamePrefix = "TRANSACTION_REQUESTS";
 
   /**
    * @param {HttpClient} http Http Client to send requests.
    */
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private paymenthubService: PaymenthubService) { }
 
   getRequestsToPay() {
     return this.http.get('/api/v1/transactionRequests');
@@ -43,4 +48,7 @@ export class RequestToPayService {
   //     .get('/assets/mock/payment-hub/transaction-details.mock.json');
   // }
 
+  exportCSV(filterBy: any) {
+    this.paymenthubService.exportCSV(filterBy, this.exportUrl, this.fileNamePrefix, new HttpParams().set("command", "export"));
+  }
 }

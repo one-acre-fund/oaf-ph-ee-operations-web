@@ -1,4 +1,5 @@
 /** Angular Imports */
+
 import { Component, OnInit, ViewChild, AfterViewInit } from "@angular/core";
 import { MatLegacyDialog as MatDialog } from "@angular/material/legacy-dialog";
 import { MatLegacyPaginator as MatPaginator } from "@angular/material/legacy-paginator";
@@ -8,17 +9,7 @@ import { UntypedFormControl } from "@angular/forms";
 import { Router, ActivatedRoute } from "@angular/router";
 import { requestInterface } from "./incoming-request-to-pay-interface";
 import {
-  HttpClient,
-  HttpParams,
-  HttpHeaders,
-  JsonpClientBackend,
-} from "@angular/common/http";
-/** rxjs Imports */
-import { merge } from "rxjs";
-import {
   tap,
-  startWith,
-  map,
   distinctUntilChanged,
   debounceTime,
 } from "rxjs/operators";
@@ -27,7 +18,7 @@ import {
 import { RequestToPayService } from "../service/request-to-pay.service";
 import { RequestToPayDataSource } from "../dataSource /requestToPay.datasource";
 /** Custom Data Source */
-import { formatDate } from "../helper/date-format.helper";
+import { formatUTCDate } from "../helper/date-format.helper";
 import { transactionStatusData as statuses } from "../helper/incoming-reqest.helper";
 
 import { DfspEntry } from "../model/dfsp.model";
@@ -59,6 +50,7 @@ export class IncomingRequestToPayComponent implements OnInit {
   transactionDateTo = new UntypedFormControl();
   /** Transaction ID form control. */
   transactionId = new UntypedFormControl();
+  externalId = new UntypedFormControl();
   csvExport: [];
   csvName: string;
   lengthElement: number;
@@ -128,7 +120,16 @@ export class IncomingRequestToPayComponent implements OnInit {
       type: "startTo",
       value: "",
     },
+    {
+      type: "externalId",
+      value: "",
+    },
+    {
+      type: 'payerDfspId',
+      value: ''
+    }
   ];
+  dateTimeFormat = "YYYY-MM-DD HH:mm:ss";
 
   /** Paginator for requesttopay table. */
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -138,8 +139,7 @@ export class IncomingRequestToPayComponent implements OnInit {
   constructor(
     private requestToPayService: RequestToPayService,
     private route: ActivatedRoute,
-    public dialog: MatDialog,
-    private http: HttpClient
+    public dialog: MatDialog
   ) {
     this.route.data.subscribe(
       (data: {
@@ -177,9 +177,8 @@ export class IncomingRequestToPayComponent implements OnInit {
         debounceTime(500),
         distinctUntilChanged(),
         tap((filterValue) => {
-          if (filterValue.length < 5) {
-          }
-          this.applyFilter(filterValue, "payeePartyId");
+          if (filterValue.length == 0 || filterValue.length > 3)
+            this.applyFilter(filterValue, "payeePartyId");
         })
       )
       .subscribe();
@@ -189,7 +188,8 @@ export class IncomingRequestToPayComponent implements OnInit {
         debounceTime(500),
         distinctUntilChanged(),
         tap((filterValue) => {
-          this.applyFilter(filterValue, "payerPartyId");
+          if (filterValue.length == 0 || filterValue.length > 3)
+            this.applyFilter(filterValue, "payerPartyId");
         })
       )
       .subscribe();
@@ -257,7 +257,6 @@ export class IncomingRequestToPayComponent implements OnInit {
         debounceTime(500),
         distinctUntilChanged(),
         tap((filterValue) => {
-          filterValue = filterValue.AlphabeticCode;
           this.applyFilter(filterValue, "currency");
         })
       )
@@ -267,9 +266,9 @@ export class IncomingRequestToPayComponent implements OnInit {
       .pipe(
         debounceTime(500),
         distinctUntilChanged(),
-        tap((filterValue) => {
+        tap((filterValue: moment.Moment) => {
           if (filterValue) {
-            this.applyFilter(filterValue, "startFrom");
+            this.applyFilter(filterValue.format(this.dateTimeFormat), "startFrom");
           }
         })
       )
@@ -279,19 +278,28 @@ export class IncomingRequestToPayComponent implements OnInit {
       .pipe(
         debounceTime(500),
         distinctUntilChanged(),
-        tap((filterValue) => {
+        tap((filterValue: moment.Moment) => {
           if (filterValue) {
-            this.applyFilter(filterValue, "startTo");
+            this.applyFilter(filterValue.format(this.dateTimeFormat), "startTo");
           }
+        })
+      )
+      .subscribe();
+
+    this.externalId.valueChanges
+      .pipe(
+        debounceTime(500),
+        distinctUntilChanged(),
+        tap((filterValue) => {
+          if (filterValue.length == 0 || filterValue.length > 3)
+            this.applyFilter(filterValue, "externalId");
         })
       )
       .subscribe();
 
     // this.sort.sortChange.subscribe(() => (this.paginator.pageIndex = 0));
   }
-  onSubmit() {
-    this.exportCSV(this.csvExport, this.csvName);
-  }
+
   loadTransactionsPage() {
     // if (!this.sort.direction) {
     //   delete this.sort.active;
@@ -313,11 +321,11 @@ export class IncomingRequestToPayComponent implements OnInit {
   //   this.dataSource.sort = this.sort;
   // }
 
-  convertTimestampToDate(timestamp: any) {
+  convertTimestampToUTCDate(timestamp: any) {
     if (!timestamp) {
       return undefined;
     }
-    return formatDate(new Date(timestamp));
+    return formatUTCDate(new Date(timestamp));
   }
 
   formatDate(date: string) {
@@ -388,25 +396,9 @@ export class IncomingRequestToPayComponent implements OnInit {
   displayDfspName(entry?: any): string | undefined {
     return entry ? entry.name : undefined;
   }
-  exportCSV(filterBy: any, filterName: string) {
-    console.log(filterBy);
-    var postData = filterBy.transactionid.split(",");
-    console.log(postData);
-
-    this.http
-      .post(
-        "/api/v1/transactionRequests/export?filterBy=" + filterBy.cars,
-
-        postData,
-        {
-          responseType: "blob" as "json",
-          headers: new HttpHeaders().append("Content-Type", "application/json"),
-        }
-      )
-      .subscribe((val) => {
-        console.log("POST call successful value returned in body", val);
-        this.downLoadFile(val, "application/csv");
-      });
+  exportCSV(filterBy: any) {
+    filterBy[filterBy.cars] = filterBy.val;
+    this.requestToPayService.exportCSV(filterBy);
   }
   /**
    * Displays office name in form control input.
