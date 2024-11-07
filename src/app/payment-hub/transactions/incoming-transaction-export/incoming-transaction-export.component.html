@@ -109,16 +109,17 @@
         />
       </mat-form-field>
       <mat-form-field>
-        <mat-label>Payer DFSP Id</mat-label>
-        <input
-          matInput
-          type="textArea"
-          class="form-control col-sm-4"
-          ngModel
-          name="payerdfspid"
-          placeholder="comma-separated-list"
-          id="payerdfspid"
-        />
+        <mat-label>AMS Business Short Code</mat-label>
+        <mat-select 
+        class="form-control col-sm-4"
+        ngModel
+        name="payerdfspid"
+        placeholder="comma-separated-list"
+        id="payerdfspid" multiple>
+          <mat-option *ngFor="let code of amsCodes" [value]="code.value">
+            {{ code.option }}
+          </mat-option>
+        </mat-select>
       </mat-form-field>
     </div>
 

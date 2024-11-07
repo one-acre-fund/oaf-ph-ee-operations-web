@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PaymenthubService } from 'app/payment-hub/paymenthub.service';
+import { amsShortCodes } from 'app/payment-hub/request-to-pay/helper/ams-short-codes';
 
 @Component({
   selector: 'mifosx-incoming-transaction-export',
@@ -9,6 +10,7 @@ import { PaymenthubService } from 'app/payment-hub/paymenthub.service';
 export class IncomingTransactionExportComponent implements OnInit {
   private readonly exportUrl = "/api/v1/transfers/export";
   private readonly fileNamePrefix = "TRANSFERS";
+  amsCodes = amsShortCodes;
 
   constructor(private paymenthubService: PaymenthubService) { }
 

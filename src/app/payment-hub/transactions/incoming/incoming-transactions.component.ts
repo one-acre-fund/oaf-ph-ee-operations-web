@@ -21,6 +21,7 @@ import { TransactionsService } from '../service/transactions.service';
 import { PaymentHubComponent } from 'app/payment-hub/paymenthub.component';
 import { DfspEntry } from '../model/dfsp.model';
 import { RetryResolveDialogComponent } from '../retry-resolve-dialog/retry-resolve-dialog.component';
+import { amsShortCodes } from 'app/payment-hub/request-to-pay/helper/ams-short-codes';
 
 /**
  * Transactions component.
@@ -48,6 +49,7 @@ export class IncomingTransactionsComponent implements OnInit, AfterViewInit {
   currenciesData: any;
   dfspEntriesData: DfspEntry[];
   transactionStatusData = statuses;
+  amsCodes = amsShortCodes;
   /** Transaction date from form control. */
   transactionDateFrom = new FormControl();
   /** Transaction date to form control. */

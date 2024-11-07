@@ -20,6 +20,7 @@ import { formatUTCDate } from "../helper/date-format.helper";
 import { transactionStatusData as statuses } from "../helper/incoming-reqest.helper";
 
 import { DfspEntry } from "../model/dfsp.model";
+import { amsShortCodes } from "../helper/ams-short-codes";
 @Component({
   selector: "mifosx-incoming-request-to-pay",
   templateUrl: "./incoming-request-to-pay.component.html",
@@ -42,6 +43,7 @@ export class IncomingRequestToPayComponent implements OnInit {
   currenciesData: any;
   dfspEntriesData: DfspEntry[];
   transactionStatusData = statuses;
+  amsCodes = amsShortCodes;
   /** Transaction date from form control. */
   transactionDateFrom = new FormControl();
   /** Transaction date to form control. */
