@@ -3,9 +3,8 @@ import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-import { MatTableDataSource } from '@angular/material/table';
 import { FormControl } from '@angular/forms';
-import { Router, ActivatedRoute } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
 /** rxjs Imports */
 import { merge } from 'rxjs';
@@ -18,7 +17,6 @@ import { TransactionsDataSource } from '../dataSource/transactions.datasource';
 import { formatDate, formatUTCDate } from '../helper/date-format.helper';
 import { transactionStatusData as statuses } from '../helper/transaction.helper';
 import { TransactionsService } from '../service/transactions.service';
-import { PaymentHubComponent } from 'app/payment-hub/paymenthub.component';
 import { DfspEntry } from '../model/dfsp.model';
 import { RetryResolveDialogComponent } from '../retry-resolve-dialog/retry-resolve-dialog.component';
 import { amsShortCodes } from 'app/payment-hub/request-to-pay/helper/ams-short-codes';
@@ -49,7 +47,7 @@ export class IncomingTransactionsComponent implements OnInit, AfterViewInit {
   currenciesData: any;
   dfspEntriesData: DfspEntry[];
   transactionStatusData = statuses;
-  amsCodes = amsShortCodes;
+  amsCodes = amsShortCodes('TILL');
   /** Transaction date from form control. */
   transactionDateFrom = new FormControl();
   /** Transaction date to form control. */

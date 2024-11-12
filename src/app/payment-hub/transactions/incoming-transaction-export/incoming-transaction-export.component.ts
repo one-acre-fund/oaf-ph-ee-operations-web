@@ -10,7 +10,7 @@ import { amsShortCodes } from 'app/payment-hub/request-to-pay/helper/ams-short-c
 export class IncomingTransactionExportComponent implements OnInit {
   private readonly exportUrl = "/api/v1/transfers/export";
   private readonly fileNamePrefix = "TRANSFERS";
-  amsCodes = amsShortCodes;
+  amsCodes = amsShortCodes();
 
   constructor(private paymenthubService: PaymenthubService) { }
 
