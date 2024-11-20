@@ -23,5 +23,13 @@ export let environment = {
   auth: {
     enabled: false,
     tenant: "phdefault"
-  }
+  },
+
+  amsShortCodes: [
+    {
+    option: 'TUPANDE_TILL',
+    type: 'TILL',
+    value: '6064956'
+}
+]
 };

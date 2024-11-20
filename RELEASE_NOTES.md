@@ -1,5 +1,8 @@
 # Release Notes
 
+## Version 1.1.3
+        * [SER-3003] - Refactored Payer DFSP Id from free text to a dropdown and renamed to ‘AMS Business Short Code’
+
 ## Version 1.1.2
         * [SER-2070] - Show action logs
 
