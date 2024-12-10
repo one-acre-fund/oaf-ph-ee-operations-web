@@ -41,7 +41,7 @@ export class PaymenthubService {
       errorDescription: this.getValues(filterBy.errordescription),
       payeeId: this.getValues(filterBy.payeeid),
       payerId: this.getValues(filterBy.payerid),
-      payerDfspId: filterBy.payerdfspid,
+      payerDfspId: this.getPayerDfspIdValues(filterBy.payerdfspid),
     };
     this.http
       .post(
@@ -80,5 +80,9 @@ export class PaymenthubService {
    */
   private getValues(value: string): string[] {
     return value ? value.split(",") : [];
+  }
+
+  private getPayerDfspIdValues(value: any): string[] {
+    return value == "" ? [] : value;
   }
 }
