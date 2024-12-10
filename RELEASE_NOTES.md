@@ -1,5 +1,7 @@
 # Release Notes
 
+## Version 1.1.4
+        * [SER-2248] - Resolve the issue on the export part and show user friendly error message when no records are found
 ## Version 1.1.3
         * [SER-3003] - Refactored Payer DFSP Id from free text to a dropdown and renamed to ‘AMS Business Short Code’
 
