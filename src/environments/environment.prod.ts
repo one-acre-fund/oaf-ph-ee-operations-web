@@ -25,15 +25,5 @@ export let environment = {
     type: 'TILL',
     value: '6064956'
 }
-],
-currencyOptions: [
-  {
-    option: 'Kenya Shillings',
-    value: 'KE'
-},
-{
-    option: 'Rwandan Franc',
-    value: 'RWF'
-}
 ]
 };
