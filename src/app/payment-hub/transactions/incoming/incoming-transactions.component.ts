@@ -47,7 +47,7 @@ export class IncomingTransactionsComponent implements OnInit, AfterViewInit {
   currenciesData: any;
   dfspEntriesData: DfspEntry[];
   transactionStatusData = statuses;
-  amsCodes = amsShortCodes('TILL');
+  amsCodes = amsShortCodes('PAYBILL');
   /** Transaction date from form control. */
   transactionDateFrom = new FormControl();
   /** Transaction date to form control. */
