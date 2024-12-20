@@ -8,7 +8,7 @@ import { amsShortCodes } from "../helper/ams-short-codes";
   styleUrls: ["./incoming-request-export.component.scss"],
 })
 export class IncomingRequestExportComponent implements OnInit {
-  amsCodes = amsShortCodes();
+  amsCodes = amsShortCodes('TILL');
   csvExport: [];
   csvName: string;
   constructor(private requestToPayService: RequestToPayService) {}
