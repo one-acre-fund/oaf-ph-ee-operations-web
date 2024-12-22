@@ -167,7 +167,6 @@ export class IncomingRequestToPayComponent implements OnInit {
 
   ngOnInit() {
     // this.setRequestToPay();
-    console.log(this.filterTransactionsBy);
     // this.dataSource.getRequestsPay(this.filterTransactionsBy , this.sort.active, this.sort.direction, this.paginator.pageIndex, this.paginator.pageSize);
     this.getRequestsPay();
     this.setFilteredCurrencies();
@@ -417,7 +416,6 @@ export class IncomingRequestToPayComponent implements OnInit {
       (filter) => filter.type === property
     );
     this.filterTransactionsBy[findIndex].value = filterValue;
-    console.log(this.filterTransactionsBy)
     this.loadTransactionsPage();
   }
   /**
