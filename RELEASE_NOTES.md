@@ -1,10 +1,11 @@
 # Release Notes
 
+## Version 1.1.5
+        * [SER-3252] - Changed Currency selection field to dropdown on incoming request to pay filters
 ## Version 1.1.4
         * [SER-2248] - Resolve the issue on the export part and show user friendly error message when no records are found
 ## Version 1.1.3
         * [SER-3003] - Refactored Payer DFSP Id from free text to a dropdown and renamed to ‘AMS Business Short Code’
-        * [SER-3252] - Changed Currency selection field to dropdown on incoming request to pay filters
 
 ## Version 1.1.2
         * [SER-2070] - Show action logs
