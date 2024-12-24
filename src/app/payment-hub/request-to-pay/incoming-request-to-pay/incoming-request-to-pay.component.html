@@ -50,15 +50,11 @@
     <input matInput [formControl]="amount" />
   </mat-form-field>
 
-  <!-- <mat-form-field fxFlex="20%">
-    <mat-label>Currency</mat-label>
-    <input matInput [formControl]="currencyCode" [matAutocomplete]="currenciesAutocomplete">
-  </mat-form-field> -->
-
   <mat-form-field fxFlex="20%">
     <mat-label>Currency</mat-label>
-    <input matInput [formControl]="currencyCode" />
+    <input matInput [formControl]="currencyCode" [matAutocomplete]="currenciesAutocomplete">
   </mat-form-field>
+
 
   <mat-form-field fxFlex="20%">
     <mat-label>Transaction Date From</mat-label>
@@ -88,6 +84,13 @@
     <ngx-mat-datetime-picker #pickerTo [showSeconds]="true"> </ngx-mat-datetime-picker>
   </mat-form-field>
 </div>
+
+<!-- Autocomplete data -->
+<mat-autocomplete autoActiveFirstOption #currenciesAutocomplete="matAutocomplete" [displayWith]="displayCurrencyName">
+  <mat-option *ngFor="let currency of filteredCurrencies | async" [value]="{ AlphabeticCode: currency.AlphabeticCode, Currency: currency.Currency }">
+    {{ currency.Currency}} ( {{ currency.AlphabeticCode }} )
+  </mat-option>
+</mat-autocomplete>
 
 <div class="container">
   <div class="mat-elevation-z8">

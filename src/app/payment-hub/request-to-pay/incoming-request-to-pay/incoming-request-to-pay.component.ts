@@ -10,6 +10,8 @@ import {
   tap,
   distinctUntilChanged,
   debounceTime,
+  startWith,
+  map,
 } from "rxjs/operators";
 
 /** Custom Services */
@@ -165,10 +167,33 @@ export class IncomingRequestToPayComponent implements OnInit {
 
   ngOnInit() {
     // this.setRequestToPay();
-    //console.log(this.dataSource);
     // this.dataSource.getRequestsPay(this.filterTransactionsBy , this.sort.active, this.sort.direction, this.paginator.pageIndex, this.paginator.pageSize);
     this.getRequestsPay();
+    this.setFilteredCurrencies();
   }
+
+  /**
+   * Sets filtered gl accounts for autocomplete.
+   */
+  setFilteredCurrencies() {
+    this.filteredCurrencies = this.currencyCode.valueChanges
+      .pipe(
+        startWith(''),
+        map((currency: any) => typeof currency === 'string' ? currency : currency.Currency + ' (' + currency.AlphabeticCode + ')'),
+        map((currency: string) => currency ? this.filterCurrencyAutocompleteData(currency) : this.currenciesData)
+      );
+  }
+
+  /**
+   * Filters gl accounts.
+   * @param {string} glAccount Gl Account name to filter gl account by.
+   * @returns {any} Filtered gl accounts.
+   */
+  private filterCurrencyAutocompleteData(currency: string): any {
+    return this.currenciesData.filter((option: any) => (option.Currency + ' (' + option.AlphabeticCode + ')').toLowerCase().includes(currency.toLowerCase()));
+  }
+
+  
   ngAfterViewInit() {
     this.paginator.page
       .pipe(tap(() => this.loadTransactionsPage()))
@@ -258,6 +283,10 @@ export class IncomingRequestToPayComponent implements OnInit {
         debounceTime(500),
         distinctUntilChanged(),
         tap((filterValue) => {
+          filterValue = filterValue.AlphabeticCode;
+          if('KES' === filterValue){
+            filterValue = 'KE'
+          }
           this.applyFilter(filterValue, "currency");
         })
       )

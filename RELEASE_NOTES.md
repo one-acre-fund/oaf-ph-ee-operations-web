@@ -1,5 +1,7 @@
 # Release Notes
 
+## Version 1.1.5
+        * [SER-3252] - Changed Currency selection field to dropdown on incoming request to pay filters
 ## Version 1.1.4
         * [SER-2248] - Resolve the issue on the export part and show user friendly error message when no records are found
 ## Version 1.1.3
