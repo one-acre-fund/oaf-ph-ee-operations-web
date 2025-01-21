@@ -56,12 +56,6 @@ export class IncomingRequestToPayComponent implements OnInit {
   externalId = new FormControl();
   csvExport: [];
   csvName: string;
-  lengthElement: number;
-  /* Requests to pay data. */
-  requestToPayData: any;
-  requestToPayDatas: any;
-  /* Requests to incoming data. */
-  requestToPayIncomingData: requestInterface[] = [];
 
   /** Columns to be displayed in request to pay table. */
   displayedColumns: string[] = [
@@ -146,28 +140,16 @@ export class IncomingRequestToPayComponent implements OnInit {
   ) {
     this.route.data.subscribe(
       (data: {
-        requestsToPay: any;
         dfspEntries: DfspEntry[];
         currencies: any;
       }) => {
-        this.requestToPayData = data.requestsToPay.content;
-        this.requestToPayDatas = data.requestsToPay;
         this.currenciesData = data.currencies;
         this.dfspEntriesData = data.dfspEntries;
       }
     );
-    for (let request of this.requestToPayData) {
-      if (request.direction === "INCOMING")
-        this.requestToPayIncomingData.push(request);
-    }
-    this.lengthElement = this.requestToPayDatas.totalElements;
-    console.log(this.requestToPayDatas);
-    console.log(this.dataSource);
   }
 
   ngOnInit() {
-    // this.setRequestToPay();
-    // this.dataSource.getRequestsPay(this.filterTransactionsBy , this.sort.active, this.sort.direction, this.paginator.pageIndex, this.paginator.pageSize);
     this.getRequestsPay();
     this.setFilteredCurrencies();
   }
@@ -463,7 +445,6 @@ export class IncomingRequestToPayComponent implements OnInit {
   }
   getRequestsPay() {
     this.dataSource = new RequestToPayDataSource(this.requestToPayService);
-    console.log(this.dataSource);
     this.dataSource.getRequestsPay(this.filterTransactionsBy);
   }
 }
