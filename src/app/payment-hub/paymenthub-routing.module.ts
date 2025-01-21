@@ -108,7 +108,6 @@ const routes: Routes = [
               path: "",
               component: IncomingRequestToPayComponent,
               resolve: {
-                requestsToPay: RequestToPayResolver,
                 currencies: CurrenciesResolver,
                 dfspEntries: DfspResolver,
               },

@@ -200,7 +200,7 @@
     </table>
 
     <mat-paginator
-      [length]="lengthElement"
+      [length]="dataSource?.records$ | async"
       #paginator
       [pageSizeOptions]="[10, 20, 30]"
       showFirstLastButtons
