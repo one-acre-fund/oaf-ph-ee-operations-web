@@ -1,5 +1,8 @@
 # Release Notes
 
+## Version 1.1.7
+        * [CP-3399] - Fix incoming transactions not being displayed
+
 ## Version 1.1.6
         * [SER-3377] - Optimize Data Fetching Logic for PH Incoming Requests to Pay
 
