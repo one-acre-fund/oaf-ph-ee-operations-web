@@ -1,41 +1,41 @@
 /** Angular Imports */
-import { Component, OnInit } from '@angular/core';
-import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
-import { Title } from '@angular/platform-browser';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import { Component, OnInit } from "@angular/core";
+import { Router, NavigationEnd, ActivatedRoute } from "@angular/router";
+import { Title } from "@angular/platform-browser";
+import { MatSnackBar } from "@angular/material/snack-bar";
 
 /** rxjs Imports */
-import { merge } from 'rxjs';
-import { filter, map, mergeMap } from 'rxjs/operators';
+import { merge } from "rxjs";
+import { filter, map, mergeMap } from "rxjs/operators";
 
 /** Translation Imports */
-import { TranslateService } from '@ngx-translate/core';
+import { TranslateService } from "@ngx-translate/core";
 
 /** Environment Configuration */
-import { environment } from 'environments/environment';
+import { environment } from "environments/environment";
 
 /** Custom Services */
-import { Logger } from './core/logger/logger.service';
-import { I18nService } from './core/i18n/i18n.service';
-import { ThemeStorageService } from './shared/theme-picker/theme-storage.service';
-import { AlertService } from './core/alert/alert.service';
+import { Logger } from "./core/logger/logger.service";
+import { I18nService } from "./core/i18n/i18n.service";
+import { ThemeStorageService } from "./shared/theme-picker/theme-storage.service";
+import { AlertService } from "./core/alert/alert.service";
+import { MatomoService } from "./core/analytics/matomo.service";
 
 /** Custom Models */
-import { Alert } from './core/alert/alert.model';
+import { Alert } from "./core/alert/alert.model";
 
 /** Initialize Logger */
-const log = new Logger('MifosX');
+const log = new Logger("MifosX");
 
 /**
  * Main web app component.
  */
 @Component({
-  selector: 'mifosx-web-app',
-  templateUrl: './web-app.component.html',
-  styleUrls: ['./web-app.component.scss']
+  selector: "mifosx-web-app",
+  templateUrl: "./web-app.component.html",
+  styleUrls: ["./web-app.component.scss"],
 })
 export class WebAppComponent implements OnInit {
-
   /**
    * @param {Router} router Router for navigation.
    * @param {ActivatedRoute} activatedRoute Activated Route.
@@ -45,15 +45,19 @@ export class WebAppComponent implements OnInit {
    * @param {ThemeStorageService} themeStorageService Theme Storage Service.
    * @param {MatSnackBar} snackBar Material Snackbar for notifications.
    * @param {AlertService} alertService Alert Service.
+   * @param {MatomoService} matomoService Matomo Analytics Service.
    */
-  constructor(private router: Router,
-              private activatedRoute: ActivatedRoute,
-              private titleService: Title,
-              private translateService: TranslateService,
-              private i18nService: I18nService,
-              private themeStorageService: ThemeStorageService,
-              public snackBar: MatSnackBar,
-              private alertService: AlertService) { }
+  constructor(
+    private router: Router,
+    private activatedRoute: ActivatedRoute,
+    private titleService: Title,
+    private translateService: TranslateService,
+    private i18nService: I18nService,
+    private themeStorageService: ThemeStorageService,
+    public snackBar: MatSnackBar,
+    private alertService: AlertService,
+    private matomoService: MatomoService
+  ) {}
 
   /**
    * Initial Setup:
@@ -73,13 +77,18 @@ export class WebAppComponent implements OnInit {
     if (environment.production) {
       Logger.enableProductionMode();
     }
-    log.debug('init');
+    log.debug("init");
 
     // Setup translations
-    this.i18nService.init(environment.defaultLanguage, environment.supportedLanguages);
+    this.i18nService.init(
+      environment.defaultLanguage,
+      environment.supportedLanguages
+    );
 
     // Change page title on navigation or language change, based on route data
-    const onNavigationEnd = this.router.events.pipe(filter(event => event instanceof NavigationEnd));
+    const onNavigationEnd = this.router.events.pipe(
+      filter((event) => event instanceof NavigationEnd)
+    );
     merge(this.translateService.onLangChange, onNavigationEnd)
       .pipe(
         map(() => {
@@ -89,14 +98,25 @@ export class WebAppComponent implements OnInit {
           }
           return route;
         }),
-        filter(route => route.outlet === 'primary'),
-        mergeMap(route => route.data)
+        filter((route) => route.outlet === "primary"),
+        mergeMap((route) => route.data)
       )
-      .subscribe(event => {
-        const title = event['title'];
+      .subscribe((event) => {
+        const title = event["title"];
         if (title) {
-          this.titleService.setTitle(`${this.translateService.instant(title)} | Mifos X`);
+          const pageTitle = `${this.translateService.instant(title)} | Mifos X`;
+          this.titleService.setTitle(pageTitle);
+          // Track page view with Matomo
+          this.matomoService.trackPageView(this.router.url, pageTitle);
         }
+      });
+
+    // Track navigation events with Matomo
+    this.router.events
+      .pipe(filter((event) => event instanceof NavigationEnd))
+      .subscribe((event: NavigationEnd) => {
+        // Track page view for navigation without title data
+        this.matomoService.trackPageView(event.urlAfterRedirects);
       });
 
     // Setup theme
@@ -107,12 +127,11 @@ export class WebAppComponent implements OnInit {
 
     // Setup alerts
     this.alertService.alertEvent.subscribe((alertEvent: Alert) => {
-      this.snackBar.open(`${alertEvent.message}`, 'Close', {
+      this.snackBar.open(`${alertEvent.message}`, "Close", {
         duration: 2000,
-        horizontalPosition: 'right',
-        verticalPosition: 'top'
+        horizontalPosition: "right",
+        verticalPosition: "top",
       });
     });
   }
-
 }

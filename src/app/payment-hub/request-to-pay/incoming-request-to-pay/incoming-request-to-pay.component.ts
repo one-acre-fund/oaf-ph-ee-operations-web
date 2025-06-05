@@ -17,6 +17,7 @@ import {
 /** Custom Services */
 import { RequestToPayService } from "../service/request-to-pay.service";
 import { RequestToPayDataSource } from "../dataSource /requestToPay.datasource";
+import { MatomoService } from "app/core/analytics/matomo.service";
 /** Custom Data Source */
 import { formatUTCDate } from "../helper/date-format.helper";
 import { transactionStatusData as statuses } from "../helper/incoming-reqest.helper";
@@ -46,7 +47,7 @@ export class IncomingRequestToPayComponent implements OnInit {
   currenciesData: any;
   dfspEntriesData: DfspEntry[];
   transactionStatusData = statuses;
-  amsCodes = amsShortCodes('TILL');
+  amsCodes = amsShortCodes("TILL");
   /** Transaction date from form control. */
   transactionDateFrom = new FormControl();
   /** Transaction date to form control. */
@@ -122,9 +123,9 @@ export class IncomingRequestToPayComponent implements OnInit {
       value: "",
     },
     {
-      type: 'payerDfspId',
-      value: ''
-    }
+      type: "payerDfspId",
+      value: "",
+    },
   ];
   dateTimeFormat = "YYYY-MM-DD HH:mm:ss";
 
@@ -136,13 +137,11 @@ export class IncomingRequestToPayComponent implements OnInit {
   constructor(
     private requestToPayService: RequestToPayService,
     private route: ActivatedRoute,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private matomoService: MatomoService
   ) {
     this.route.data.subscribe(
-      (data: {
-        dfspEntries: DfspEntry[];
-        currencies: any;
-      }) => {
+      (data: { dfspEntries: DfspEntry[]; currencies: any }) => {
         this.currenciesData = data.currencies;
         this.dfspEntriesData = data.dfspEntries;
       }
@@ -150,6 +149,8 @@ export class IncomingRequestToPayComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.trackPageView();
+    this.setupAnalytics();
     this.getRequestsPay();
     this.setFilteredCurrencies();
   }
@@ -158,12 +159,19 @@ export class IncomingRequestToPayComponent implements OnInit {
    * Sets filtered gl accounts for autocomplete.
    */
   setFilteredCurrencies() {
-    this.filteredCurrencies = this.currencyCode.valueChanges
-      .pipe(
-        startWith(''),
-        map((currency: any) => typeof currency === 'string' ? currency : currency.Currency + ' (' + currency.AlphabeticCode + ')'),
-        map((currency: string) => currency ? this.filterCurrencyAutocompleteData(currency) : this.currenciesData)
-      );
+    this.filteredCurrencies = this.currencyCode.valueChanges.pipe(
+      startWith(""),
+      map((currency: any) =>
+        typeof currency === "string"
+          ? currency
+          : currency.Currency + " (" + currency.AlphabeticCode + ")"
+      ),
+      map((currency: string) =>
+        currency
+          ? this.filterCurrencyAutocompleteData(currency)
+          : this.currenciesData
+      )
+    );
   }
 
   /**
@@ -172,10 +180,13 @@ export class IncomingRequestToPayComponent implements OnInit {
    * @returns {any} Filtered gl accounts.
    */
   private filterCurrencyAutocompleteData(currency: string): any {
-    return this.currenciesData.filter((option: any) => (option.Currency + ' (' + option.AlphabeticCode + ')').toLowerCase().includes(currency.toLowerCase()));
+    return this.currenciesData.filter((option: any) =>
+      (option.Currency + " (" + option.AlphabeticCode + ")")
+        .toLowerCase()
+        .includes(currency.toLowerCase())
+    );
   }
 
-  
   ngAfterViewInit() {
     this.paginator.page
       .pipe(tap(() => this.loadTransactionsPage()))
@@ -266,8 +277,8 @@ export class IncomingRequestToPayComponent implements OnInit {
         distinctUntilChanged(),
         tap((filterValue) => {
           filterValue = filterValue.AlphabeticCode;
-          if('KES' === filterValue){
-            filterValue = 'KE'
+          if ("KES" === filterValue) {
+            filterValue = "KE";
           }
           this.applyFilter(filterValue, "currency");
         })
@@ -280,7 +291,10 @@ export class IncomingRequestToPayComponent implements OnInit {
         distinctUntilChanged(),
         tap((filterValue: moment.Moment) => {
           if (filterValue) {
-            this.applyFilter(filterValue.format(this.dateTimeFormat), "startFrom");
+            this.applyFilter(
+              filterValue.format(this.dateTimeFormat),
+              "startFrom"
+            );
           }
         })
       )
@@ -292,7 +306,10 @@ export class IncomingRequestToPayComponent implements OnInit {
         distinctUntilChanged(),
         tap((filterValue: moment.Moment) => {
           if (filterValue) {
-            this.applyFilter(filterValue.format(this.dateTimeFormat), "startTo");
+            this.applyFilter(
+              filterValue.format(this.dateTimeFormat),
+              "startTo"
+            );
           }
         })
       )
@@ -313,6 +330,8 @@ export class IncomingRequestToPayComponent implements OnInit {
   }
 
   loadTransactionsPage() {
+    const startTime = performance.now();
+
     // if (!this.sort.direction) {
     //   delete this.sort.active;
     // }
@@ -323,6 +342,16 @@ export class IncomingRequestToPayComponent implements OnInit {
       this.paginator.pageIndex,
       this.paginator.pageSize
     );
+
+    // Track performance
+    const endTime = performance.now();
+    const duration = Math.round(endTime - startTime);
+    this.trackPerformanceMetric("Load Transactions Page", duration);
+
+    // Track pagination if triggered by pagination
+    if (this.paginator.pageIndex !== undefined) {
+      this.onPageChange(this.paginator.pageIndex, this.paginator.pageSize);
+    }
   }
   /**
    * Initializes the data source, paginator and sorter for request to pay table.
@@ -398,6 +427,10 @@ export class IncomingRequestToPayComponent implements OnInit {
       (filter) => filter.type === property
     );
     this.filterTransactionsBy[findIndex].value = filterValue;
+
+    // Track filter usage
+    this.onFilterUsed(property, filterValue);
+
     this.loadTransactionsPage();
   }
   /**
@@ -409,8 +442,30 @@ export class IncomingRequestToPayComponent implements OnInit {
     return entry ? entry.name : undefined;
   }
   exportCSV(filterBy: any) {
-    filterBy[filterBy.cars] = filterBy.val;
-    this.requestToPayService.exportCSV(filterBy);
+    const startTime = performance.now();
+
+    try {
+      filterBy[filterBy.cars] = filterBy.val;
+
+      // Track export usage
+      this.onExportUsed(filterBy.cars, filterBy.val);
+
+      this.requestToPayService.exportCSV(filterBy);
+
+      // Track successful export
+      const endTime = performance.now();
+      const duration = Math.round(endTime - startTime);
+      this.matomoService.trackEvent(
+        "Export",
+        "Success",
+        "Request to Pay CSV",
+        1
+      );
+      this.trackPerformanceMetric("CSV Export", duration);
+    } catch (error) {
+      this.matomoService.trackEvent("Export", "Error", "Request to Pay CSV", 1);
+      this.trackBusinessMetric("export_errors", 1, "errors");
+    }
   }
   /**
    * Displays office name in form control input.
@@ -446,5 +501,152 @@ export class IncomingRequestToPayComponent implements OnInit {
   getRequestsPay() {
     this.dataSource = new RequestToPayDataSource(this.requestToPayService);
     this.dataSource.getRequestsPay(this.filterTransactionsBy);
+  }
+
+  /**
+   * Track page view for incoming request to pay
+   */
+  trackPageView(): void {
+    this.matomoService.trackPageView(
+      "Incoming Request to Pay",
+      "/payment-hub/request-to-pay/incoming"
+    );
+  }
+
+  /**
+   * Setup initial analytics configuration
+   */
+  setupAnalytics(): void {
+    this.matomoService.trackEvent(
+      "Page",
+      "Loaded",
+      "Incoming Request to Pay",
+      1
+    );
+    this.trackBusinessMetric("request_to_pay_views", 1, "views");
+  }
+
+  /**
+   * Track filter interactions
+   */
+  onFilterUsed(filterType: string, value?: any): void {
+    this.matomoService.trackEvent(
+      "Filter",
+      "Used",
+      `Request to Pay ${filterType}`,
+      1
+    );
+
+    if (value) {
+      this.matomoService.trackEvent(
+        "Filter",
+        "Value Set",
+        `Request to Pay ${filterType}`,
+        1
+      );
+    }
+
+    this.trackBusinessMetric("filter_interactions", 1, "interactions");
+  }
+
+  /**
+   * Track sorting interactions
+   */
+  onColumnSort(column: string, direction: string): void {
+    this.matomoService.trackEvent("Table", "Sort", `${column} ${direction}`, 1);
+    this.trackBusinessMetric("column_sort_usage", 1, "sorts");
+  }
+
+  /**
+   * Track pagination interactions
+   */
+  onPageChange(pageIndex: number, pageSize: number): void {
+    this.matomoService.trackEvent(
+      "Table",
+      "Pagination",
+      `Page ${pageIndex + 1}`,
+      pageSize
+    );
+    this.trackBusinessMetric("pagination_usage", 1, "page_changes");
+  }
+
+  /**
+   * Track transaction row clicks
+   */
+  onTransactionRowClick(transactionId: string, state: string): void {
+    this.matomoService.trackEvent("Transaction", "Row Click", transactionId, 1);
+    this.matomoService.trackEvent("Transaction", "State Click", state, 1);
+    this.trackBusinessMetric("transaction_details_views", 1, "views");
+  }
+
+  /**
+   * Track autocomplete interactions
+   */
+  onAutocompleteSelection(type: string, value: any): void {
+    this.matomoService.trackEvent(
+      "Autocomplete",
+      "Selection",
+      `${type}: ${value}`,
+      1
+    );
+    this.trackBusinessMetric("autocomplete_usage", 1, "selections");
+  }
+
+  /**
+   * Track date picker interactions
+   */
+  onDatePickerUsed(dateType: "from" | "to"): void {
+    this.matomoService.trackEvent(
+      "DatePicker",
+      "Used",
+      `Transaction Date ${dateType}`,
+      1
+    );
+    this.trackBusinessMetric("datepicker_usage", 1, "uses");
+  }
+
+  /**
+   * Track export functionality
+   */
+  onExportUsed(filterType: string, value: string): void {
+    this.matomoService.trackEvent(
+      "Export",
+      "CSV Export",
+      `${filterType}: ${value}`,
+      1
+    );
+    this.trackBusinessMetric("csv_exports", 1, "exports");
+  }
+
+  /**
+   * Track performance metrics
+   */
+  trackPerformanceMetric(metric: string, duration: number): void {
+    this.matomoService.trackEvent(
+      "Performance",
+      metric,
+      `${duration}ms`,
+      duration
+    );
+
+    if (duration > 3000) {
+      this.matomoService.trackEvent(
+        "Performance",
+        "Slow Operation",
+        metric,
+        duration
+      );
+    }
+  }
+
+  /**
+   * Track business metrics
+   */
+  private trackBusinessMetric(
+    metric: string,
+    value: number,
+    unit: string
+  ): void {
+    this.matomoService.trackBusinessMetric(metric, value, unit);
   }
 }

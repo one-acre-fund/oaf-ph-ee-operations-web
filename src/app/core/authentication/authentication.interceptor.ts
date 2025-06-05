@@ -102,7 +102,7 @@ export class AuthenticationInterceptor implements HttpInterceptor {
     if (tenantId) {
       httpOptions.headers['Platform-TenantId'] = tenantId;
     } else {
-      delete httpOptions.headers['Platform-TenantId'];
+      delete httpOptions.headers["Platform-TenantId"];
     }
   }
 

@@ -15,56 +15,61 @@ export let environment = {
     enabled: "true", // For connecting to Mifos X using OAuth2 Authentication change the value to true
     serverUrl: "https://paymenthub.qa.oneacrefund.org/opsapp",
     basicAuth: "true",
-    basicAuthToken: 'Y2xpZW50Og=='
+    basicAuthToken: "Y2xpZW50Og==",
   },
   defaultLanguage: "en-US",
   supportedLanguages: ["en-US", "fr-FR"],
   externalConfigurationFile: "configuration.properties", // When provided, the external configuration file content will override this environment settings based on naming conventions
   auth: {
     enabled: false,
-    tenant: "phdefault"
+    tenant: "phdefault",
   },
 
   amsShortCodes: [
     {
-      option: 'ERPLY_TILL',
-      type: 'TILL',
-      value: '9499081'
+      option: "ERPLY_TILL",
+      type: "TILL",
+      value: "9499081",
+    },
+    {
+      option: "TUPANDE_TILL",
+      type: "TILL",
+      value: "6064956",
+    },
+    {
+      option: "PAYGOPS_USSD_KE_TILL",
+      type: "TILL",
+      value: "9347335",
+    },
+    {
+      option: "ROSTER_USSD_KE_TILL",
+      type: "TILL",
+      value: "9558723",
+    },
+    {
+      option: "ODOO_KE_TILL",
+      type: "TILL",
+      value: "9491775",
+    },
+    {
+      option: "FINERACT_USSD_KE_TILL",
+      type: "TILL",
+      value: "8167094",
+    },
+    {
+      option: "PAYGOPS_PAYBILL",
+      type: "PAYBILL",
+      value: "840706",
+    },
+    {
+      option: "TEST_PAYBILL",
+      type: "PAYBILL",
+      value: "840700",
+    },
+  ],
+  matomo: {
+    url: "https://your-matomo-domain.com/",
+    siteId: 1, // Replace with your site ID
+    disabled: false,
   },
-  {
-      option: 'TUPANDE_TILL',
-      type: 'TILL',
-      value: '6064956'
-  },
-  {
-      option: 'PAYGOPS_USSD_KE_TILL',
-      type: 'TILL',
-      value: '9347335'
-  },
-  {
-      option: 'ROSTER_USSD_KE_TILL',
-      type: 'TILL',
-      value: '9558723'
-  },
-  {
-      option: 'ODOO_KE_TILL',
-      type: 'TILL',
-      value: '9491775'
-  },
-  {
-      option: 'FINERACT_USSD_KE_TILL',
-      type: 'TILL',
-      value: '8167094'
-  },
-  {
-      option: 'PAYGOPS_PAYBILL',
-      type: 'PAYBILL',
-      value: '840706'
-  },
-  {
-      option: 'TEST_PAYBILL',
-      type: 'PAYBILL',
-      value: '840700'
-  }
-  ]
 };

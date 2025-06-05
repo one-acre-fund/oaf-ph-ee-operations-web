@@ -1,36 +1,42 @@
 /** Angular Imports */
-import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort } from '@angular/material/sort';
-import { FormControl } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { Component, OnInit, ViewChild, AfterViewInit } from "@angular/core";
+import { MatDialog } from "@angular/material/dialog";
+import { MatPaginator } from "@angular/material/paginator";
+import { MatSort } from "@angular/material/sort";
+import { FormControl } from "@angular/forms";
+import { ActivatedRoute } from "@angular/router";
 
 /** rxjs Imports */
-import { merge } from 'rxjs';
-import { tap, startWith, map, distinctUntilChanged, debounceTime } from 'rxjs/operators';
+import { merge } from "rxjs";
+import {
+  tap,
+  startWith,
+  map,
+  distinctUntilChanged,
+  debounceTime,
+} from "rxjs/operators";
 
 /** Custom Services */
+import { MatomoService } from "app/core/analytics/matomo.service";
 
 /** Custom Data Source */
-import { TransactionsDataSource } from '../dataSource/transactions.datasource';
-import { formatDate, formatUTCDate } from '../helper/date-format.helper';
-import { transactionStatusData as statuses } from '../helper/transaction.helper';
-import { TransactionsService } from '../service/transactions.service';
-import { DfspEntry } from '../model/dfsp.model';
-import { RetryResolveDialogComponent } from '../retry-resolve-dialog/retry-resolve-dialog.component';
-import { amsShortCodes } from 'app/payment-hub/request-to-pay/helper/ams-short-codes';
+import { TransactionsDataSource } from "../dataSource/transactions.datasource";
+import { formatDate, formatUTCDate } from "../helper/date-format.helper";
+import { transactionStatusData as statuses } from "../helper/transaction.helper";
+import { TransactionsService } from "../service/transactions.service";
+import { DfspEntry } from "../model/dfsp.model";
+import { RetryResolveDialogComponent } from "../retry-resolve-dialog/retry-resolve-dialog.component";
+import { amsShortCodes } from "app/payment-hub/request-to-pay/helper/ams-short-codes";
 
 /**
  * Transactions component.
  */
 @Component({
-  selector: 'mifosx-incoming-transactions',
-  templateUrl: './incoming-transactions.component.html',
-  styleUrls: ['./incoming-transactions.component.scss']
+  selector: "mifosx-incoming-transactions",
+  templateUrl: "./incoming-transactions.component.html",
+  styleUrls: ["./incoming-transactions.component.scss"],
 })
 export class IncomingTransactionsComponent implements OnInit, AfterViewInit {
-
   /** Minimum transaction date allowed. */
   minDate = new Date(2000, 0, 1);
   /** Maximum transaction date allowed. */
@@ -47,7 +53,7 @@ export class IncomingTransactionsComponent implements OnInit, AfterViewInit {
   currenciesData: any;
   dfspEntriesData: DfspEntry[];
   transactionStatusData = statuses;
-  amsCodes = amsShortCodes('PAYBILL');
+  amsCodes = amsShortCodes("PAYBILL");
   /** Transaction date from form control. */
   transactionDateFrom = new FormControl();
   /** Transaction date to form control. */
@@ -56,55 +62,67 @@ export class IncomingTransactionsComponent implements OnInit, AfterViewInit {
   /** Transaction ID form control. */
   transactionId = new FormControl();
   /** Columns to be displayed in transactions table. */
-  displayedColumns: string[] = ['startedAt', 'completedAt', 'transactionId', 'payerPartyId', 'payeePartyId', 'payerDfspId', 'payerDfspName', 'amount', 'currency', 'status', 'actions'];
+  displayedColumns: string[] = [
+    "startedAt",
+    "completedAt",
+    "transactionId",
+    "payerPartyId",
+    "payeePartyId",
+    "payerDfspId",
+    "payerDfspName",
+    "amount",
+    "currency",
+    "status",
+    "actions",
+  ];
   /** Data source for transactions table. */
   dataSource: TransactionsDataSource;
   /** Journal entries filter. */
   filterTransactionsBy = [
     {
-      type: 'payeePartyId',
-      value: ''
+      type: "payeePartyId",
+      value: "",
     },
     {
-      type: 'payerPartyId',
-      value: ''
+      type: "payerPartyId",
+      value: "",
     },
     {
-      type: 'clientCorrelationId',
-      value: ''
+      type: "clientCorrelationId",
+      value: "",
     },
     {
-      type: 'direction',
-      value: 'INCOMING'
+      type: "direction",
+      value: "INCOMING",
     },
     {
-      type: 'transactionId',
-      value: ''
+      type: "transactionId",
+      value: "",
     },
     {
-      type: 'status',
-      value: ''
+      type: "status",
+      value: "",
     },
     {
-      type: 'amount',
-      value: ''
+      type: "amount",
+      value: "",
     },
     {
-      type: 'currency',
-      value: ''
+      type: "currency",
+      value: "",
     },
     {
-      type: 'startFrom',
-      value: ''
+      type: "startFrom",
+      value: "",
     },
     {
-      type: 'startTo',
-      value: ''
+      type: "startTo",
+      value: "",
     },
     {
-      type: 'payerDfspId',
-      value: ''
-    }
+      type: "payerDfspId",
+      value: "",
+    },
   ];
   dateTimeFormat = "YYYY-MM-DD HH:mm:ss";
 
@@ -114,27 +132,41 @@ export class IncomingTransactionsComponent implements OnInit, AfterViewInit {
   @ViewChild(MatSort) sort: MatSort;
 
   /**
-   * Retrieves the offices and gl accounts data from `resolve`.
-   * @param {AccountingService} accountingService Accounting Service.
+   * Constructor - initializes services and sets up component data.
+   * @param {TransactionsService} transactionsService Transactions Service.
    * @param {ActivatedRoute} route Activated Route.
    * @param {MatDialog} dialog Dialog reference.
+   * @param {MatomoService} matomoService Matomo Analytics Service.
    */
-  constructor(private transactionsService: TransactionsService,
+  constructor(
+    private transactionsService: TransactionsService,
     private route: ActivatedRoute,
-    public dialog: MatDialog) {
-    this.route.data.subscribe((data: {
-      currencies: any
-      dfspEntries: DfspEntry[]
-    }) => {
-      this.currenciesData = data.currencies;
-      this.dfspEntriesData = data.dfspEntries;
-    });
+    public dialog: MatDialog,
+    private matomoService: MatomoService
+  ) {
+    this.route.data.subscribe(
+      (data: { currencies: any; dfspEntries: DfspEntry[] }) => {
+        this.currenciesData = data.currencies;
+        this.dfspEntriesData = data.dfspEntries;
+      }
+    );
   }
 
   /**
    * Sets filtered offices and gl accounts for autocomplete and journal entries table.
    */
   ngOnInit() {
+    // Track page view
+    this.matomoService.trackPageView("Incoming Transactions");
+    this.matomoService.trackEvent(
+      "Transaction Management",
+      "View Incoming Transactions",
+      "Page Load"
+    );
+
+    // Set custom dimension for transaction direction
+    this.matomoService.setCustomDimension(2, "INCOMING");
+
     this.setFilteredCurrencies();
     this.setFilteredDfspEntries();
     this.getTransactions();
@@ -151,8 +183,16 @@ export class IncomingTransactionsComponent implements OnInit, AfterViewInit {
         debounceTime(500),
         distinctUntilChanged(),
         tap((filterValue) => {
-          if (filterValue.length == 0 || filterValue.length > 3)
-            this.applyFilter(filterValue, 'payeePartyId');
+          if (filterValue.length == 0 || filterValue.length > 3) {
+            this.applyFilter(filterValue, "payeePartyId");
+            // Track filter usage
+            this.matomoService.trackEvent(
+              "Transaction Management",
+              "Filter Applied",
+              "Payee Party ID",
+              filterValue.length
+            );
+          }
         })
       )
       .subscribe();
@@ -162,8 +202,16 @@ export class IncomingTransactionsComponent implements OnInit, AfterViewInit {
         debounceTime(500),
         distinctUntilChanged(),
         tap((filterValue) => {
-          if (filterValue.length == 0 || filterValue.length > 3)
-            this.applyFilter(filterValue, 'payerPartyId');
+          if (filterValue.length == 0 || filterValue.length > 3) {
+            this.applyFilter(filterValue, "payerPartyId");
+            // Track filter usage
+            this.matomoService.trackEvent(
+              "Transaction Management",
+              "Filter Applied",
+              "Payer Party ID",
+              filterValue.length
+            );
+          }
         })
       )
       .subscribe();
@@ -173,7 +221,14 @@ export class IncomingTransactionsComponent implements OnInit, AfterViewInit {
         debounceTime(500),
         distinctUntilChanged(),
         tap((filterValue) => {
-          this.applyFilter(filterValue, 'payerDfspId');
+          this.applyFilter(filterValue, "payerDfspId");
+          // Track filter usage
+          this.matomoService.trackEvent(
+            "Transaction Management",
+            "Filter Applied",
+            "AMS Business Short Code",
+            1
+          );
         })
       )
       .subscribe();
@@ -183,7 +238,9 @@ export class IncomingTransactionsComponent implements OnInit, AfterViewInit {
         debounceTime(500),
         distinctUntilChanged(),
         tap((filterValue) => {
-          const elements = this.dfspEntriesData.filter((option) => option.name === filterValue.name);
+          const elements = this.dfspEntriesData.filter(
+            (option) => option.name === filterValue.name
+          );
           if (elements.length === 1) {
             this.payerDfspId.setValue(elements[0].id);
             filterValue = elements[0].name;
@@ -197,7 +254,14 @@ export class IncomingTransactionsComponent implements OnInit, AfterViewInit {
         debounceTime(500),
         distinctUntilChanged(),
         tap((filterValue) => {
-          this.applyFilter(filterValue, 'transactionId');
+          this.applyFilter(filterValue, "transactionId");
+          // Track filter usage
+          this.matomoService.trackEvent(
+            "Transaction Management",
+            "Filter Applied",
+            "Transaction ID",
+            filterValue.length
+          );
         })
       )
       .subscribe();
@@ -207,7 +271,17 @@ export class IncomingTransactionsComponent implements OnInit, AfterViewInit {
         debounceTime(500),
         distinctUntilChanged(),
         tap((filterValue) => {
-          this.applyFilter(filterValue, 'status');
+          this.applyFilter(filterValue, "status");
+          // Track filter usage
+          this.matomoService.trackEvent(
+            "Transaction Management",
+            "Filter Applied",
+            "Status",
+            1
+          );
+          if (filterValue) {
+            this.matomoService.setCustomDimension(3, filterValue);
+          }
         })
       )
       .subscribe();
@@ -217,7 +291,22 @@ export class IncomingTransactionsComponent implements OnInit, AfterViewInit {
         debounceTime(500),
         distinctUntilChanged(),
         tap((filterValue) => {
-          this.applyFilter(filterValue, 'amount');
+          this.applyFilter(filterValue, "amount");
+          // Track filter usage
+          this.matomoService.trackEvent(
+            "Transaction Management",
+            "Filter Applied",
+            "Amount",
+            filterValue ? 1 : 0
+          );
+          if (filterValue) {
+            this.matomoService.trackEvent(
+              "Transaction Management",
+              "Amount Range Filter",
+              "Value",
+              parseFloat(filterValue) || 0
+            );
+          }
         })
       )
       .subscribe();
@@ -228,7 +317,17 @@ export class IncomingTransactionsComponent implements OnInit, AfterViewInit {
         distinctUntilChanged(),
         tap((filterValue) => {
           filterValue = filterValue.AlphabeticCode;
-          this.applyFilter(filterValue, 'currency');
+          this.applyFilter(filterValue, "currency");
+          // Track filter usage
+          this.matomoService.trackEvent(
+            "Transaction Management",
+            "Filter Applied",
+            "Currency",
+            1
+          );
+          if (filterValue) {
+            this.matomoService.setCustomDimension(4, filterValue);
+          }
         })
       )
       .subscribe();
@@ -238,7 +337,22 @@ export class IncomingTransactionsComponent implements OnInit, AfterViewInit {
         debounceTime(500),
         distinctUntilChanged(),
         tap((filterValue: moment.Moment) => {
-          this.applyFilter(filterValue.format(this.dateTimeFormat), 'startFrom');
+          this.applyFilter(
+            filterValue.format(this.dateTimeFormat),
+            "startFrom"
+          );
+          // Track filter usage
+          this.matomoService.trackEvent(
+            "Transaction Management",
+            "Filter Applied",
+            "Date From",
+            1
+          );
+          this.matomoService.trackEvent(
+            "Transaction Management",
+            "Date Range Filter",
+            "From Date Set"
+          );
         })
       )
       .subscribe();
@@ -248,29 +362,65 @@ export class IncomingTransactionsComponent implements OnInit, AfterViewInit {
         debounceTime(500),
         distinctUntilChanged(),
         tap((filterValue: moment.Moment) => {
-          this.applyFilter(filterValue.format(this.dateTimeFormat), 'startTo');
+          this.applyFilter(filterValue.format(this.dateTimeFormat), "startTo");
+          // Track filter usage
+          this.matomoService.trackEvent(
+            "Transaction Management",
+            "Filter Applied",
+            "Date To",
+            1
+          );
+          this.matomoService.trackEvent(
+            "Transaction Management",
+            "Date Range Filter",
+            "To Date Set"
+          );
         })
       )
       .subscribe();
 
-
-      this.externalId.valueChanges
+    this.externalId.valueChanges
       .pipe(
         debounceTime(500),
         distinctUntilChanged(),
         tap((filterValue) => {
           // check if length is reset or above 3
-          if (filterValue.length == 0 || filterValue.length > 3)
+          if (filterValue.length == 0 || filterValue.length > 3) {
             this.applyFilter(filterValue, "clientCorrelationId");
+            // Track filter usage
+            this.matomoService.trackEvent(
+              "Transaction Management",
+              "Filter Applied",
+              "External ID",
+              filterValue.length
+            );
+          }
         })
       )
       .subscribe();
 
-    this.sort.sortChange.subscribe(() => this.paginator.pageIndex = 0);
+    this.sort.sortChange.subscribe(() => {
+      this.paginator.pageIndex = 0;
+      // Track sorting usage
+      this.matomoService.trackEvent(
+        "Transaction Management",
+        "Table Sorted",
+        `${this.sort.active} ${this.sort.direction}`
+      );
+    });
 
     merge(this.sort.sortChange, this.paginator.page)
       .pipe(
-        tap(() => this.loadTransactionsPage())
+        tap(() => {
+          this.loadTransactionsPage();
+          // Track pagination
+          this.matomoService.trackEvent(
+            "Transaction Management",
+            "Page Changed",
+            `Page ${this.paginator.pageIndex + 1}`,
+            this.paginator.pageSize
+          );
+        })
       )
       .subscribe();
   }
@@ -279,10 +429,39 @@ export class IncomingTransactionsComponent implements OnInit, AfterViewInit {
    * Loads a page of transactions.
    */
   loadTransactionsPage() {
+    const startTime = performance.now();
+
     if (!this.sort.direction) {
       delete this.sort.active;
     }
-    this.dataSource.getTransactions(this.filterTransactionsBy, this.sort.active, this.sort.direction, this.paginator.pageIndex, this.paginator.pageSize);
+
+    this.dataSource.getTransactions(
+      this.filterTransactionsBy,
+      this.sort.active,
+      this.sort.direction,
+      this.paginator.pageIndex,
+      this.paginator.pageSize
+    );
+
+    // Track performance
+    const loadTime = performance.now() - startTime;
+    this.matomoService.trackEvent(
+      "Performance",
+      "Transaction Load Time",
+      "Incoming Transactions",
+      Math.round(loadTime)
+    );
+
+    // Track business metrics
+    const activeFilters = this.filterTransactionsBy.filter(
+      (filter) => filter.value && filter.value.length > 0
+    ).length;
+    this.matomoService.trackEvent(
+      "Transaction Management",
+      "Transactions Loaded",
+      "Active Filters",
+      activeFilters
+    );
   }
 
   convertTimestampToUTCDate(timestamp: any) {
@@ -305,8 +484,28 @@ export class IncomingTransactionsComponent implements OnInit, AfterViewInit {
    * @param {string} property Property to filter data by.
    */
   applyFilter(filterValue: string, property: string) {
+    // Track filter usage analytics
+    this.matomoService.trackEvent(
+      "Transaction Management",
+      "Filter Applied",
+      `${property}: ${filterValue ? "Applied" : "Cleared"}`
+    );
+
+    // Track specific filter metrics
+    if (filterValue) {
+      this.matomoService.trackEvent(
+        "Search and Filter",
+        "Filter Used",
+        property,
+        1
+      );
+      this.matomoService.setCustomDimension(3, property); // Track most used filter type
+    }
+
     this.paginator.pageIndex = 0;
-    const findIndex = this.filterTransactionsBy.findIndex(filter => filter.type === property);
+    const findIndex = this.filterTransactionsBy.findIndex(
+      (filter) => filter.type === property
+    );
     this.filterTransactionsBy[findIndex].value = filterValue;
     this.loadTransactionsPage();
   }
@@ -317,11 +516,15 @@ export class IncomingTransactionsComponent implements OnInit, AfterViewInit {
    * @returns {string} Office name if valid otherwise undefined.
    */
   displayCurrencyName(currency?: any): string | undefined {
-    return currency ? currency.Currency + ' (' + currency.AlphabeticCode + ')' : undefined;
+    return currency
+      ? currency.Currency + " (" + currency.AlphabeticCode + ")"
+      : undefined;
   }
 
   getDfpsEntry(dfpsId?: any): DfspEntry | undefined {
-    const elements = this.dfspEntriesData.filter((option) => option.id === dfpsId);
+    const elements = this.dfspEntriesData.filter(
+      (option) => option.id === dfpsId
+    );
     return elements.length > 0 ? elements[0] : undefined;
   }
 
@@ -335,7 +538,7 @@ export class IncomingTransactionsComponent implements OnInit, AfterViewInit {
   }
 
   shortenValue(value: any) {
-    return value && value.length > 15 ? value.slice(0, 13) + '...' : value;
+    return value && value.length > 15 ? value.slice(0, 13) + "..." : value;
   }
 
   /**
@@ -344,13 +547,16 @@ export class IncomingTransactionsComponent implements OnInit, AfterViewInit {
    * @returns {string} Office name if valid otherwise undefined.
    */
   displayStatus(status?: any): string | undefined {
-    const elements = this.transactionStatusData.filter((option) => option.value === status);
+    const elements = this.transactionStatusData.filter(
+      (option) => option.value === status
+    );
     return elements.length > 0 ? elements[0].option : undefined;
   }
 
   displayCSS(status?: any): string | undefined {
-
-    const elements = this.transactionStatusData.filter((option) => option.value === status);
+    const elements = this.transactionStatusData.filter(
+      (option) => option.value === status
+    );
     return elements.length > 0 ? elements[0].css : undefined;
   }
 
@@ -359,9 +565,9 @@ export class IncomingTransactionsComponent implements OnInit, AfterViewInit {
       return undefined;
     }
     date = date.toString();
-    date = date.replace('+0000', '');
-    date = date.replace('T', ' ');
-    date = date.replace('.000', '');
+    date = date.replace("+0000", "");
+    date = date.replace("T", " ");
+    date = date.replace(".000", "");
     return date;
   }
 
@@ -370,31 +576,41 @@ export class IncomingTransactionsComponent implements OnInit, AfterViewInit {
       return undefined;
     }
     date = this.formatDate(date);
-    return date.split(' ')[1];
+    return date.split(" ")[1];
   }
 
   /**
    * Sets filtered gl accounts for autocomplete.
    */
   setFilteredCurrencies() {
-    this.filteredCurrencies = this.currencyCode.valueChanges
-      .pipe(
-        startWith(''),
-        map((currency: any) => typeof currency === 'string' ? currency : currency.Currency + ' (' + currency.AlphabeticCode + ')'),
-        map((currency: string) => currency ? this.filterCurrencyAutocompleteData(currency) : this.currenciesData)
-      );
+    this.filteredCurrencies = this.currencyCode.valueChanges.pipe(
+      startWith(""),
+      map((currency: any) =>
+        typeof currency === "string"
+          ? currency
+          : currency.Currency + " (" + currency.AlphabeticCode + ")"
+      ),
+      map((currency: string) =>
+        currency
+          ? this.filterCurrencyAutocompleteData(currency)
+          : this.currenciesData
+      )
+    );
   }
 
   /**
    * Sets filtered gl accounts for autocomplete.
    */
   setFilteredDfspEntries() {
-    this.filteredDfspEntries = this.payerDfspName.valueChanges
-      .pipe(
-        startWith(''),
-        map((entry: any) => typeof entry === 'string' ? entry : entry.name + ' (' + entry.id + ')'),
-        map((entry: string) => entry ? this.filterDfspAutocompleteData(entry) : this.dfspEntriesData)
-      );
+    this.filteredDfspEntries = this.payerDfspName.valueChanges.pipe(
+      startWith(""),
+      map((entry: any) =>
+        typeof entry === "string" ? entry : entry.name + " (" + entry.id + ")"
+      ),
+      map((entry: string) =>
+        entry ? this.filterDfspAutocompleteData(entry) : this.dfspEntriesData
+      )
+    );
   }
 
   /**
@@ -403,32 +619,94 @@ export class IncomingTransactionsComponent implements OnInit, AfterViewInit {
    * @returns {any} Filtered gl accounts.
    */
   private filterCurrencyAutocompleteData(currency: string): any {
-    return this.currenciesData.filter((option: any) => (option.Currency + ' (' + option.AlphabeticCode + ')').toLowerCase().includes(currency.toLowerCase()));
+    return this.currenciesData.filter((option: any) =>
+      (option.Currency + " (" + option.AlphabeticCode + ")")
+        .toLowerCase()
+        .includes(currency.toLowerCase())
+    );
   }
 
   private filterDfspAutocompleteData(entry: string): any {
-    return this.dfspEntriesData.filter((option: any) => (option.name + ' (' + option.id + ')').toLowerCase().includes(entry.toLowerCase()));
+    return this.dfspEntriesData.filter((option: any) =>
+      (option.name + " (" + option.id + ")")
+        .toLowerCase()
+        .includes(entry.toLowerCase())
+    );
   }
 
   /**
    * Initializes the data source for journal entries table and loads the first page.
    */
   getTransactions() {
+    const startTime = performance.now();
+
     this.dataSource = new TransactionsDataSource(this.transactionsService);
     if (this.sort && this.paginator) {
-      this.dataSource.getTransactions(this.filterTransactionsBy, this.sort.active, this.sort.direction, this.paginator.pageIndex, this.paginator.pageSize);
+      this.dataSource.getTransactions(
+        this.filterTransactionsBy,
+        this.sort.active,
+        this.sort.direction,
+        this.paginator.pageIndex,
+        this.paginator.pageSize
+      );
     } else {
-      this.dataSource.getTransactions(this.filterTransactionsBy, '', '', 0, 10);
+      this.dataSource.getTransactions(this.filterTransactionsBy, "", "", 0, 10);
     }
+
+    // Track initial load performance
+    const loadTime = performance.now() - startTime;
+    this.matomoService.trackEvent(
+      "Performance",
+      "Initial Transaction Load",
+      "Incoming Transactions",
+      Math.round(loadTime)
+    );
   }
 
+  /**
+   * Opens retry/resolve dialog for transaction actions.
+   * @param {any} workflowInstanceKey The workflow instance key.
+   * @param {string} action The action to perform (retry or resolve).
+   */
   openRetryResolveDialog(workflowInstanceKey: any, action: string) {
-    const retryResolveDialogRef = this.dialog.open(RetryResolveDialogComponent, {
-      data: {
-        action: action,
-        workflowInstanceKey: workflowInstanceKey
-      },
+    // Track user action
+    this.matomoService.trackEvent(
+      "Transaction Management",
+      "Action Button Clicked",
+      action,
+      1
+    );
+    this.matomoService.trackEvent(
+      "Transaction Management",
+      `Transaction ${action.charAt(0).toUpperCase() + action.slice(1)}`,
+      "Dialog Opened"
+    );
+
+    const retryResolveDialogRef = this.dialog.open(
+      RetryResolveDialogComponent,
+      {
+        data: {
+          action: action,
+          workflowInstanceKey: workflowInstanceKey,
+        },
+      }
+    );
+
+    // Track dialog result
+    retryResolveDialogRef.afterClosed().subscribe((result) => {
+      if (result) {
+        this.matomoService.trackEvent(
+          "Transaction Management",
+          `Transaction ${action.charAt(0).toUpperCase() + action.slice(1)}`,
+          "Action Confirmed"
+        );
+      } else {
+        this.matomoService.trackEvent(
+          "Transaction Management",
+          `Transaction ${action.charAt(0).toUpperCase() + action.slice(1)}`,
+          "Action Cancelled"
+        );
+      }
     });
   }
-
 }
