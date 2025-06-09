@@ -11,7 +11,6 @@ import { FileUploadComponent } from "./file-upload/file-upload.component";
 import { FooterComponent } from "./footer/footer.component";
 import { LanguageSelectorComponent } from "./language-selector/language-selector.component";
 import { ThemePickerComponent } from "./theme-picker/theme-picker.component";
-import { AnalyticsExamplesComponent } from "./examples/analytics-examples.component";
 
 /** Custom Directives */
 import {
@@ -42,7 +41,6 @@ import { ConfirmDialogComponent } from "./confirm-dialog/confirm-dialog.componen
     FooterComponent,
     LanguageSelectorComponent,
     ThemePickerComponent,
-    AnalyticsExamplesComponent,
     MatomoClickDirective,
     MatomoFormDirective,
     MatomoDownloadDirective,
@@ -53,7 +51,6 @@ import { ConfirmDialogComponent } from "./confirm-dialog/confirm-dialog.componen
     FooterComponent,
     LanguageSelectorComponent,
     ThemePickerComponent,
-    AnalyticsExamplesComponent,
     CommonModule,
     IconsModule,
     MaterialModule,
