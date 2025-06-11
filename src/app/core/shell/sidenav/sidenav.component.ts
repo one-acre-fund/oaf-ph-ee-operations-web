@@ -1,18 +1,18 @@
 /** Angular Imports */
-import { Component, OnInit, Input } from "@angular/core";
-import { Router } from "@angular/router";
+import { Component, OnInit, Input } from '@angular/core';
+import { Router } from '@angular/router';
 
 /** Custom Services */
-import { AuthenticationService } from "../../authentication/authentication.service";
-import { MatomoService } from "../../analytics/matomo.service";
+import { AuthenticationService } from '../../authentication/authentication.service';
+import { MatomoService } from '../../analytics/matomo.service';
 
 /**
  * Sidenav component.
  */
 @Component({
-  selector: "mifosx-sidenav",
-  templateUrl: "./sidenav.component.html",
-  styleUrls: ["./sidenav.component.scss"],
+  selector: 'mifosx-sidenav',
+  templateUrl: './sidenav.component.html',
+  styleUrls: ['./sidenav.component.scss'],
 })
 export class SidenavComponent implements OnInit {
   /** True if sidenav is in collapsed state. */
@@ -39,7 +39,7 @@ export class SidenavComponent implements OnInit {
     if (credentials) {
       this.username = credentials.username;
     } else {
-      this.username = "User";
+      this.username = 'User';
     }
   }
 
@@ -52,6 +52,6 @@ export class SidenavComponent implements OnInit {
 
     this.authenticationService
       .logout()
-      .subscribe(() => this.router.navigate(["/login"], { replaceUrl: true }));
+      .subscribe(() => this.router.navigate(['/login'], { replaceUrl: true }));
   }
 }

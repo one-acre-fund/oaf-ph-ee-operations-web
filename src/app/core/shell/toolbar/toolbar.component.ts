@@ -1,34 +1,34 @@
 /** Angular Imports */
-import { Component, OnInit, Input, EventEmitter, Output } from "@angular/core";
-import { MatSidenav } from "@angular/material/sidenav";
-import { BreakpointObserver, Breakpoints } from "@angular/cdk/layout";
-import { style, animate, transition, trigger } from "@angular/animations";
-import { Router } from "@angular/router";
+import { animate, style, transition, trigger } from '@angular/animations';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { MatSidenav } from '@angular/material/sidenav';
+import { Router } from '@angular/router';
 
 /** rxjs Imports */
-import { Observable } from "rxjs";
-import { map } from "rxjs/operators";
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 /** Custom Services */
-import { AuthenticationService } from "../../authentication/authentication.service";
-import { Credentials } from "app/core/authentication/credentials.model";
-import { Utils } from "app/core/utils/utils";
-import { MatomoService } from "../../analytics/matomo.service";
+import { Credentials } from 'app/core/authentication/credentials.model';
+import { Utils } from 'app/core/utils/utils';
+import { MatomoService } from '../../analytics/matomo.service';
+import { AuthenticationService } from '../../authentication/authentication.service';
 
 /**
- * Toolbar component.
+ * Toolbar component. test
  */
 @Component({
-  selector: "mifosx-toolbar",
-  templateUrl: "./toolbar.component.html",
-  styleUrls: ["./toolbar.component.scss"],
+  selector: 'mifosx-toolbar',
+  templateUrl: './toolbar.component.html',
+  styleUrls: ['./toolbar.component.scss'],
   animations: [
-    trigger("fadeInOut", [
-      transition(":enter", [
+    trigger('fadeInOut', [
+      transition(':enter', [
         style({ opacity: 0 }),
         animate(500, style({ opacity: 1 })),
       ]),
-      transition(":leave", [animate(500, style({ opacity: 0 }))]),
+      transition(':leave', [animate(500, style({ opacity: 0 }))]),
     ]),
   ],
 })
@@ -63,7 +63,7 @@ export class ToolbarComponent implements OnInit {
     private utils: Utils,
     private authenticationService: AuthenticationService,
     private matomoService: MatomoService
-  ) {}
+  ) { }
 
   /**
    * Subscribes to breakpoint for handset.
@@ -80,8 +80,8 @@ export class ToolbarComponent implements OnInit {
 
   displayUser() {
     return this.credentials
-      ? this.credentials.username + " - " + this.credentials.tenantId
-      : "";
+      ? this.credentials.username + ' - ' + this.credentials.tenantId
+      : '';
   }
 
   /**
@@ -115,7 +115,7 @@ export class ToolbarComponent implements OnInit {
 
     this.authenticationService
       .logout()
-      .subscribe(() => this.router.navigate(["/login"], { replaceUrl: true }));
+      .subscribe(() => this.router.navigate(['/login'], { replaceUrl: true }));
   }
 
   /**

@@ -1,16 +1,16 @@
 /** Angular Imports */
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit } from '@angular/core';
 
 /** Custom Services */
-import { MatomoService } from "app/core/analytics/matomo.service";
+import { MatomoService } from 'app/core/analytics/matomo.service';
 
 /**
  * Settings component.
  */
 @Component({
-  selector: "mifosx-settings",
-  templateUrl: "./settings.component.html",
-  styleUrls: ["./settings.component.scss"],
+  selector: 'mifosx-settings',
+  templateUrl: './settings.component.html',
+  styleUrls: ['./settings.component.scss'],
 })
 export class SettingsComponent implements OnInit {
   /** Placeholder for languages. */
@@ -24,11 +24,11 @@ export class SettingsComponent implements OnInit {
 
   ngOnInit() {
     // Track settings page access
-    this.matomoService.trackPageView("Settings");
+    this.matomoService.trackPageView('Settings');
     this.matomoService.trackEvent(
-      "Navigation",
-      "Settings Access",
-      "Application Settings"
+      'Navigation',
+      'Settings Access',
+      'Application Settings'
     );
   }
 
@@ -36,7 +36,7 @@ export class SettingsComponent implements OnInit {
    * Track language change
    */
   onLanguageChange(language: string): void {
-    this.matomoService.trackEvent("Settings", "Language Change", language);
+    this.matomoService.trackEvent('Settings', 'Language Change', language);
     this.matomoService.setCustomDimension(4, language); // Assuming dimension 4 for language
   }
 
@@ -44,7 +44,7 @@ export class SettingsComponent implements OnInit {
    * Track theme change
    */
   onThemeChange(theme: string): void {
-    this.matomoService.trackEvent("Settings", "Theme Change", theme);
+    this.matomoService.trackEvent('Settings', 'Theme Change', theme);
     this.matomoService.setCustomDimension(5, theme); // Assuming dimension 5 for theme
   }
 
@@ -53,9 +53,9 @@ export class SettingsComponent implements OnInit {
    */
   onAnalyticsToggle(enabled: boolean): void {
     this.matomoService.trackEvent(
-      "Settings",
-      "Analytics Toggle",
-      enabled ? "Enabled" : "Disabled"
+      'Settings',
+      'Analytics Toggle',
+      enabled ? 'Enabled' : 'Disabled'
     );
     this.matomoService.setTrackingEnabled(enabled);
   }

@@ -1,27 +1,27 @@
 /** Angular Imports */
-import { Component, OnInit } from "@angular/core";
-import { ActivatedRoute, Router } from "@angular/router";
-import { MatDialog } from "@angular/material/dialog";
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
 
 /** Custom Services */
-import { UsersService } from "../users.service";
-import { MatomoService } from "app/core/analytics/matomo.service";
+import { UsersService } from '../users.service';
+import { MatomoService } from 'app/core/analytics/matomo.service';
 
 /** Custom Components */
-import { DeleteDialogComponent } from "app/shared/delete-dialog/delete-dialog.component";
-import { ConfirmDialogComponent } from "app/shared/confirm-dialog/confirm-dialog.component";
-import { FormfieldBase } from "app/shared/form-dialog/formfield/model/formfield-base";
-import { InputBase } from "app/shared/form-dialog/formfield/model/input-base";
-import { FormDialogComponent } from "app/shared/form-dialog/form-dialog.component";
-import { AlertService } from "app/core/alert/alert.service";
+import { DeleteDialogComponent } from 'app/shared/delete-dialog/delete-dialog.component';
+import { ConfirmDialogComponent } from 'app/shared/confirm-dialog/confirm-dialog.component';
+import { FormfieldBase } from 'app/shared/form-dialog/formfield/model/formfield-base';
+import { InputBase } from 'app/shared/form-dialog/formfield/model/input-base';
+import { FormDialogComponent } from 'app/shared/form-dialog/form-dialog.component';
+import { AlertService } from 'app/core/alert/alert.service';
 
 /**
  * View user component.
  */
 @Component({
-  selector: "mifosx-view-user",
-  templateUrl: "./view-user.component.html",
-  styleUrls: ["./view-user.component.scss"],
+  selector: 'mifosx-view-user',
+  templateUrl: './view-user.component.html',
+  styleUrls: ['./view-user.component.scss'],
 })
 export class ViewUserComponent implements OnInit {
   /** User Data. */
@@ -56,17 +56,17 @@ export class ViewUserComponent implements OnInit {
 
     // Track additional page context
     this.matomoService.trackEvent(
-      "User Management",
-      "View User",
+      'User Management',
+      'View User',
       `User ID: ${this.userData.id}`,
       1
     );
 
     // Track user status for analytics
     this.matomoService.trackEvent(
-      "User Management",
-      "User Status",
-      this.userData.enabled ? "Enabled" : "Disabled",
+      'User Management',
+      'User Status',
+      this.userData.enabled ? 'Enabled' : 'Disabled',
       1
     );
 
@@ -86,8 +86,8 @@ export class ViewUserComponent implements OnInit {
       if (response.delete) {
         // Track user deletion action
         this.matomoService.trackEvent(
-          "User Management",
-          "Delete User",
+          'User Management',
+          'Delete User',
           `User ID: ${this.userData.id}`,
           1
         );
@@ -95,18 +95,18 @@ export class ViewUserComponent implements OnInit {
         this.usersService.deleteUser(this.userData.id).subscribe(() => {
           // Track successful deletion
           this.matomoService.trackEvent(
-            "User Management",
-            "Delete Success",
+            'User Management',
+            'Delete Success',
             `User ID: ${this.userData.id}`,
             1
           );
-          this.router.navigate(["/users"]);
+          this.router.navigate(['/users']);
         });
       } else {
         // Track deletion cancellation
         this.matomoService.trackEvent(
-          "User Management",
-          "Delete Cancelled",
+          'User Management',
+          'Delete Cancelled',
           `User ID: ${this.userData.id}`,
           1
         );
@@ -119,14 +119,14 @@ export class ViewUserComponent implements OnInit {
    */
   activate() {
     const activateUserDialogRef = this.dialog.open(ConfirmDialogComponent, {
-      data: { deleteContext: `user ${this.userData.id}`, action: "Activate" },
+      data: { deleteContext: `user ${this.userData.id}`, action: 'Activate' },
     });
     activateUserDialogRef.afterClosed().subscribe((response: any) => {
       if (response.delete) {
         // Track user activation action
         this.matomoService.trackEvent(
-          "User Management",
-          "Activate User",
+          'User Management',
+          'Activate User',
           `User ID: ${this.userData.id}`,
           1
         );
@@ -134,18 +134,18 @@ export class ViewUserComponent implements OnInit {
         this.usersService.activateUser(this.userData.id).subscribe(() => {
           // Track successful activation
           this.matomoService.trackEvent(
-            "User Management",
-            "Activate Success",
+            'User Management',
+            'Activate Success',
             `User ID: ${this.userData.id}`,
             1
           );
-          this.router.navigate(["/users"]);
+          this.router.navigate(['/users']);
         });
       } else {
         // Track activation cancellation
         this.matomoService.trackEvent(
-          "User Management",
-          "Activate Cancelled",
+          'User Management',
+          'Activate Cancelled',
           `User ID: ${this.userData.id}`,
           1
         );
@@ -159,23 +159,23 @@ export class ViewUserComponent implements OnInit {
   editCurrencies() {
     // Track currency edit dialog opening
     this.matomoService.trackEvent(
-      "User Configuration",
-      "Edit Currencies Dialog",
+      'User Configuration',
+      'Edit Currencies Dialog',
       `User ID: ${this.userData.id}`,
       1
     );
 
     const formfields: FormfieldBase[] = [
       new InputBase({
-        controlName: "list",
-        label: "Allowed Currencies (Comma Separated)",
-        type: "text",
+        controlName: 'list',
+        label: 'Allowed Currencies (Comma Separated)',
+        type: 'text',
         required: true,
       }),
     ];
     const data = {
-      title: "Assign Country Currencies",
-      layout: { addButtonText: "Save" },
+      title: 'Assign Country Currencies',
+      layout: { addButtonText: 'Save' },
       formfields: formfields,
     };
     const editFundDialogRef = this.dialog.open(FormDialogComponent, { data });
@@ -183,25 +183,25 @@ export class ViewUserComponent implements OnInit {
       if (response.data) {
         // Track currency edit submission
         this.matomoService.trackEvent(
-          "User Configuration",
-          "Update Currencies",
+          'User Configuration',
+          'Update Currencies',
           `User ID: ${this.userData.id}`,
           1
         );
 
         this.usersService
-          .editCurrencies(this.userData.id, response.data.value.list.split(","))
+          .editCurrencies(this.userData.id, response.data.value.list.split(','))
           .subscribe(
             (res) => {
               // Track successful currency update
               this.matomoService.trackEvent(
-                "User Configuration",
-                "Currencies Updated",
+                'User Configuration',
+                'Currencies Updated',
                 `User ID: ${this.userData.id}`,
                 1
               );
               this.alertService.alert({
-                type: "Edit Success",
+                type: 'Edit Success',
                 message: `Edit request was successful!`,
               });
               this.reloadCurrentUserData();
@@ -209,13 +209,13 @@ export class ViewUserComponent implements OnInit {
             (err) => {
               // Track currency update failure
               this.matomoService.trackEvent(
-                "User Configuration",
-                "Currencies Update Failed",
+                'User Configuration',
+                'Currencies Update Failed',
                 `User ID: ${this.userData.id}`,
                 1
               );
               this.alertService.alert({
-                type: "Edit Error",
+                type: 'Edit Error',
                 message: `Edit request failed`,
               });
             }
@@ -223,8 +223,8 @@ export class ViewUserComponent implements OnInit {
       } else {
         // Track currency edit cancellation
         this.matomoService.trackEvent(
-          "User Configuration",
-          "Edit Currencies Cancelled",
+          'User Configuration',
+          'Edit Currencies Cancelled',
           `User ID: ${this.userData.id}`,
           1
         );
@@ -238,23 +238,23 @@ export class ViewUserComponent implements OnInit {
   editPayePartyIds() {
     // Track Shop/Account ID edit dialog opening
     this.matomoService.trackEvent(
-      "User Configuration",
-      "Edit Shop/Account ID Dialog",
+      'User Configuration',
+      'Edit Shop/Account ID Dialog',
       `User ID: ${this.userData.id}`,
       1
     );
 
     const formfields: FormfieldBase[] = [
       new InputBase({
-        controlName: "list",
-        label: "Allowed Shop/Account ID (Comma Separated)",
-        type: "text",
+        controlName: 'list',
+        label: 'Allowed Shop/Account ID (Comma Separated)',
+        type: 'text',
         required: true,
       }),
     ];
     const data = {
-      title: "Assign Shop/Account ID",
-      layout: { addButtonText: "Save" },
+      title: 'Assign Shop/Account ID',
+      layout: { addButtonText: 'Save' },
       formfields: formfields,
     };
     const editFundDialogRef = this.dialog.open(FormDialogComponent, { data });
@@ -262,8 +262,8 @@ export class ViewUserComponent implements OnInit {
       if (response.data) {
         // Track Shop/Account ID edit submission
         this.matomoService.trackEvent(
-          "User Configuration",
-          "Update Shop/Account ID",
+          'User Configuration',
+          'Update Shop/Account ID',
           `User ID: ${this.userData.id}`,
           1
         );
@@ -271,19 +271,19 @@ export class ViewUserComponent implements OnInit {
         this.usersService
           .editPayeePartyIds(
             this.userData.id,
-            response.data.value.list.split(",")
+            response.data.value.list.split(',')
           )
           .subscribe(
             (res) => {
               // Track successful Shop/Account ID update
               this.matomoService.trackEvent(
-                "User Configuration",
-                "Shop/Account ID Updated",
+                'User Configuration',
+                'Shop/Account ID Updated',
                 `User ID: ${this.userData.id}`,
                 1
               );
               this.alertService.alert({
-                type: "Edit Success",
+                type: 'Edit Success',
                 message: `Edit request was successful!`,
               });
               this.reloadCurrentUserData();
@@ -291,13 +291,13 @@ export class ViewUserComponent implements OnInit {
             (err) => {
               // Track Shop/Account ID update failure
               this.matomoService.trackEvent(
-                "User Configuration",
-                "Shop/Account ID Update Failed",
+                'User Configuration',
+                'Shop/Account ID Update Failed',
                 `User ID: ${this.userData.id}`,
                 1
               );
               this.alertService.alert({
-                type: "Edit Error",
+                type: 'Edit Error',
                 message: `Edit request failed`,
               });
             }
@@ -305,8 +305,8 @@ export class ViewUserComponent implements OnInit {
       } else {
         // Track Shop/Account ID edit cancellation
         this.matomoService.trackEvent(
-          "User Configuration",
-          "Edit Shop/Account ID Cancelled",
+          'User Configuration',
+          'Edit Shop/Account ID Cancelled',
           `User ID: ${this.userData.id}`,
           1
         );
@@ -320,24 +320,24 @@ export class ViewUserComponent implements OnInit {
   editPayePartyIdTypes() {
     // Track AMS edit dialog opening
     this.matomoService.trackEvent(
-      "User Configuration",
-      "Edit AMS Dialog",
+      'User Configuration',
+      'Edit AMS Dialog',
       `User ID: ${this.userData.id}`,
       1
     );
 
     const formfields: FormfieldBase[] = [
       new InputBase({
-        controlName: "list",
-        label: "Allowed AMS (Comma Separated)",
-        type: "text",
+        controlName: 'list',
+        label: 'Allowed AMS (Comma Separated)',
+        type: 'text',
         required: true,
       }),
     ];
     const data = {
-      title: "Assign AMS",
-      subTitle: "Options: ".concat(this.amsList.map((obj) => obj.id).join(",")),
-      layout: { addButtonText: "Save" },
+      title: 'Assign AMS',
+      subTitle: 'Options: '.concat(this.amsList.map((obj) => obj.id).join(',')),
+      layout: { addButtonText: 'Save' },
       formfields: formfields,
     };
     const editFundDialogRef = this.dialog.open(FormDialogComponent, { data });
@@ -345,8 +345,8 @@ export class ViewUserComponent implements OnInit {
       if (response.data) {
         // Track AMS edit submission
         this.matomoService.trackEvent(
-          "User Configuration",
-          "Update AMS",
+          'User Configuration',
+          'Update AMS',
           `User ID: ${this.userData.id}`,
           1
         );
@@ -354,19 +354,19 @@ export class ViewUserComponent implements OnInit {
         this.usersService
           .editPayeePartyIdTypes(
             this.userData.id,
-            response.data.value.list.split(",")
+            response.data.value.list.split(',')
           )
           .subscribe(
             (res) => {
               // Track successful AMS update
               this.matomoService.trackEvent(
-                "User Configuration",
-                "AMS Updated",
+                'User Configuration',
+                'AMS Updated',
                 `User ID: ${this.userData.id}`,
                 1
               );
               this.alertService.alert({
-                type: "Edit Success",
+                type: 'Edit Success',
                 message: `Edit request was successful!`,
               });
               this.reloadCurrentUserData();
@@ -374,13 +374,13 @@ export class ViewUserComponent implements OnInit {
             (err) => {
               // Track AMS update failure
               this.matomoService.trackEvent(
-                "User Configuration",
-                "AMS Update Failed",
+                'User Configuration',
+                'AMS Update Failed',
                 `User ID: ${this.userData.id}`,
                 1
               );
               this.alertService.alert({
-                type: "Edit Error",
+                type: 'Edit Error',
                 message: `Edit request failed`,
               });
             }
@@ -388,8 +388,8 @@ export class ViewUserComponent implements OnInit {
       } else {
         // Track AMS edit cancellation
         this.matomoService.trackEvent(
-          "User Configuration",
-          "Edit AMS Cancelled",
+          'User Configuration',
+          'Edit AMS Cancelled',
           `User ID: ${this.userData.id}`,
           1
         );
@@ -403,23 +403,23 @@ export class ViewUserComponent implements OnInit {
   changePassword() {
     // Track password change dialog opening
     this.matomoService.trackEvent(
-      "User Management",
-      "Change Password Dialog",
+      'User Management',
+      'Change Password Dialog',
       `User ID: ${this.userData.id}`,
       1
     );
 
     const formfields: FormfieldBase[] = [
       new InputBase({
-        controlName: "password",
-        label: "New User Password",
-        type: "password",
+        controlName: 'password',
+        label: 'New User Password',
+        type: 'password',
         required: true,
       }),
     ];
     const data = {
-      title: "Change User Password",
-      layout: { addButtonText: "Save" },
+      title: 'Change User Password',
+      layout: { addButtonText: 'Save' },
       formfields: formfields,
     };
     const editFundDialogRef = this.dialog.open(FormDialogComponent, { data });
@@ -427,8 +427,8 @@ export class ViewUserComponent implements OnInit {
       if (response.data) {
         // Track password change submission
         this.matomoService.trackEvent(
-          "User Management",
-          "Change Password",
+          'User Management',
+          'Change Password',
           `User ID: ${this.userData.id}`,
           1
         );
@@ -441,13 +441,13 @@ export class ViewUserComponent implements OnInit {
           (res) => {
             // Track successful password change
             this.matomoService.trackEvent(
-              "User Management",
-              "Password Changed",
+              'User Management',
+              'Password Changed',
               `User ID: ${this.userData.id}`,
               1
             );
             this.alertService.alert({
-              type: "Edit Success",
+              type: 'Edit Success',
               message: `Change User Password Request was successful!`,
             });
             this.reloadCurrentUserData();
@@ -455,13 +455,13 @@ export class ViewUserComponent implements OnInit {
           (err) => {
             // Track password change failure
             this.matomoService.trackEvent(
-              "User Management",
-              "Password Change Failed",
+              'User Management',
+              'Password Change Failed',
               `User ID: ${this.userData.id}`,
               1
             );
             this.alertService.alert({
-              type: "Edit Error",
+              type: 'Edit Error',
               message: `Change User Password request failed`,
             });
           }
@@ -469,8 +469,8 @@ export class ViewUserComponent implements OnInit {
       } else {
         // Track password change cancellation
         this.matomoService.trackEvent(
-          "User Management",
-          "Change Password Cancelled",
+          'User Management',
+          'Change Password Cancelled',
           `User ID: ${this.userData.id}`,
           1
         );
@@ -483,29 +483,29 @@ export class ViewUserComponent implements OnInit {
   editAppUser() {
     // Track user details edit dialog opening
     this.matomoService.trackEvent(
-      "User Management",
-      "Edit User Details Dialog",
+      'User Management',
+      'Edit User Details Dialog',
       `User ID: ${this.userData.id}`,
       1
     );
 
     const formfields: FormfieldBase[] = [
       new InputBase({
-        controlName: "firstName",
-        label: "First Name",
-        type: "text",
+        controlName: 'firstName',
+        label: 'First Name',
+        type: 'text',
         required: true,
       }),
       new InputBase({
-        controlName: "lastName",
-        label: "Last Name",
-        type: "text",
+        controlName: 'lastName',
+        label: 'Last Name',
+        type: 'text',
         required: true,
       }),
     ];
     const data = {
-      title: "Edit User Details",
-      layout: { addButtonText: "Save" },
+      title: 'Edit User Details',
+      layout: { addButtonText: 'Save' },
       formfields: formfields,
     };
     const editFundDialogRef = this.dialog.open(FormDialogComponent, { data });
@@ -513,8 +513,8 @@ export class ViewUserComponent implements OnInit {
       if (response.data) {
         // Track user details edit submission
         this.matomoService.trackEvent(
-          "User Management",
-          "Update User Details",
+          'User Management',
+          'Update User Details',
           `User ID: ${this.userData.id}`,
           1
         );
@@ -528,13 +528,13 @@ export class ViewUserComponent implements OnInit {
           (res) => {
             // Track successful user details update
             this.matomoService.trackEvent(
-              "User Management",
-              "User Details Updated",
+              'User Management',
+              'User Details Updated',
               `User ID: ${this.userData.id}`,
               1
             );
             this.alertService.alert({
-              type: "Edit Success",
+              type: 'Edit Success',
               message: `Edit User Request was successful!`,
             });
             this.reloadCurrentUserData();
@@ -542,13 +542,13 @@ export class ViewUserComponent implements OnInit {
           (err) => {
             // Track user details update failure
             this.matomoService.trackEvent(
-              "User Management",
-              "User Details Update Failed",
+              'User Management',
+              'User Details Update Failed',
               `User ID: ${this.userData.id}`,
               1
             );
             this.alertService.alert({
-              type: "Edit Error",
+              type: 'Edit Error',
               message: `Edit User request failed`,
             });
           }
@@ -556,8 +556,8 @@ export class ViewUserComponent implements OnInit {
       } else {
         // Track user details edit cancellation
         this.matomoService.trackEvent(
-          "User Management",
-          "Edit User Details Cancelled",
+          'User Management',
+          'Edit User Details Cancelled',
           `User ID: ${this.userData.id}`,
           1
         );
@@ -568,8 +568,8 @@ export class ViewUserComponent implements OnInit {
   reloadCurrentUserData() {
     // Track data reload for analytics
     this.matomoService.trackEvent(
-      "User Management",
-      "Reload User Data",
+      'User Management',
+      'Reload User Data',
       `User ID: ${this.userData.id}`,
       1
     );
@@ -584,14 +584,14 @@ export class ViewUserComponent implements OnInit {
    */
   deactivate() {
     const deactivateUserDialogRef = this.dialog.open(ConfirmDialogComponent, {
-      data: { deleteContext: `user ${this.userData.id}`, action: "Deactivate" },
+      data: { deleteContext: `user ${this.userData.id}`, action: 'Deactivate' },
     });
     deactivateUserDialogRef.afterClosed().subscribe((response: any) => {
       if (response.delete) {
         // Track user deactivation action
         this.matomoService.trackEvent(
-          "User Management",
-          "Deactivate User",
+          'User Management',
+          'Deactivate User',
           `User ID: ${this.userData.id}`,
           1
         );
@@ -599,18 +599,18 @@ export class ViewUserComponent implements OnInit {
         this.usersService.deactivateUser(this.userData.id).subscribe(() => {
           // Track successful deactivation
           this.matomoService.trackEvent(
-            "User Management",
-            "Deactivate Success",
+            'User Management',
+            'Deactivate Success',
             `User ID: ${this.userData.id}`,
             1
           );
-          this.router.navigate(["/users"]);
+          this.router.navigate(['/users']);
         });
       } else {
         // Track deactivation cancellation
         this.matomoService.trackEvent(
-          "User Management",
-          "Deactivate Cancelled",
+          'User Management',
+          'Deactivate Cancelled',
           `User ID: ${this.userData.id}`,
           1
         );

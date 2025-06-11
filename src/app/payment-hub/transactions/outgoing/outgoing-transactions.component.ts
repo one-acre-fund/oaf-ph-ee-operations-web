@@ -1,41 +1,41 @@
 /** Angular Imports */
-import { Component, OnInit, ViewChild, AfterViewInit } from "@angular/core";
-import { MatDialog } from "@angular/material/dialog";
-import { MatPaginator } from "@angular/material/paginator";
-import { MatSort } from "@angular/material/sort";
-import { MatTableDataSource } from "@angular/material/table";
-import { FormControl } from "@angular/forms";
-import { Router, ActivatedRoute } from "@angular/router";
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
+import { FormControl } from '@angular/forms';
+import { Router, ActivatedRoute } from '@angular/router';
 
 /** rxjs Imports */
-import { merge } from "rxjs";
+import { merge } from 'rxjs';
 import {
   tap,
   startWith,
   map,
   distinctUntilChanged,
   debounceTime,
-} from "rxjs/operators";
+} from 'rxjs/operators';
 
 /** Custom Services */
-import { MatomoService } from "../../../core/analytics/matomo.service";
+import { MatomoService } from '../../../core/analytics/matomo.service';
 
 /** Custom Data Source */
-import { TransactionsDataSource } from "../dataSource/transactions.datasource";
-import { formatDate, formatUTCDate } from "../helper/date-format.helper";
-import { TransactionsService } from "../service/transactions.service";
-import { PaymentHubComponent } from "app/payment-hub/paymenthub.component";
-import { DfspEntry } from "../model/dfsp.model";
-import { transactionStatusData as statuses } from "../helper/transaction.helper";
-import { RetryResolveDialogComponent } from "../retry-resolve-dialog/retry-resolve-dialog.component";
+import { TransactionsDataSource } from '../dataSource/transactions.datasource';
+import { formatDate, formatUTCDate } from '../helper/date-format.helper';
+import { TransactionsService } from '../service/transactions.service';
+import { PaymentHubComponent } from 'app/payment-hub/paymenthub.component';
+import { DfspEntry } from '../model/dfsp.model';
+import { transactionStatusData as statuses } from '../helper/transaction.helper';
+import { RetryResolveDialogComponent } from '../retry-resolve-dialog/retry-resolve-dialog.component';
 
 /**
  * Transactions component.
  */
 @Component({
-  selector: "mifosx-outgoing-transactions",
-  templateUrl: "./outgoing-transactions.component.html",
-  styleUrls: ["./outgoing-transactions.component.scss"],
+  selector: 'mifosx-outgoing-transactions',
+  templateUrl: './outgoing-transactions.component.html',
+  styleUrls: ['./outgoing-transactions.component.scss'],
 })
 export class OutgoingTransactionsComponent implements OnInit, AfterViewInit {
   /** Minimum transaction date allowed. */
@@ -62,64 +62,64 @@ export class OutgoingTransactionsComponent implements OnInit, AfterViewInit {
   transactionId = new FormControl();
   /** Columns to be displayed in transactions table. */
   displayedColumns: string[] = [
-    "startedAt",
-    "completedAt",
-    "transactionId",
-    "payerPartyId",
-    "payeePartyId",
-    "payeeDfspId",
-    "payeeDfspName",
-    "amount",
-    "currency",
-    "status",
-    "actions",
+    'startedAt',
+    'completedAt',
+    'transactionId',
+    'payerPartyId',
+    'payeePartyId',
+    'payeeDfspId',
+    'payeeDfspName',
+    'amount',
+    'currency',
+    'status',
+    'actions',
   ];
   /** Data source for transactions table. */
   dataSource: TransactionsDataSource;
   /** Journal entries filter. */
   filterTransactionsBy = [
     {
-      type: "payeePartyId",
-      value: "",
+      type: 'payeePartyId',
+      value: '',
     },
     {
-      type: "payerPartyId",
-      value: "",
+      type: 'payerPartyId',
+      value: '',
     },
     {
-      type: "payeeDfspId",
-      value: "",
+      type: 'payeeDfspId',
+      value: '',
     },
     {
-      type: "direction",
-      value: "OUTGOING",
+      type: 'direction',
+      value: 'OUTGOING',
     },
     {
-      type: "transactionId",
-      value: "",
+      type: 'transactionId',
+      value: '',
     },
     {
-      type: "status",
-      value: "",
+      type: 'status',
+      value: '',
     },
     {
-      type: "amount",
-      value: "",
+      type: 'amount',
+      value: '',
     },
     {
-      type: "currency",
-      value: "",
+      type: 'currency',
+      value: '',
     },
     {
-      type: "startFrom",
-      value: "",
+      type: 'startFrom',
+      value: '',
     },
     {
-      type: "startTo",
-      value: "",
+      type: 'startTo',
+      value: '',
     },
   ];
-  dateTimeFormat = "YYYY-MM-DD HH:mm:ss";
+  dateTimeFormat = 'YYYY-MM-DD HH:mm:ss';
 
   /** Paginator for transactions table. */
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -169,7 +169,7 @@ export class OutgoingTransactionsComponent implements OnInit, AfterViewInit {
         debounceTime(500),
         distinctUntilChanged(),
         tap((filterValue) => {
-          this.applyFilter(filterValue, "payeePartyId");
+          this.applyFilter(filterValue, 'payeePartyId');
         })
       )
       .subscribe();
@@ -179,7 +179,7 @@ export class OutgoingTransactionsComponent implements OnInit, AfterViewInit {
         debounceTime(500),
         distinctUntilChanged(),
         tap((filterValue) => {
-          this.applyFilter(filterValue, "payerPartyId");
+          this.applyFilter(filterValue, 'payerPartyId');
         })
       )
       .subscribe();
@@ -189,7 +189,7 @@ export class OutgoingTransactionsComponent implements OnInit, AfterViewInit {
         debounceTime(500),
         distinctUntilChanged(),
         tap((filterValue) => {
-          this.applyFilter(filterValue, "payeeDfspId");
+          this.applyFilter(filterValue, 'payeeDfspId');
         })
       )
       .subscribe();
@@ -215,7 +215,7 @@ export class OutgoingTransactionsComponent implements OnInit, AfterViewInit {
         debounceTime(500),
         distinctUntilChanged(),
         tap((filterValue) => {
-          this.applyFilter(filterValue, "transactionId");
+          this.applyFilter(filterValue, 'transactionId');
         })
       )
       .subscribe();
@@ -225,7 +225,7 @@ export class OutgoingTransactionsComponent implements OnInit, AfterViewInit {
         debounceTime(500),
         distinctUntilChanged(),
         tap((filterValue) => {
-          this.applyFilter(filterValue, "status");
+          this.applyFilter(filterValue, 'status');
         })
       )
       .subscribe();
@@ -235,7 +235,7 @@ export class OutgoingTransactionsComponent implements OnInit, AfterViewInit {
         debounceTime(500),
         distinctUntilChanged(),
         tap((filterValue) => {
-          this.applyFilter(filterValue, "amount");
+          this.applyFilter(filterValue, 'amount');
         })
       )
       .subscribe();
@@ -246,7 +246,7 @@ export class OutgoingTransactionsComponent implements OnInit, AfterViewInit {
         distinctUntilChanged(),
         tap((filterValue) => {
           filterValue = filterValue.AlphabeticCode;
-          this.applyFilter(filterValue, "currency");
+          this.applyFilter(filterValue, 'currency');
         })
       )
       .subscribe();
@@ -258,7 +258,7 @@ export class OutgoingTransactionsComponent implements OnInit, AfterViewInit {
         tap((filterValue: moment.Moment) => {
           this.applyFilter(
             filterValue.format(this.dateTimeFormat),
-            "startFrom"
+            'startFrom'
           );
         })
       )
@@ -269,7 +269,7 @@ export class OutgoingTransactionsComponent implements OnInit, AfterViewInit {
         debounceTime(500),
         distinctUntilChanged(),
         tap((filterValue: moment.Moment) => {
-          this.applyFilter(filterValue.format(this.dateTimeFormat), "startTo");
+          this.applyFilter(filterValue.format(this.dateTimeFormat), 'startTo');
         })
       )
       .subscribe();
@@ -314,11 +314,11 @@ export class OutgoingTransactionsComponent implements OnInit, AfterViewInit {
       const loadTime = performance.now() - startTime;
       try {
         this.matomoService.trackPerformance(
-          "Outgoing Transactions Load",
+          'Outgoing Transactions Load',
           loadTime
         );
       } catch (error) {
-        console.warn("Performance tracking failed:", error);
+        console.warn('Performance tracking failed:', error);
       }
     }, 100);
   }
@@ -347,7 +347,7 @@ export class OutgoingTransactionsComponent implements OnInit, AfterViewInit {
    */
   displayCurrencyName(currency?: any): string | undefined {
     return currency
-      ? currency.Currency + " (" + currency.AlphabeticCode + ")"
+      ? currency.Currency + ' (' + currency.AlphabeticCode + ')'
       : undefined;
   }
 
@@ -368,7 +368,7 @@ export class OutgoingTransactionsComponent implements OnInit, AfterViewInit {
   }
 
   shortenValue(value: any) {
-    return value && value.length > 15 ? value.slice(0, 13) + "..." : value;
+    return value && value.length > 15 ? value.slice(0, 13) + '...' : value;
   }
 
   /**
@@ -395,9 +395,9 @@ export class OutgoingTransactionsComponent implements OnInit, AfterViewInit {
       return undefined;
     }
     date = date.toString();
-    date = date.replace("+0000", "");
-    date = date.replace("T", " ");
-    date = date.replace(".000", "");
+    date = date.replace('+0000', '');
+    date = date.replace('T', ' ');
+    date = date.replace('.000', '');
     return date;
   }
 
@@ -406,7 +406,7 @@ export class OutgoingTransactionsComponent implements OnInit, AfterViewInit {
       return undefined;
     }
     date = this.formatDate(date);
-    return date.split(" ")[1];
+    return date.split(' ')[1];
   }
 
   convertTimestampToDate(timestamp: any) {
@@ -428,11 +428,11 @@ export class OutgoingTransactionsComponent implements OnInit, AfterViewInit {
    */
   setFilteredCurrencies() {
     this.filteredCurrencies = this.currencyCode.valueChanges.pipe(
-      startWith(""),
+      startWith(''),
       map((currency: any) =>
-        typeof currency === "string"
+        typeof currency === 'string'
           ? currency
-          : currency.Currency + " (" + currency.AlphabeticCode + ")"
+          : currency.Currency + ' (' + currency.AlphabeticCode + ')'
       ),
       map((currency: string) =>
         currency
@@ -447,9 +447,9 @@ export class OutgoingTransactionsComponent implements OnInit, AfterViewInit {
    */
   setFilteredDfspEntries() {
     this.filteredDfspEntries = this.payeeDfspName.valueChanges.pipe(
-      startWith(""),
+      startWith(''),
       map((entry: any) =>
-        typeof entry === "string" ? entry : entry.name + " (" + entry.id + ")"
+        typeof entry === 'string' ? entry : entry.name + ' (' + entry.id + ')'
       ),
       map((entry: string) =>
         entry ? this.filterDfspAutocompleteData(entry) : this.dfspEntriesData
@@ -464,7 +464,7 @@ export class OutgoingTransactionsComponent implements OnInit, AfterViewInit {
    */
   private filterCurrencyAutocompleteData(currency: string): any {
     return this.currenciesData.filter((option: any) =>
-      (option.Currency + " (" + option.AlphabeticCode + ")")
+      (option.Currency + ' (' + option.AlphabeticCode + ')')
         .toLowerCase()
         .includes(currency.toLowerCase())
     );
@@ -472,7 +472,7 @@ export class OutgoingTransactionsComponent implements OnInit, AfterViewInit {
 
   private filterDfspAutocompleteData(entry: string): any {
     return this.dfspEntriesData.filter((option: any) =>
-      (option.name + " (" + option.id + ")")
+      (option.name + ' (' + option.id + ')')
         .toLowerCase()
         .includes(entry.toLowerCase())
     );
@@ -492,7 +492,7 @@ export class OutgoingTransactionsComponent implements OnInit, AfterViewInit {
         this.paginator.pageSize
       );
     } else {
-      this.dataSource.getTransactions(this.filterTransactionsBy, "", "", 0, 10);
+      this.dataSource.getTransactions(this.filterTransactionsBy, '', '', 0, 10);
     }
   }
 
@@ -520,24 +520,24 @@ export class OutgoingTransactionsComponent implements OnInit, AfterViewInit {
    */
   private trackPageView(): void {
     try {
-      this.matomoService.trackPageView("Outgoing Transactions Search");
+      this.matomoService.trackPageView('Outgoing Transactions Search');
 
       // Set custom dimensions for outgoing transactions context
-      this.matomoService.setCustomDimension(1, "Payment Hub");
-      this.matomoService.setCustomDimension(2, "Outgoing Transactions");
-      this.matomoService.setCustomDimension(3, "Search Interface");
+      this.matomoService.setCustomDimension(1, 'Payment Hub');
+      this.matomoService.setCustomDimension(2, 'Outgoing Transactions');
+      this.matomoService.setCustomDimension(3, 'Search Interface');
 
       // Track initial load performance
       const startTime = performance.now();
       setTimeout(() => {
         const loadTime = performance.now() - startTime;
         this.matomoService.trackPerformance(
-          "Outgoing Transactions Page Load",
+          'Outgoing Transactions Page Load',
           loadTime
         );
       }, 100);
     } catch (error) {
-      console.warn("Analytics page view tracking failed:", error);
+      console.warn('Analytics page view tracking failed:', error);
     }
   }
 
@@ -548,19 +548,19 @@ export class OutgoingTransactionsComponent implements OnInit, AfterViewInit {
     try {
       // Track that user accessed the outgoing transactions page
       this.matomoService.trackEvent(
-        "Page View",
-        "Outgoing Transactions",
-        "Search Interface Access"
+        'Page View',
+        'Outgoing Transactions',
+        'Search Interface Access'
       );
 
       // Track business metric - Outgoing Transactions page access
       this.matomoService.trackBusinessMetric(
-        "outgoing_transactions_access",
+        'outgoing_transactions_access',
         1,
-        "page_views"
+        'page_views'
       );
     } catch (error) {
-      console.warn("Analytics setup failed:", error);
+      console.warn('Analytics setup failed:', error);
     }
   }
 
@@ -573,8 +573,8 @@ export class OutgoingTransactionsComponent implements OnInit, AfterViewInit {
     try {
       // Track filter usage
       this.matomoService.trackEvent(
-        "Filter Usage",
-        "Outgoing Transactions Filter",
+        'Filter Usage',
+        'Outgoing Transactions Filter',
         filterType,
         filterValue ? 1 : 0
       );
@@ -583,13 +583,13 @@ export class OutgoingTransactionsComponent implements OnInit, AfterViewInit {
       this.matomoService.trackBusinessMetric(
         `${filterType}_filter_usage`,
         1,
-        "filters"
+        'filters'
       );
 
       // Set custom dimension for current filter context
       this.matomoService.setCustomDimension(4, filterType);
     } catch (error) {
-      console.warn("Filter tracking failed:", error);
+      console.warn('Filter tracking failed:', error);
     }
   }
 
@@ -601,18 +601,18 @@ export class OutgoingTransactionsComponent implements OnInit, AfterViewInit {
   onColumnSort(column: string, direction: string): void {
     try {
       this.matomoService.trackEvent(
-        "Table Interaction",
-        "Column Sort",
+        'Table Interaction',
+        'Column Sort',
         `${column} - ${direction}`
       );
 
       this.matomoService.trackBusinessMetric(
         `${column}_sort_usage`,
         1,
-        "sorts"
+        'sorts'
       );
     } catch (error) {
-      console.warn("Sort tracking failed:", error);
+      console.warn('Sort tracking failed:', error);
     }
   }
 
@@ -624,18 +624,18 @@ export class OutgoingTransactionsComponent implements OnInit, AfterViewInit {
   onPageChange(pageIndex: number, pageSize: number): void {
     try {
       this.matomoService.trackEvent(
-        "Pagination",
-        "Page Change",
+        'Pagination',
+        'Page Change',
         `Page ${pageIndex + 1} (Size: ${pageSize})`
       );
 
       this.matomoService.trackBusinessMetric(
-        "pagination_usage",
+        'pagination_usage',
         1,
-        "page_changes"
+        'page_changes'
       );
     } catch (error) {
-      console.warn("Pagination tracking failed:", error);
+      console.warn('Pagination tracking failed:', error);
     }
   }
 
@@ -650,14 +650,14 @@ export class OutgoingTransactionsComponent implements OnInit, AfterViewInit {
   ): void {
     try {
       this.matomoService.trackEvent(
-        "Transaction Action",
-        "Retry Resolve Dialog",
+        'Transaction Action',
+        'Retry Resolve Dialog',
         `${action} - ${workflowInstanceKey}`
       );
 
-      this.matomoService.trackBusinessMetric(`${action}_actions`, 1, "actions");
+      this.matomoService.trackBusinessMetric(`${action}_actions`, 1, 'actions');
     } catch (error) {
-      console.warn("Retry/Resolve action tracking failed:", error);
+      console.warn('Retry/Resolve action tracking failed:', error);
     }
   }
 
@@ -668,21 +668,21 @@ export class OutgoingTransactionsComponent implements OnInit, AfterViewInit {
   onTransactionRowClick(transactionId: string): void {
     try {
       this.matomoService.trackEvent(
-        "Navigation",
-        "Transaction Details",
-        "View Transaction Details"
+        'Navigation',
+        'Transaction Details',
+        'View Transaction Details'
       );
 
       this.matomoService.trackBusinessMetric(
-        "transaction_detail_views",
+        'transaction_detail_views',
         1,
-        "views"
+        'views'
       );
 
       // Set custom dimension for transaction viewing context
-      this.matomoService.setCustomDimension(5, "Transaction Details");
+      this.matomoService.setCustomDimension(5, 'Transaction Details');
     } catch (error) {
-      console.warn("Transaction navigation tracking failed:", error);
+      console.warn('Transaction navigation tracking failed:', error);
     }
   }
 
@@ -694,18 +694,18 @@ export class OutgoingTransactionsComponent implements OnInit, AfterViewInit {
   onAutocompleteSelection(optionType: string, selectedValue: any): void {
     try {
       this.matomoService.trackEvent(
-        "Autocomplete Usage",
-        "Option Selection",
+        'Autocomplete Usage',
+        'Option Selection',
         `${optionType} - ${selectedValue}`
       );
 
       this.matomoService.trackBusinessMetric(
         `${optionType}_autocomplete_usage`,
         1,
-        "selections"
+        'selections'
       );
     } catch (error) {
-      console.warn("Autocomplete tracking failed:", error);
+      console.warn('Autocomplete tracking failed:', error);
     }
   }
 }

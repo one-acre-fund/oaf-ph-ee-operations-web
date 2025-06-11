@@ -9,7 +9,7 @@
     mat-raised-button
     color="primary"
     (click)="editAppUser()"
-    mifosxMatomoClick="Edit User Details"
+    matomoClick="Edit User Details"
     category="User Management"
     name="Edit User Button"
     [value]="userData.id"
@@ -20,7 +20,7 @@
     mat-raised-button
     color="warn"
     (click)="delete()"
-    mifosxMatomoClick="Delete User"
+    matomoClick="Delete User"
     category="User Management"
     name="Delete User Button"
     [value]="userData.id"
@@ -31,7 +31,7 @@
     mat-raised-button
     color="primary"
     (click)="changePassword()"
-    mifosxMatomoClick="Change User Password"
+    matomoClick="Change User Password"
     category="User Management"
     name="Change Password Button"
     [value]="userData.id"
@@ -44,7 +44,7 @@
     color="primary"
     (click)="deactivate()"
     *ngIf="userData.enabled"
-    mifosxMatomoClick="Deactivate User"
+    matomoClick="Deactivate User"
     category="User Management"
     name="Deactivate User Button"
     [value]="userData.id"
@@ -56,7 +56,7 @@
     color="primary"
     (click)="activate()"
     *ngIf="!userData.enabled"
-    mifosxMatomoClick="Activate User"
+    matomoClick="Activate User"
     category="User Management"
     name="Activate User Button"
     [value]="userData.id"
@@ -121,7 +121,7 @@
             mat-raised-button
             color="primary"
             (click)="editCurrencies()"
-            mifosxMatomoClick="Edit User Currencies"
+            matomoClick="Edit User Currencies"
             category="User Configuration"
             name="Edit Currencies Button"
             [value]="userData.id"
@@ -142,7 +142,7 @@
             mat-raised-button
             color="primary"
             (click)="editPayePartyIdTypes()"
-            mifosxMatomoClick="Edit User AMS"
+            matomoClick="Edit User AMS"
             category="User Configuration"
             name="Edit AMS Button"
             [value]="userData.id"
@@ -164,7 +164,7 @@
             mat-raised-button
             color="primary"
             (click)="editPayePartyIds()"
-            mifosxMatomoClick="Edit User Shop/Account ID"
+            matomoClick="Edit User Shop/Account ID"
             category="User Configuration"
             name="Edit Shop/Account ID Button"
             [value]="userData.id"

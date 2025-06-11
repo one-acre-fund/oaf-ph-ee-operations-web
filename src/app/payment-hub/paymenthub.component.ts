@@ -1,16 +1,16 @@
 /** Angular Imports */
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit } from '@angular/core';
 
 /** Analytics Imports */
-import { MatomoService } from "../core/analytics/matomo.service";
+import { MatomoService } from '../core/analytics/matomo.service';
 
 /**
  * Payment HUB component.
  */
 @Component({
-  selector: "mifosx-paymenthubee",
-  templateUrl: "./paymenthub.component.html",
-  styleUrls: ["./paymenthub.component.scss"],
+  selector: 'mifosx-paymenthubee',
+  templateUrl: './paymenthub.component.html',
+  styleUrls: ['./paymenthub.component.scss'],
 })
 export class PaymentHubComponent implements OnInit {
   constructor(private matomoService: MatomoService) {}
@@ -25,20 +25,20 @@ export class PaymentHubComponent implements OnInit {
    */
   private trackPageView(): void {
     try {
-      this.matomoService.trackPageView("Payment Hub Dashboard");
+      this.matomoService.trackPageView('Payment Hub Dashboard');
 
       // Set custom dimensions for the Payment Hub context
-      this.matomoService.setCustomDimension(1, "Payment Hub");
-      this.matomoService.setCustomDimension(2, "Dashboard View");
+      this.matomoService.setCustomDimension(1, 'Payment Hub');
+      this.matomoService.setCustomDimension(2, 'Dashboard View');
 
       // Track initial load performance
       const startTime = performance.now();
       setTimeout(() => {
         const loadTime = performance.now() - startTime;
-        this.matomoService.trackPerformance("Payment Hub Load", loadTime);
+        this.matomoService.trackPerformance('Payment Hub Load', loadTime);
       }, 100);
     } catch (error) {
-      console.warn("Analytics tracking failed:", error);
+      console.warn('Analytics tracking failed:', error);
     }
   }
 
@@ -49,19 +49,19 @@ export class PaymentHubComponent implements OnInit {
     try {
       // Track that user accessed the main Payment Hub page
       this.matomoService.trackEvent(
-        "Page View",
-        "Payment Hub Dashboard",
-        "Main Menu Access"
+        'Page View',
+        'Payment Hub Dashboard',
+        'Main Menu Access'
       );
 
       // Track business metric - Payment Hub access
       this.matomoService.trackBusinessMetric(
-        "payment_hub_access",
+        'payment_hub_access',
         1,
-        "page_views"
+        'page_views'
       );
     } catch (error) {
-      console.warn("Analytics setup failed:", error);
+      console.warn('Analytics setup failed:', error);
     }
   }
 
@@ -74,8 +74,8 @@ export class PaymentHubComponent implements OnInit {
     try {
       // Track the navigation event
       this.matomoService.trackEvent(
-        "Navigation",
-        "Payment Hub Section",
+        'Navigation',
+        'Payment Hub Section',
         `${section} - ${actionType}`
       );
 
@@ -84,20 +84,20 @@ export class PaymentHubComponent implements OnInit {
 
       // Track business metrics for section popularity
       this.matomoService.trackBusinessMetric(
-        "section_navigation",
+        'section_navigation',
         1,
-        "navigations"
+        'navigations'
       );
 
       // Track user interaction patterns
       this.matomoService.trackEvent(
-        "User Journey",
-        "Hub Navigation",
+        'User Journey',
+        'Hub Navigation',
         section,
         Date.now() - performance.timeOrigin
       );
     } catch (error) {
-      console.warn("Navigation tracking failed:", error);
+      console.warn('Navigation tracking failed:', error);
     }
   }
 
@@ -108,15 +108,15 @@ export class PaymentHubComponent implements OnInit {
   onExportAction(exportType: string): void {
     try {
       this.matomoService.trackEvent(
-        "Export Action",
-        "Export Initiation",
+        'Export Action',
+        'Export Initiation',
         exportType
       );
 
       // Track business metric for export usage
-      this.matomoService.trackBusinessMetric("export_usage", 1, "exports");
+      this.matomoService.trackBusinessMetric('export_usage', 1, 'exports');
     } catch (error) {
-      console.warn("Export tracking failed:", error);
+      console.warn('Export tracking failed:', error);
     }
   }
 }

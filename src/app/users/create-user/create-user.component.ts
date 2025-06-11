@@ -1,27 +1,27 @@
 /** Angular Imports */
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit } from '@angular/core';
 import {
   FormGroup,
   FormBuilder,
   FormControl,
   Validators,
-} from "@angular/forms";
-import { Router, ActivatedRoute } from "@angular/router";
+} from '@angular/forms';
+import { Router, ActivatedRoute } from '@angular/router';
 
 /** Custom Services */
-import { UsersService } from "../users.service";
-import { MatomoService } from "app/core/analytics/matomo.service";
+import { UsersService } from '../users.service';
+import { MatomoService } from 'app/core/analytics/matomo.service';
 
 /** Custom Validators */
-import { confirmPasswordValidator } from "../../login/reset-password/confirm-password.validator";
+import { confirmPasswordValidator } from '../../login/reset-password/confirm-password.validator';
 
 /**
  * Create user component.
  */
 @Component({
-  selector: "mifosx-create-user",
-  templateUrl: "./create-user.component.html",
-  styleUrls: ["./create-user.component.scss"],
+  selector: 'mifosx-create-user',
+  templateUrl: './create-user.component.html',
+  styleUrls: ['./create-user.component.scss'],
 })
 export class CreateUserComponent implements OnInit {
   /** User form. */
@@ -68,17 +68,17 @@ export class CreateUserComponent implements OnInit {
   createUserForm() {
     this.userForm = this.formBuilder.group(
       {
-        email: ["", [Validators.required, Validators.email]],
+        email: ['', [Validators.required, Validators.email]],
         firstname: [
-          "",
-          [Validators.required, Validators.pattern("(^[A-z]).*")],
+          '',
+          [Validators.required, Validators.pattern('(^[A-z]).*')],
         ],
-        lastname: ["", [Validators.required, Validators.pattern("(^[A-z]).*")]],
+        lastname: ['', [Validators.required, Validators.pattern('(^[A-z]).*')]],
         sendPasswordToEmail: [true],
         passwordNeverExpires: [false],
         officeId: [undefined],
         staffId: [undefined],
-        roles: ["", Validators.required],
+        roles: ['', Validators.required],
       },
       { validator: confirmPasswordValidator }
     );
@@ -88,7 +88,7 @@ export class CreateUserComponent implements OnInit {
    * Sets the staff data each time the user selects a new office
    */
   setStaffData() {
-    this.userForm.get("officeId").valueChanges.subscribe((officeId: string) => {
+    this.userForm.get('officeId').valueChanges.subscribe((officeId: string) => {
       this.staffData = [];
       this.usersService.getStaff(officeId).subscribe((staff: any) => {
         this.staffData = staff;
@@ -101,26 +101,26 @@ export class CreateUserComponent implements OnInit {
    */
   setConditionalControls() {
     this.userForm
-      .get("sendPasswordToEmail")
+      .get('sendPasswordToEmail')
       .valueChanges.subscribe((sendPasswordToEmail: boolean) => {
         if (sendPasswordToEmail) {
-          this.userForm.removeControl("password");
-          this.userForm.removeControl("repeatPassword");
+          this.userForm.removeControl('password');
+          this.userForm.removeControl('repeatPassword');
           this.userForm
-            .get("email")
+            .get('email')
             .setValidators([Validators.required, Validators.email]);
         } else {
           this.userForm.addControl(
-            "password",
-            new FormControl("", Validators.required)
+            'password',
+            new FormControl('', Validators.required)
           );
           this.userForm.addControl(
-            "repeatPassword",
-            new FormControl("", Validators.required)
+            'repeatPassword',
+            new FormControl('', Validators.required)
           );
-          this.userForm.get("email").setValidators([Validators.email]);
+          this.userForm.get('email').setValidators([Validators.email]);
         }
-        this.userForm.get("email").updateValueAndValidity();
+        this.userForm.get('email').updateValueAndValidity();
       });
   }
 
@@ -129,16 +129,16 @@ export class CreateUserComponent implements OnInit {
    * if successful redirects to users.
    */
   submit() {
-    let user = this.userForm.value;
+    const user = this.userForm.value;
 
     // Track user creation attempt
     this.matomoService.trackEvent(
-      "User Management",
-      "Create User Attempt",
+      'User Management',
+      'Create User Attempt',
       user.email
     );
 
-    let data = {
+    const data = {
       email: user.email,
       username: user.email,
       firstname: user.firstname,
@@ -150,31 +150,31 @@ export class CreateUserComponent implements OnInit {
       enabled: true,
       firstTimeLoginRemaining: false,
       deleted: false,
-      payeePartyIdTypesList: ["*"],
-      currenciesList: ["*"],
-      payeePartyIdsList: ["*"],
+      payeePartyIdTypesList: ['*'],
+      currenciesList: ['*'],
+      payeePartyIdsList: ['*'],
       passwordNeverExpires: true,
       lastTimePasswordUpdated: Date.now(),
     };
     this.usersService.createUser(data).subscribe(
       (response: any) => {
-        let rolesData = { entityIds: user.roles };
+        const rolesData = { entityIds: user.roles };
         this.usersService.assignRoles(response.id, rolesData).subscribe(
           (roleResponse: any) => {
             // Track successful user creation
             this.matomoService.trackEvent(
-              "User Management",
-              "Create User Success",
+              'User Management',
+              'Create User Success',
               user.email
             );
-            this.matomoService.setCustomDimension(1, "User Created"); // Custom dimension for user actions
-            this.router.navigate(["../"], { relativeTo: this.route });
+            this.matomoService.setCustomDimension(1, 'User Created'); // Custom dimension for user actions
+            this.router.navigate(['../'], { relativeTo: this.route });
           },
           (roleError: any) => {
             // Track role assignment failure
             this.matomoService.trackEvent(
-              "User Management",
-              "Role Assignment Error",
+              'User Management',
+              'Role Assignment Error',
               user.email
             );
           }
@@ -183,8 +183,8 @@ export class CreateUserComponent implements OnInit {
       (error: any) => {
         // Track user creation failure
         this.matomoService.trackEvent(
-          "User Management",
-          "Create User Error",
+          'User Management',
+          'Create User Error',
           user.email
         );
       }

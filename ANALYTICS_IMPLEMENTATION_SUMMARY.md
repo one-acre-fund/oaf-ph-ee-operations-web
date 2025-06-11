@@ -8,7 +8,7 @@ Complete implementation of Matomo analytics integration for the view-user compon
 
 ### 1. Template Analytics Integration (`view-user.component.html`)
 
-- **Button Tracking**: Added `mifosxMatomoClick` directives to all 8 interactive buttons
+- **Button Tracking**: Added `matomoClick` directives to all 8 interactive buttons
 - **Categories**: Proper categorization with "User Management" and "User Configuration"
 - **Contextual Values**: All buttons include user ID context for tracking
 
@@ -153,7 +153,7 @@ Created and executed comprehensive validation script (`validate-analytics.sh`) w
 
 #### ✅ Template Analytics (8 Buttons Tracked)
 
-- **Click Directives**: `mifosxMatomoClick` applied to all interactive buttons ✅
+- **Click Directives**: `matomoClick` applied to all interactive buttons ✅
 - **Categories**: "User Management" and "User Configuration" properly set ✅
 - **Value Parameters**: User ID context included in all buttons ✅
 

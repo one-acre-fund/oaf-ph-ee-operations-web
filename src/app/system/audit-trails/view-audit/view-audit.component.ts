@@ -1,26 +1,26 @@
 /** Angular Imports */
-import { Component, OnInit, ViewChild } from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
-import { MatPaginator } from "@angular/material/paginator";
-import { MatSort } from "@angular/material/sort";
-import { MatTableDataSource } from "@angular/material/table";
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort } from '@angular/material/sort';
+import { MatTableDataSource } from '@angular/material/table';
 
 /** Custom Services */
-import { MatomoService } from "app/core/analytics/matomo.service";
+import { MatomoService } from 'app/core/analytics/matomo.service';
 
 /**
  * View Audit Component.
  */
 @Component({
-  selector: "mifosx-view-audit",
-  templateUrl: "./view-audit.component.html",
-  styleUrls: ["./view-audit.component.scss"],
+  selector: 'mifosx-view-audit',
+  templateUrl: './view-audit.component.html',
+  styleUrls: ['./view-audit.component.scss'],
 })
 export class ViewAuditComponent implements OnInit {
   /** Audit Trail Data. */
   auditTrailData: any;
   /** Columns to be displayed in audit trail table. */
-  displayedColumns: string[] = ["command", "commandValue"];
+  displayedColumns: string[] = ['command', 'commandValue'];
   /** Data source for audit trail table. */
   dataSource: MatTableDataSource<any>;
 
@@ -74,7 +74,7 @@ export class ViewAuditComponent implements OnInit {
    * Track page view for audit trail details
    */
   trackPageView(): void {
-    const auditId = this.auditTrailData?.id || "unknown";
+    const auditId = this.auditTrailData?.id || 'unknown';
     this.matomoService.trackPageView(
       `View Audit Trail - ${auditId}`,
       `/system/audit-trails/view/${auditId}`
@@ -85,8 +85,8 @@ export class ViewAuditComponent implements OnInit {
    * Setup initial analytics configuration
    */
   setupAnalytics(): void {
-    this.matomoService.trackEvent("Page", "Loaded", "View Audit Trail", 1);
-    this.trackBusinessMetric("view_audit_trail_loaded", 1, "views");
+    this.matomoService.trackEvent('Page', 'Loaded', 'View Audit Trail', 1);
+    this.trackBusinessMetric('view_audit_trail_loaded', 1, 'views');
 
     // Track audit trail metadata
     if (this.auditTrailData) {
@@ -103,8 +103,8 @@ export class ViewAuditComponent implements OnInit {
     // Track action type
     if (auditData.actionName) {
       this.matomoService.trackEvent(
-        "Audit",
-        "Action Type",
+        'Audit',
+        'Action Type',
         auditData.actionName,
         1
       );
@@ -113,8 +113,8 @@ export class ViewAuditComponent implements OnInit {
     // Track entity type
     if (auditData.entityName) {
       this.matomoService.trackEvent(
-        "Audit",
-        "Entity Type",
+        'Audit',
+        'Entity Type',
         auditData.entityName,
         1
       );
@@ -123,8 +123,8 @@ export class ViewAuditComponent implements OnInit {
     // Track processing result
     if (auditData.processingResult) {
       this.matomoService.trackEvent(
-        "Audit",
-        "Processing Result",
+        'Audit',
+        'Processing Result',
         auditData.processingResult,
         1
       );
@@ -132,10 +132,10 @@ export class ViewAuditComponent implements OnInit {
 
     // Track office if available
     if (auditData.officeName) {
-      this.matomoService.trackEvent("Audit", "Office", auditData.officeName, 1);
+      this.matomoService.trackEvent('Audit', 'Office', auditData.officeName, 1);
     }
 
-    this.trackBusinessMetric("audit_metadata_tracked", 1, "metadata");
+    this.trackBusinessMetric('audit_metadata_tracked', 1, 'metadata');
   }
 
   /**
@@ -143,12 +143,12 @@ export class ViewAuditComponent implements OnInit {
    */
   onAuditDetailsView(): void {
     this.matomoService.trackEvent(
-      "View",
-      "Audit Details",
-      "Audit Information Card",
+      'View',
+      'Audit Details',
+      'Audit Information Card',
       1
     );
-    this.trackBusinessMetric("audit_details_views", 1, "views");
+    this.trackBusinessMetric('audit_details_views', 1, 'views');
   }
 
   /**
@@ -156,12 +156,12 @@ export class ViewAuditComponent implements OnInit {
    */
   onCommandTableView(): void {
     this.matomoService.trackEvent(
-      "View",
-      "Command Table",
-      "Audit Commands Data",
+      'View',
+      'Command Table',
+      'Audit Commands Data',
       1
     );
-    this.trackBusinessMetric("command_table_views", 1, "views");
+    this.trackBusinessMetric('command_table_views', 1, 'views');
   }
 
   /**
@@ -169,12 +169,12 @@ export class ViewAuditComponent implements OnInit {
    */
   onTableSort(sortHeader: string): void {
     this.matomoService.trackEvent(
-      "Table",
-      "Sort",
+      'Table',
+      'Sort',
       `Audit Commands - ${sortHeader}`,
       1
     );
-    this.trackBusinessMetric("table_sort_interactions", 1, "sorts");
+    this.trackBusinessMetric('table_sort_interactions', 1, 'sorts');
   }
 
   /**
@@ -182,20 +182,20 @@ export class ViewAuditComponent implements OnInit {
    */
   onCommandValueView(command: string): void {
     this.matomoService.trackEvent(
-      "View",
-      "Command Value",
+      'View',
+      'Command Value',
       `Command: ${command}`,
       1
     );
-    this.trackBusinessMetric("command_value_views", 1, "views");
+    this.trackBusinessMetric('command_value_views', 1, 'views');
   }
 
   /**
    * Track user email interactions
    */
   onUserEmailView(): void {
-    this.matomoService.trackEvent("View", "User Email", "Audit Trail User", 1);
-    this.trackBusinessMetric("user_email_views", 1, "views");
+    this.matomoService.trackEvent('View', 'User Email', 'Audit Trail User', 1);
+    this.trackBusinessMetric('user_email_views', 1, 'views');
   }
 
   /**
@@ -203,12 +203,12 @@ export class ViewAuditComponent implements OnInit {
    */
   onResourceIdView(): void {
     this.matomoService.trackEvent(
-      "View",
-      "Resource ID",
-      "Audit Trail Resource",
+      'View',
+      'Resource ID',
+      'Audit Trail Resource',
       1
     );
-    this.trackBusinessMetric("resource_id_views", 1, "views");
+    this.trackBusinessMetric('resource_id_views', 1, 'views');
   }
 
   /**
@@ -216,12 +216,12 @@ export class ViewAuditComponent implements OnInit {
    */
   onDateView(): void {
     this.matomoService.trackEvent(
-      "View",
-      "Date Information",
-      "Audit Trail Date",
+      'View',
+      'Date Information',
+      'Audit Trail Date',
       1
     );
-    this.trackBusinessMetric("date_info_views", 1, "views");
+    this.trackBusinessMetric('date_info_views', 1, 'views');
   }
 
   /**
@@ -229,15 +229,15 @@ export class ViewAuditComponent implements OnInit {
    */
   trackPerformanceMetric(metricName: string, value: number): void {
     this.matomoService.trackEvent(
-      "Performance",
+      'Performance',
       metricName,
-      "View Audit Trail",
+      'View Audit Trail',
       value
     );
     this.trackBusinessMetric(
       `performance_${metricName.toLowerCase()}`,
       value,
-      "milliseconds"
+      'milliseconds'
     );
   }
 

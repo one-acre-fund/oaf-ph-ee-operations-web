@@ -1,21 +1,21 @@
 /** Angular Imports */
-import { Component, OnInit } from "@angular/core";
-import { FormGroup, FormBuilder, Validators } from "@angular/forms";
+import { Component, OnInit } from '@angular/core';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 /** rxjs Imports */
-import { finalize } from "rxjs/operators";
+import { finalize } from 'rxjs/operators';
 
 /** Custom Services */
-import { AuthenticationService } from "../../core/authentication/authentication.service";
-import { MatomoService } from "../../core/analytics/matomo.service";
+import { AuthenticationService } from '../../core/authentication/authentication.service';
+import { MatomoService } from '../../core/analytics/matomo.service';
 
 /**
  * Login form component.
  */
 @Component({
-  selector: "mifosx-login-form",
-  templateUrl: "./login-form.component.html",
-  styleUrls: ["./login-form.component.scss"],
+  selector: 'mifosx-login-form',
+  templateUrl: './login-form.component.html',
+  styleUrls: ['./login-form.component.scss'],
 })
 export class LoginFormComponent implements OnInit {
   /** Login form group. */
@@ -43,7 +43,7 @@ export class LoginFormComponent implements OnInit {
    */
   ngOnInit() {
     this.createLoginForm();
-    this.passwordInputType = "password";
+    this.passwordInputType = 'password';
   }
 
   /**
@@ -55,9 +55,9 @@ export class LoginFormComponent implements OnInit {
 
     // Track login attempt
     this.matomoService.trackEvent(
-      "Authentication",
-      "Login Attempt",
-      "User Login Form"
+      'Authentication',
+      'Login Attempt',
+      'User Login Form'
     );
 
     this.authenticationService
@@ -89,9 +89,9 @@ export class LoginFormComponent implements OnInit {
         error: (error) => {
           // Track login failure
           this.matomoService.trackEvent(
-            "Authentication",
-            "Login Failed",
-            "Login Error"
+            'Authentication',
+            'Login Failed',
+            'Login Error'
           );
         },
       });
@@ -101,7 +101,7 @@ export class LoginFormComponent implements OnInit {
    * TODO: Decision to be taken on providing this feature.
    */
   forgotPassword() {
-    console.log("Forgot Password feature currently unavailable.");
+    console.log('Forgot Password feature currently unavailable.');
   }
 
   /**
@@ -109,9 +109,9 @@ export class LoginFormComponent implements OnInit {
    */
   private createLoginForm() {
     this.loginForm = this.formBuilder.group({
-      username: ["", Validators.required],
-      password: ["", Validators.required],
-      tenant: ["", Validators.required],
+      username: ['', Validators.required],
+      password: ['', Validators.required],
+      tenant: ['', Validators.required],
       remember: false,
     });
   }
