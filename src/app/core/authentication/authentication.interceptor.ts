@@ -13,7 +13,7 @@ import { environment } from '../../../environments/environment';
 
 /** Http request options headers. */
 const httpOptions = {
-  headers: {}
+  headers: {} as { [key: string]: any }
 };
 
 /** Authorization header. */

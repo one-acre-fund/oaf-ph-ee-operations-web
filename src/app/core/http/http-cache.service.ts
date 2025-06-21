@@ -1,6 +1,6 @@
 /** Angular Imports */
-import { Injectable } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
+import { Injectable } from '@angular/core';
 
 /** Other Imports */
 import { each } from 'lodash';
@@ -108,7 +108,7 @@ export class HttpCacheService {
    */
   setPersistence(persistence?: 'local' | 'session') {
     this.cleanCache();
-    this.storage = persistence === 'local' || persistence === 'session' ? window[persistence + 'Storage'] : null;
+    this.storage = persistence === 'local' || persistence === 'session' ? (window as any)[persistence + 'Storage'] : null;
     this.loadCacheData();
   }
 

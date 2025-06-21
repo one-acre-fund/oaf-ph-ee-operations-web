@@ -87,13 +87,13 @@ export class AuthenticationService {
         if (oAuthRefreshToken) {
           this.refreshAccessToken = true;
           this.authorizationToken = `Bearer ${savedCredentials.accessToken}`;
-          
+
           // Check if token is still valid and set up refresh
           if (oAuthTokenDetails.expires_in && oAuthTokenDetails.timestamp) {
             const tokenExpiry = oAuthTokenDetails.timestamp + (oAuthTokenDetails.expires_in * 1000);
             const now = Date.now();
             const timeUntilExpiry = Math.max(0, tokenExpiry - now);
-            
+
             if (timeUntilExpiry > 60000) { // If more than 1 minute left
               // Token is still valid, set up refresh
               this.refreshTokenOnExpiry(Math.floor(timeUntilExpiry / 1000));
@@ -198,14 +198,14 @@ export class AuthenticationService {
     if (this.refreshTimeout) {
       clearTimeout(this.refreshTimeout);
     }
-    
+
     this.accessTokenExpirationTime = Date.now() + expiresInTime * 1000;
-    
+
     // Calculate when to refresh the token (60 seconds before expiry, minimum 30 seconds)
     const refreshTime = Math.max(30, expiresInTime - 60);
-    
+
     console.log(`Token expires in ${expiresInTime} seconds. Will refresh in ${refreshTime} seconds.`);
-    
+
     // Set up automatic refresh before token expires
     this.refreshTimeout = setTimeout(() => {
       console.log('Automatically refreshing token before expiry...');
@@ -301,7 +301,7 @@ export class AuthenticationService {
       clearTimeout(this.refreshTimeout);
       this.refreshTimeout = null;
     }
-    
+
     this.loggedIn = false;
     this.setCredentials();
     return of(true);
