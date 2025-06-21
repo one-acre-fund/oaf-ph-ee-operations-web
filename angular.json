@@ -33,30 +33,36 @@
             ],
             "styles": [
               "src/main.scss",
-              {"inject":false,
+              {
+                "inject": false,
                 "input": "src/theme/deeppurple-amber.scss",
                 "bundleName": "deeppurple-amber"
-},
-              {"inject":false,
+              },
+              {
+                "inject": false,
                 "input": "src/theme/indigo-pink.scss",
                 "bundleName": "indigo-pink"
-},
-              {"inject":false,
+              },
+              {
+                "inject": false,
                 "input": "src/theme/pink-bluegrey.scss",
                 "bundleName": "pink-bluegrey"
-},
-              {"inject":false,
+              },
+              {
+                "inject": false,
                 "input": "src/theme/purple-green.scss",
                 "bundleName": "purple-green"
-},
-              {"inject":false,
+              },
+              {
+                "inject": false,
                 "input": "src/theme/custom/denim-yellowgreen.scss",
                 "bundleName": "denim-yellowgreen"
-},
-              {"inject":false,
+              },
+              {
+                "inject": false,
                 "input": "src/theme/custom/pictonblue-yellowgreen.scss",
                 "bundleName": "pictonblue-yellowgreen"
-}
+              }
             ],
             "scripts": [],
             "vendorChunk": true,
@@ -129,10 +135,7 @@
         "lint": {
           "builder": "@angular-eslint/builder:lint",
           "options": {
-            "lintFilePatterns": [
-              "src/**/*.ts",
-              "src/**/*.html"
-            ]
+            "lintFilePatterns": ["src/**/*.ts", "src/**/*.html"]
           }
         },
         "test": {
@@ -145,30 +148,36 @@
             "scripts": [],
             "styles": [
               "src/main.scss",
-              {"inject":false,
+              {
+                "inject": false,
                 "input": "src/theme/deeppurple-amber.scss",
                 "bundleName": "deeppurple-amber"
-},
-              {"inject":false,
+              },
+              {
+                "inject": false,
                 "input": "src/theme/indigo-pink.scss",
                 "bundleName": "indigo-pink"
-},
-              {"inject":false,
+              },
+              {
+                "inject": false,
                 "input": "src/theme/pink-bluegrey.scss",
                 "bundleName": "pink-bluegrey"
-},
-              {"inject":false,
+              },
+              {
+                "inject": false,
                 "input": "src/theme/purple-green.scss",
                 "bundleName": "purple-green"
-},
-              {"inject":false,
+              },
+              {
+                "inject": false,
                 "input": "src/theme/custom/denim-yellowgreen.scss",
                 "bundleName": "denim-yellowgreen"
-},
-              {"inject":false,
+              },
+              {
+                "inject": false,
                 "input": "src/theme/custom/pictonblue-yellowgreen.scss",
                 "bundleName": "pictonblue-yellowgreen"
-}
+              }
             ],
             "assets": [
               "src/favicon.ico",
