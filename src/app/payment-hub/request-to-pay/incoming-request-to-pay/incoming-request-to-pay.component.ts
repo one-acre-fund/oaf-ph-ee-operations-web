@@ -296,6 +296,8 @@ export class IncomingRequestToPayComponent implements OnInit, AfterViewInit {
               filterValue.format(this.dateTimeFormat),
               'startFrom'
             );
+          } else {
+            this.applyFilter('', 'startFrom');
           }
         })
       )
@@ -311,6 +313,8 @@ export class IncomingRequestToPayComponent implements OnInit, AfterViewInit {
               filterValue.format(this.dateTimeFormat),
               'startTo'
             );
+          } else {
+            this.applyFilter('', 'startTo');
           }
         })
       )

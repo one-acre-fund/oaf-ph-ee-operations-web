@@ -1,20 +1,19 @@
 /** Angular Imports */
-import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { UntypedFormControl } from '@angular/forms';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { MatLegacyPaginator as MatPaginator } from '@angular/material/legacy-paginator';
 import { MatSort } from '@angular/material/sort';
-import { MatLegacyTableDataSource as MatTableDataSource } from '@angular/material/legacy-table';
-import { UntypedFormControl } from '@angular/forms';
-import { Router, ActivatedRoute } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
 /** rxjs Imports */
 import { merge } from 'rxjs';
 import {
-  tap,
-  startWith,
-  map,
-  distinctUntilChanged,
   debounceTime,
+  distinctUntilChanged,
+  map,
+  startWith,
+  tap,
 } from 'rxjs/operators';
 
 /** Custom Services */
@@ -23,11 +22,10 @@ import { MatomoService } from '../../../core/analytics/matomo.service';
 /** Custom Data Source */
 import { TransactionsDataSource } from '../dataSource/transactions.datasource';
 import { formatDate, formatUTCDate } from '../helper/date-format.helper';
-import { TransactionsService } from '../service/transactions.service';
-import { PaymentHubComponent } from 'app/payment-hub/paymenthub.component';
-import { DfspEntry } from '../model/dfsp.model';
 import { transactionStatusData as statuses } from '../helper/transaction.helper';
+import { DfspEntry } from '../model/dfsp.model';
 import { RetryResolveDialogComponent } from '../retry-resolve-dialog/retry-resolve-dialog.component';
+import { TransactionsService } from '../service/transactions.service';
 
 /**
  * Transactions component.
@@ -256,10 +254,14 @@ export class OutgoingTransactionsComponent implements OnInit, AfterViewInit {
         debounceTime(500),
         distinctUntilChanged(),
         tap((filterValue: moment.Moment) => {
-          this.applyFilter(
-            filterValue.format(this.dateTimeFormat),
-            'startFrom'
-          );
+          if (filterValue) {
+            this.applyFilter(
+              filterValue.format(this.dateTimeFormat),
+              'startFrom'
+            );
+          } else {
+            this.applyFilter('', 'startFrom');
+          }
         })
       )
       .subscribe();
@@ -269,7 +271,11 @@ export class OutgoingTransactionsComponent implements OnInit, AfterViewInit {
         debounceTime(500),
         distinctUntilChanged(),
         tap((filterValue: moment.Moment) => {
-          this.applyFilter(filterValue.format(this.dateTimeFormat), 'startTo');
+          if (filterValue) {
+            this.applyFilter(filterValue.format(this.dateTimeFormat), 'startTo');
+          } else {
+            this.applyFilter('', 'startTo');
+          }
         })
       )
       .subscribe();

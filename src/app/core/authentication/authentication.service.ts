@@ -48,6 +48,7 @@ export class AuthenticationService {
   private refreshAccessToken = false;
   private loggedIn = false;
   private authorizationToken: String;
+  private refreshTimeout: any;
   private tenantId: String = environment.auth.tenant;
   private username: String;
   private accessTokenExpirationTime = 1;
@@ -79,10 +80,33 @@ export class AuthenticationService {
         this.storage = localStorage;
       }
 
-      const oAuthRefreshToken = JSON.parse(this.getStoreageItem(this.oAuthTokenDetailsStorageKey)).refresh_token;
-      if (oAuthRefreshToken) {
-        this.refreshAccessToken = true;
-        this.authorizationToken = `Bearer ${oAuthRefreshToken}`;
+      const oAuthTokenDetailsString = this.getStoreageItem(this.oAuthTokenDetailsStorageKey);
+      if (oAuthTokenDetailsString) {
+        const oAuthTokenDetails = JSON.parse(oAuthTokenDetailsString);
+        const oAuthRefreshToken = oAuthTokenDetails.refresh_token;
+        if (oAuthRefreshToken) {
+          this.refreshAccessToken = true;
+          this.authorizationToken = `Bearer ${savedCredentials.accessToken}`;
+          
+          // Check if token is still valid and set up refresh
+          if (oAuthTokenDetails.expires_in && oAuthTokenDetails.timestamp) {
+            const tokenExpiry = oAuthTokenDetails.timestamp + (oAuthTokenDetails.expires_in * 1000);
+            const now = Date.now();
+            const timeUntilExpiry = Math.max(0, tokenExpiry - now);
+            
+            if (timeUntilExpiry > 60000) { // If more than 1 minute left
+              // Token is still valid, set up refresh
+              this.refreshTokenOnExpiry(Math.floor(timeUntilExpiry / 1000));
+              this.refreshAccessToken = false; // Token is still valid
+            } else {
+              // Token has expired or will expire soon
+              console.log('Stored token has expired or will expire soon, will refresh on next API call');
+              this.refreshAccessToken = true;
+            }
+          }
+        } else {
+          this.authorizationToken = `Basic ${savedCredentials.base64EncodedAuthenticationKey}`;
+        }
       } else {
         this.authorizationToken = `Basic ${savedCredentials.base64EncodedAuthenticationKey}`;
       }
@@ -120,9 +144,15 @@ export class AuthenticationService {
       return this.http.disableApiPrefix().post(`${environment.oauth.serverUrl}/oauth/token`, {}, { params: httpParams })
         .pipe(
           map((tokenResponse: OAuth2Token) => {
-            // TODO: fix UserDetails API
-            this.storage.setItem(this.oAuthTokenDetailsStorageKey, JSON.stringify(tokenResponse));
+            // Add timestamp to token response for expiry calculation
+            const tokenWithTimestamp = {
+              ...tokenResponse,
+              timestamp: Date.now()
+            };
+            this.storage.setItem(this.oAuthTokenDetailsStorageKey, JSON.stringify(tokenWithTimestamp));
             this.onLoginSuccess({ username: loginContext.username, accessToken: tokenResponse.access_token, authenticated: true, tenantId: loginContext.tenant } as any);
+            // Set up automatic token refresh
+            this.refreshTokenOnExpiry(tokenResponse.expires_in);
             return true;
           })
         );
@@ -159,9 +189,40 @@ export class AuthenticationService {
    * Sets the oauth2 token to refresh on expiry.
    * @param {number} expiresInTime OAuth2 token expiry time in seconds.
    */
+  /**
+   * Sets up automatic token refresh before expiry.
+   * @param {number} expiresInTime OAuth2 token expiry time in seconds.
+   */
   private refreshTokenOnExpiry(expiresInTime: number) {
+    // Clear any existing refresh timeout
+    if (this.refreshTimeout) {
+      clearTimeout(this.refreshTimeout);
+    }
+    
     this.accessTokenExpirationTime = Date.now() + expiresInTime * 1000;
-    setTimeout(() => this.refreshAccessToken = true, expiresInTime * 1000);
+    
+    // Calculate when to refresh the token (60 seconds before expiry, minimum 30 seconds)
+    const refreshTime = Math.max(30, expiresInTime - 60);
+    
+    console.log(`Token expires in ${expiresInTime} seconds. Will refresh in ${refreshTime} seconds.`);
+    
+    // Set up automatic refresh before token expires
+    this.refreshTimeout = setTimeout(() => {
+      console.log('Automatically refreshing token before expiry...');
+      this.refreshOAuthAccessToken().subscribe(
+        (success) => {
+          console.log('Token refreshed successfully');
+        },
+        (error) => {
+          console.error('Failed to refresh token automatically:', error);
+          // If refresh fails, redirect to login
+          this.alertService.alert({ type: 'Session Expired', message: 'Your session has expired. Please log in again.' });
+          this.logout().subscribe(() => {
+            this.router.navigate(['/login']);
+          });
+        }
+      );
+    }, refreshTime * 1000);
   }
 
   private getStoreageItem(item: string): any {
@@ -188,7 +249,11 @@ export class AuthenticationService {
     return this.http.disableApiPrefix().post(`${environment.oauth.serverUrl}/oauth/token`, {}, { params: httpParams })
       .pipe(map((tokenResponse: OAuth2Token) => {
         this.refreshAccessToken = false;
-        this.storage.setItem(this.oAuthTokenDetailsStorageKey, JSON.stringify(tokenResponse));
+        const tokenWithTimestamp = {
+          ...tokenResponse,
+          timestamp: Date.now()
+        };
+        this.storage.setItem(this.oAuthTokenDetailsStorageKey, JSON.stringify(tokenWithTimestamp));
         this.authorizationToken = `Bearer ${tokenResponse.access_token}`;
         this.refreshTokenOnExpiry(tokenResponse.expires_in);
         const credentials = JSON.parse(this.getStoreageItem(this.credentialsStorageKey));
@@ -231,6 +296,12 @@ export class AuthenticationService {
    * @returns {Observable<boolean>} True if the user was logged out successfully.
    */
   logout(): Observable<boolean> {
+    // Clear the refresh timeout
+    if (this.refreshTimeout) {
+      clearTimeout(this.refreshTimeout);
+      this.refreshTimeout = null;
+    }
+    
     this.loggedIn = false;
     this.setCredentials();
     return of(true);
