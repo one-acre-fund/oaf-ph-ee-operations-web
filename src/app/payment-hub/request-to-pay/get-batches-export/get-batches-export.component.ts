@@ -107,7 +107,7 @@ export class GetBatchesExportComponent implements AfterViewInit {
           formdata
         );
 
-      upload$.subscribe((res) => {
+      upload$.subscribe((res: any) => {
         if (res) {
           this.resbatch = res;
           console.log(this.resbatch.batch_id);

@@ -91,7 +91,7 @@ export class AuthenticationService {
 
   hasAccess(permission: String): Boolean {
     const credentials = JSON.parse(this.getStoreageItem(this.credentialsStorageKey));
-    const decoded = jwt_decode(credentials.accessToken);
+    const decoded = jwt_decode(credentials.accessToken) as any;
     const authorities = decoded['authorities'];
     return authorities.includes('ALL_FUNCTIONS') || authorities.includes(permission);
   }
@@ -123,7 +123,7 @@ export class AuthenticationService {
             // TODO: fix UserDetails API
             this.storage.setItem(this.oAuthTokenDetailsStorageKey, JSON.stringify(tokenResponse));
             this.onLoginSuccess({ username: loginContext.username, accessToken: tokenResponse.access_token, authenticated: true, tenantId: loginContext.tenant } as any);
-            return of(true);
+            return true;
           })
         );
     } else {
@@ -131,7 +131,7 @@ export class AuthenticationService {
         .pipe(
           map((credentials: Credentials) => {
             this.onLoginSuccess(credentials);
-            return of(true);
+            return true;
           })
         );
     }
@@ -194,7 +194,7 @@ export class AuthenticationService {
         const credentials = JSON.parse(this.getStoreageItem(this.credentialsStorageKey));
         credentials.accessToken = tokenResponse.access_token;
         this.storage.setItem(this.credentialsStorageKey, JSON.stringify(credentials));
-        return of(true);
+        return true;
       }));
     
   }

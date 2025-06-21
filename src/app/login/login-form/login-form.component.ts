@@ -72,7 +72,7 @@ export class LoginFormComponent implements OnInit {
         })
       )
       .subscribe({
-        next: (success) => {
+        next: (success: boolean) => {
           if (success) {
             // Track successful login
             const credentials = this.authenticationService.getCredentials();
@@ -86,7 +86,7 @@ export class LoginFormComponent implements OnInit {
             }
           }
         },
-        error: (error) => {
+        error: (error: any) => {
           // Track login failure
           this.matomoService.trackEvent(
             'Authentication',
