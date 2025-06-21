@@ -5,7 +5,7 @@ import {
   HttpHeaders,
   JsonpClientBackend,
 } from "@angular/common/http";
-import { FormControl } from "@angular/forms";
+import { UntypedFormControl } from "@angular/forms";
 import { FormsModule } from "@angular/forms";
 import { MatTableModule } from "@angular/material/table";
 
@@ -17,7 +17,7 @@ import { MatTableDataSource } from "@angular/material/table";
   styleUrls: ["./bulk-batch-export.component.scss"],
 })
 export class BulkBatchExportComponent implements OnInit {
-  template = new FormControl("");
+  template = new UntypedFormControl("");
   templates: string[] = ["Mojaloop", "Program"];
   fileToUpload: File | null = null;
   batchid: any;
