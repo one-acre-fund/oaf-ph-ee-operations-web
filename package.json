@@ -16,7 +16,7 @@
     "build:prod": "node --max-old-space-size=16384 ./node_modules/@angular/cli/bin/ng build --configuration production --output-hashing=none --base-href=\"/web-app/\"",
     "start": "npm run env -s && ng serve --aot --proxy-config proxy.conf.js",
     "serve:sw": "npm run build -s && npx http-server ./dist -p 4200",
-    "lint": "stylelint \"src/**/*.scss\" --syntax scss && htmlhint \"src\" --config .htmlhintrc",
+    "lint": "ng lint && stylelint \"src/**/*.scss\" --syntax scss && htmlhint \"src\" --config .htmlhintrc",
     "test": "npm run env -s && ng test",
     "test:ci": "npm run env -s && npm run lint -s && ng test --code-coverage --watch=false",
     "e2e": "npm run env -s && ng e2e",
@@ -58,6 +58,11 @@
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^16.2.16",
+    "@angular-eslint/builder": "^16.3.0",
+    "@angular-eslint/eslint-plugin": "^16.3.0",
+    "@angular-eslint/eslint-plugin-template": "^16.3.0",
+    "@angular-eslint/schematics": "^16.3.0",
+    "@angular-eslint/template-parser": "^16.3.0",
     "@angular/cli": "^16.2.16",
     "@angular/compiler-cli": "16.2.12",
     "@angular/language-service": "16.2.12",
@@ -69,6 +74,9 @@
     "@types/jwt-decode": "^2.2.1",
     "@types/lodash": "4.17.7",
     "@types/node": "^18.19.39",
+    "@typescript-eslint/eslint-plugin": "^5.62.0",
+    "@typescript-eslint/parser": "^5.62.0",
+    "eslint": "^8.57.1",
     "hads": "1.7.3",
     "htmlhint": "0.11.0",
     "https-proxy-agent": "5.0.0",
@@ -86,7 +94,6 @@
     "stylelint-config-standard": "18.3.0",
     "stylelint-scss": "3.6.1",
     "ts-node": "8.2.0",
-    "tslint": "~6.1.0",
     "typescript": "5.1.6"
   },
   "repository": {
