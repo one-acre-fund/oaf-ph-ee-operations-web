@@ -21,7 +21,10 @@ $theme-picker-accent-stripe-size: 6px;
     position: relative;
     width: $theme-picker-swatch-size;
     height: $theme-picker-swatch-size;
-    margin: math.div($theme-picker-grid-cell-size - $theme-picker-swatch-size, 2);
+    margin: math.div(
+      $theme-picker-grid-cell-size - $theme-picker-swatch-size,
+      2
+    );
     border-radius: 50%;
     overflow: hidden;
 

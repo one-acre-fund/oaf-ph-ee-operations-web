@@ -1,13 +1,13 @@
 /** Angular Imports */
 import { Component, OnInit } from '@angular/core';
-import { UntypedFormGroup, UntypedFormBuilder, Validators } from '@angular/forms';
+import { UntypedFormBuilder, UntypedFormGroup, Validators } from '@angular/forms';
 
 /** rxjs Imports */
 import { finalize } from 'rxjs/operators';
 
 /** Custom Services */
-import { AuthenticationService } from '../../core/authentication/authentication.service';
 import { MatomoService } from '../../core/analytics/matomo.service';
+import { AuthenticationService } from '../../core/authentication/authentication.service';
 
 /**
  * Login form component.
@@ -34,7 +34,7 @@ export class LoginFormComponent implements OnInit {
     private formBuilder: UntypedFormBuilder,
     private authenticationService: AuthenticationService,
     private matomoService: MatomoService
-  ) {}
+  ) { }
 
   /**
    * Creates login form.
