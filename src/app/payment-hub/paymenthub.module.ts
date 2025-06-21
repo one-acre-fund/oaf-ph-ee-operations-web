@@ -27,31 +27,26 @@ import { IncomingTransactionExportComponent } from './transactions/incoming-tran
  * All components related to payment hub functions should be declared here.
  */
 @NgModule({
-  imports: [
-    MatDialogModule,
-    SharedModule,
-    PaymentHubRoutingModule,
-    PipesModule,
-  ],
-  declarations: [
-    IncomingTransactionsComponent,
-    OutgoingTransactionsComponent,
-    TransactionDetailsComponent,
-    PaymentHubComponent,
-    BpmnDialogComponent,
-    RetryResolveDialogComponent,
-    IncomingRequestToPayComponent,
-    OutgoingRequestToPayComponent,
-    ViewRequestToPayComponent,
-    IncomingRequestExportComponent,
-    BulkBatchExportComponent,
-    GetBatchesExportComponent,
-    IncomingTransactionExportComponent,
-  ],
-  entryComponents: [
-    PaymentHubComponent,
-    BpmnDialogComponent,
-    RetryResolveDialogComponent,
-  ],
+    imports: [
+        MatDialogModule,
+        SharedModule,
+        PaymentHubRoutingModule,
+        PipesModule,
+    ],
+    declarations: [
+        IncomingTransactionsComponent,
+        OutgoingTransactionsComponent,
+        TransactionDetailsComponent,
+        PaymentHubComponent,
+        BpmnDialogComponent,
+        RetryResolveDialogComponent,
+        IncomingRequestToPayComponent,
+        OutgoingRequestToPayComponent,
+        ViewRequestToPayComponent,
+        IncomingRequestExportComponent,
+        BulkBatchExportComponent,
+        GetBatchesExportComponent,
+        IncomingTransactionExportComponent,
+    ]
 })
 export class PaymentHubModule {}
