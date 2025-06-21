@@ -7,10 +7,10 @@ import {
 } from "@angular/common/http";
 import { UntypedFormControl } from "@angular/forms";
 import { FormsModule } from "@angular/forms";
-import { MatTableModule } from "@angular/material/table";
+import { MatLegacyTableModule as MatTableModule } from "@angular/material/legacy-table";
 
-import { MatPaginator } from "@angular/material/paginator";
-import { MatTableDataSource } from "@angular/material/table";
+import { MatLegacyPaginator as MatPaginator } from "@angular/material/legacy-paginator";
+import { MatLegacyTableDataSource as MatTableDataSource } from "@angular/material/legacy-table";
 @Component({
   selector: "mifosx-bulk-batch-export",
   templateUrl: "./bulk-batch-export.component.html",

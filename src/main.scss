@@ -14,4 +14,6 @@
 // // 3rd party libraries
  $fa-font-path: "../fonts";
 
- @import "../node_modules/font-awesome/scss/font-awesome.scss";
+ // Note: Commenting out old font-awesome import to avoid Sass division deprecation warnings
+ // The project now uses @fortawesome/angular-fontawesome components
+ // @import "../node_modules/font-awesome/scss/font-awesome.scss";

@@ -9,8 +9,8 @@ import {
 import { Observable, Subscription } from "rxjs";
 import { Router } from "@angular/router";
 import { HttpClient, HttpParams, HttpHeaders } from "@angular/common/http";
-import { MatPaginator } from "@angular/material/paginator";
-import { MatTableDataSource } from "@angular/material/table";
+import { MatLegacyPaginator as MatPaginator } from "@angular/material/legacy-paginator";
+import { MatLegacyTableDataSource as MatTableDataSource } from "@angular/material/legacy-table";
 
 import { UntypedFormControl, NgForm } from "@angular/forms";
 @Component({
