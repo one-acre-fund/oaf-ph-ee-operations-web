@@ -1,29 +1,28 @@
 {
-    "extends": [
-        "stylelint-config-standard",
-        "stylelint-config-recommended-scss"
+  "extends": [
+    "stylelint-config-standard",
+    "stylelint-config-recommended-scss"
+  ],
+  "plugins": [
+    "stylelint-scss"
+  ],
+  "rules": {
+    "at-rule-no-unknown": null,
+    "scss/at-rule-no-unknown": true,
+    "selector-pseudo-element-no-unknown": [
+      true,
+      {
+        "ignorePseudoElements": ["ng-deep"]
+      }
     ],
-    "plugins": [
-        "stylelint-scss"
-    ],
-    "rules": {
-        "at-rule-no-unknown": null,
-        "scss/at-rule-no-unknown": true,
-        "selector-pseudo-element-no-unknown": [
-            true,
-            {
-                "ignorePseudoElements": [
-                    "ng-deep"
-                ]
-            }
-        ],
-        "no-empty-source": null,
-        "declaration-block-trailing-semicolon": null,
-        "no-missing-end-of-source-newline": null
-    },
-    "ignoreFiles": [
-        "src/assets/**/*.scss",
-        "src/theme/**/*.scss",
-        "node_modules/**/*"
-    ]
+    "no-empty-source": null,
+    "scss/no-global-function-names": null,
+    "declaration-block-trailing-semicolon": null,
+    "no-missing-end-of-source-newline": null
+  },
+  "ignoreFiles": [
+    "src/assets/**/*.scss",
+    "src/theme/**/*.scss",
+    "node_modules/**/*"
+  ]
 }

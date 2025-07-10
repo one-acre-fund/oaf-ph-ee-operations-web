@@ -1,29 +1,65 @@
-# Configuration file for Mega-Linter
-# See all available variables at https://megalinter.github.io/latest/configuration/ and in linters documentation
+# MegaLinter Configuration
+# Documentation: https://megalinter.io/latest/configuration/
 
-APPLY_FIXES: all # all, none, or list of linter keys
-VALIDATE_ALL_CODEBASE: false
-DEFAULT_BRANCH: develop
+# Apply linters to the project
+APPLY_FIXES: none # Set to 'all' to automatically fix issues, or 'none' to only report
+DEFAULT_BRANCH: main
 
-# If you use ENABLE_LINTERS variable, all other linters will be disabled by default
+# Enable/Disable linters
 ENABLE_LINTERS:
-  # See https://megalinter.github.io/descriptors/markdown_markdownlint/
-  - MARKDOWN_MARKDOWNLINT
-  # See https://megalinter.github.io/descriptors/yaml_yamllint/
-  - YAML_YAMLLINT
-  # See https://megalinter.github.io/descriptors/dockerfile_hadolint/
-  - DOCKERFILE_HADOLINT
-  - JSON_PRETTIER
+  - TYPESCRIPT_ES
   - HTML_HTMLHINT
+  - CSS_STYLELINT
+  - JSON_ESLINT_PLUGIN_JSONC
+  - YAML_YAMLLINT
+  - MARKDOWN_MARKDOWNLINT
+  - DOCKERFILE_HADOLINT
+
+# Disable linters that might conflict or aren't needed
+DISABLE_LINTERS:
+  - TYPESCRIPT_STANDARD
   - TYPESCRIPT_PRETTIER
+  - JSON_PRETTIER
+  - YAML_PRETTIER
 
-# DISABLE:
-#   - COPYPASTE # Uncomment to enable checks of abusive copy-pastes
-#   - SPELL # Uncomment to disable checks of spelling mistakes
+# ESLint configuration for TypeScript
+TYPESCRIPT_ES_CONFIG_FILE: .eslintrc.json
+TYPESCRIPT_ES_RULES_PATH: .
 
+# HTMLHint configuration - will use default rules if .htmlhintrc doesn't exist
+HTML_HTMLHINT_CONFIG_FILE: .htmlhintrc
+HTML_HTMLHINT_DISABLE_ERRORS_IF_LESS_THAN: 0
+
+# Stylelint configuration - will use default rules if config doesn't exist  
+CSS_STYLELINT_CONFIG_FILE: .stylelintrc.json
+CSS_STYLELINT_ARGUMENTS: --syntax scss
+CSS_STYLELINT_DISABLE_ERRORS_IF_LESS_THAN: 0
+
+# File patterns to include/exclude
+FILTER_REGEX_INCLUDE: (src/.*\.(ts|html|scss|css|json))|(.*\.(md|yml|yaml|json))|(Dockerfile)
+FILTER_REGEX_EXCLUDE: (node_modules/|dist/|coverage/|\.git/)
+
+# Reporting
 SHOW_ELAPSED_TIME: true
 FILEIO_REPORTER: false
-# Custom Linter configurations
+JSON_REPORTER: true
+SARIF_REPORTER: true
+TAP_REPORTER: false
+CONSOLE_REPORTER: true
 
-PRINT_ALPACA: false
-CSS_SCSS_LINT_DISABLE_ERRORS: true
+# Fail fast - stop on first error
+DISABLE_ERRORS: false
+FAIL_IF_MISSING_LINTER_IN_FLAVOR: false
+
+# Pre/post commands
+PRE_COMMANDS:
+  - command: npm ci
+    cwd: workspace
+  - command: npm run build --if-present
+    cwd: workspace
+    continue_if_failed: true
+
+# Linter-specific configurations
+TYPESCRIPT_ES_FILTER_REGEX_INCLUDE: (src/.*\.ts)
+HTML_HTMLHINT_FILTER_REGEX_INCLUDE: (src/.*\.html)
+CSS_STYLELINT_FILTER_REGEX_INCLUDE: (src/.*\.(scss|css))

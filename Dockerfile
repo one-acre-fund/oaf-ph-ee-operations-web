@@ -2,7 +2,7 @@ FROM node:16.13.0 as builder
 
 RUN apt-get update && apt-get install -y vim
 
-RUN npm install -g @angular/cli@12.2.16
+RUN npm install -g @angular/cli@16.2.12
 
 #CMD ng serve --host 0.0.0.0 --disable-host-check --configuration kubernetes
 
