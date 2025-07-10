@@ -1,4 +1,4 @@
-FROM node:16.13.0 as builder
+FROM node:18.19.0 as builder
 
 RUN apt-get update && apt-get install -y vim
 

@@ -74,42 +74,68 @@ export class AuthenticationService {
     const savedCredentials = JSON.parse(
       this.getStoreageItem(this.credentialsStorageKey)
     );
-    if (savedCredentials) {
-      if (savedCredentials.rememberMe) {
-        this.rememberMe = true;
-        this.storage = localStorage;
-      }
+    
+    if (!savedCredentials) {
+      return;
+    }
 
-      const oAuthTokenDetailsString = this.getStoreageItem(this.oAuthTokenDetailsStorageKey);
-      if (oAuthTokenDetailsString) {
-        const oAuthTokenDetails = JSON.parse(oAuthTokenDetailsString);
-        const oAuthRefreshToken = oAuthTokenDetails.refresh_token;
-        if (oAuthRefreshToken) {
-          this.refreshAccessToken = true;
-          this.authorizationToken = `Bearer ${savedCredentials.accessToken}`;
+    this.setupStorageType(savedCredentials);
+    this.setupAuthorizationToken(savedCredentials);
+  }
 
-          // Check if token is still valid and set up refresh
-          if (oAuthTokenDetails.expires_in && oAuthTokenDetails.timestamp) {
-            const tokenExpiry = oAuthTokenDetails.timestamp + (oAuthTokenDetails.expires_in * 1000);
-            const now = Date.now();
-            const timeUntilExpiry = Math.max(0, tokenExpiry - now);
+  private setupStorageType(savedCredentials: any): void {
+    if (savedCredentials.rememberMe) {
+      this.rememberMe = true;
+      this.storage = localStorage;
+    }
+  }
 
-            if (timeUntilExpiry > 60000) { // If more than 1 minute left
-              // Token is still valid, set up refresh
-              this.refreshTokenOnExpiry(Math.floor(timeUntilExpiry / 1000));
-              this.refreshAccessToken = false; // Token is still valid
-            } else {
-              // Token has expired or will expire soon
-              console.log('Stored token has expired or will expire soon, will refresh on next API call');
-              this.refreshAccessToken = true;
-            }
-          }
-        } else {
-          this.authorizationToken = `Basic ${savedCredentials.base64EncodedAuthenticationKey}`;
-        }
-      } else {
-        this.authorizationToken = `Basic ${savedCredentials.base64EncodedAuthenticationKey}`;
-      }
+  private setupAuthorizationToken(savedCredentials: any): void {
+    const oAuthTokenDetailsString = this.getStoreageItem(this.oAuthTokenDetailsStorageKey);
+    
+    if (!oAuthTokenDetailsString) {
+      this.authorizationToken = `Basic ${savedCredentials.base64EncodedAuthenticationKey}`;
+      return;
+    }
+
+    const oAuthTokenDetails = JSON.parse(oAuthTokenDetailsString);
+    const oAuthRefreshToken = oAuthTokenDetails.refresh_token;
+    
+    if (!oAuthRefreshToken) {
+      this.authorizationToken = `Basic ${savedCredentials.base64EncodedAuthenticationKey}`;
+      return;
+    }
+
+    this.handleOAuthToken(savedCredentials, oAuthTokenDetails);
+  }
+
+  private handleOAuthToken(savedCredentials: any, oAuthTokenDetails: any): void {
+    this.refreshAccessToken = true;
+    this.authorizationToken = `Bearer ${savedCredentials.accessToken}`;
+
+    if (this.isTokenValid(oAuthTokenDetails)) {
+      const timeUntilExpiry = this.calculateTimeUntilExpiry(oAuthTokenDetails);
+      this.setupTokenRefresh(timeUntilExpiry);
+    } else {
+      console.log('Stored token has expired or will expire soon, will refresh on next API call');
+    }
+  }
+
+  private isTokenValid(oAuthTokenDetails: any): boolean {
+    return oAuthTokenDetails.expires_in && oAuthTokenDetails.timestamp;
+  }
+
+  private calculateTimeUntilExpiry(oAuthTokenDetails: any): number {
+    const tokenExpiry = oAuthTokenDetails.timestamp + (oAuthTokenDetails.expires_in * 1000);
+    const now = Date.now();
+    return Math.max(0, tokenExpiry - now);
+  }
+
+  private setupTokenRefresh(timeUntilExpiry: number): void {
+    if (timeUntilExpiry > 60000) { // If more than 1 minute left
+      // Token is still valid, set up refresh
+      this.refreshTokenOnExpiry(Math.floor(timeUntilExpiry / 1000));
+      this.refreshAccessToken = false; // Token is still valid
     }
   }
 
