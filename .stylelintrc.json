@@ -15,14 +15,38 @@
         "ignorePseudoElements": ["ng-deep"]
       }
     ],
+    "function-no-unknown": [
+      true,
+      {
+        "ignoreFunctions": ["mat-color", "map-get", "map-keys", "map-values", "mat-get-color-from-palette"]
+      }
+    ],
     "no-empty-source": null,
     "scss/no-global-function-names": null,
-    "declaration-block-trailing-semicolon": null,
-    "no-missing-end-of-source-newline": null
+    "color-function-notation": "legacy",
+    "alpha-value-notation": "number",
+    "selector-class-pattern": null,
+    "custom-property-pattern": null,
+    "keyframes-name-pattern": null,
+    "scss/percent-placeholder-pattern": null,
+    "scss/dollar-variable-pattern": null,
+    "import-notation": null,
+    "comment-empty-line-before": null,
+    "length-zero-no-unit": null,
+    "rule-empty-line-before": null,
+    "declaration-empty-line-before": null,
+    "font-family-name-quotes": null,
+    "property-no-vendor-prefix": null,
+    "shorthand-property-no-redundant-values": null,
+    "hue-degree-notation": null,
+    "no-duplicate-selectors": null,
+    "declaration-block-no-duplicate-properties": null
   },
   "ignoreFiles": [
     "src/assets/**/*.scss",
     "src/theme/**/*.scss",
-    "node_modules/**/*"
+    "node_modules/**/*",
+    "dist/**/*",
+    "coverage/**/*"
   ]
 }
