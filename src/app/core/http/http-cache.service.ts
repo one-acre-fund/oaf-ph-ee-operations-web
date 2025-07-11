@@ -44,7 +44,7 @@ export class HttpCacheService {
       lastUpdated: lastUpdated || new Date(),
       data: data
     };
-    log.debug(`Cache set for key: "${url}"`);
+   
     this.saveCacheData();
   }
 
@@ -57,7 +57,7 @@ export class HttpCacheService {
     const cacheEntry = this.cachedData[url];
 
     if (cacheEntry) {
-      log.debug(`Cache hit for key: "${url}"`);
+   
       return cacheEntry.data;
     }
 
@@ -79,7 +79,7 @@ export class HttpCacheService {
    */
   clearCache(url: string): void {
     delete this.cachedData[url];
-    log.debug(`Cache cleared for key: "${url}"`);
+   
     this.saveCacheData();
   }
 

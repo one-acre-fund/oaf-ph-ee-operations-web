@@ -35,7 +35,7 @@ export class AuthenticationGuard  {
       return true;
     }
 
-    log.debug('User not authenticated, redirecting to login...');
+   
     this.authenticationService.logout();
     this.router.navigate(['/login'], { replaceUrl: true });
     return false;

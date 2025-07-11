@@ -77,7 +77,7 @@ export class I18nService {
       language = this.defaultLanguage;
     }
 
-    log.debug(`Language set to ${language}`);
+   
     this.translateService.use(language);
   }
 

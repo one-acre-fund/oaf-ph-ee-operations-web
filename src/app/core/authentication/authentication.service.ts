@@ -230,11 +230,10 @@ export class AuthenticationService {
     // Calculate when to refresh the token (60 seconds before expiry, minimum 30 seconds)
     const refreshTime = Math.max(30, expiresInTime - 60);
 
-    console.log(`Token expires in ${expiresInTime} seconds. Will refresh in ${refreshTime} seconds.`);
-
+  
     // Set up automatic refresh before token expires
     this.refreshTimeout = setTimeout(() => {
-      console.log('Automatically refreshing token before expiry...');
+      
       this.refreshOAuthAccessToken().subscribe(
         (success) => {
           console.log('Token refreshed successfully');
