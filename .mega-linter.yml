@@ -76,7 +76,7 @@ PRE_COMMANDS:
   - command: npm list @angular-eslint/eslint-plugin @angular-eslint/template-parser @angular-eslint/eslint-plugin-template || npm install @angular-eslint/eslint-plugin@^16.3.0 @angular-eslint/template-parser@^16.3.0 @angular-eslint/eslint-plugin-template@^16.3.0 --save-dev
     cwd: workspace
     continue_if_failed: true
-  - command: npm list stylelint stylelint-config-standard stylelint-config-recommended-scss stylelint-scss || npm install stylelint@^16.6.1 stylelint-config-standard@^36.0.1 stylelint-config-recommended-scss@^14.1.0 stylelint-scss@^6.5.1 --save-dev
+  - command: npm install stylelint@^16.6.1 stylelint-config-standard@^36.0.1 stylelint-scss@^6.5.1 postcss-scss@^4.0.9 --save-dev
     cwd: workspace
     continue_if_failed: true
   - command: npm run build --if-present

@@ -1,14 +1,35 @@
 {
+  "customSyntax": "postcss-scss",
   "extends": [
-    "stylelint-config-standard",
-    "stylelint-config-recommended-scss"
+    "stylelint-config-standard"
   ],
   "plugins": [
     "stylelint-scss"
   ],
   "rules": {
     "at-rule-no-unknown": null,
-    "scss/at-rule-no-unknown": true,
+    "scss/at-rule-no-unknown": [
+      true,
+      {
+        "ignoreAtRules": [
+          "extend",
+          "at-root",
+          "debug",
+          "warn",
+          "error",
+          "if",
+          "else",
+          "for",
+          "each",
+          "while",
+          "mixin",
+          "include",
+          "content",
+          "return",
+          "function"
+        ]
+      }
+    ],
     "selector-pseudo-element-no-unknown": [
       true,
       {
@@ -22,14 +43,11 @@
       }
     ],
     "no-empty-source": null,
-    "scss/no-global-function-names": null,
     "color-function-notation": "legacy",
     "alpha-value-notation": "number",
     "selector-class-pattern": null,
     "custom-property-pattern": null,
     "keyframes-name-pattern": null,
-    "scss/percent-placeholder-pattern": null,
-    "scss/dollar-variable-pattern": null,
     "import-notation": null,
     "comment-empty-line-before": null,
     "length-zero-no-unit": null,

@@ -1,4 +1,3 @@
----
 # Hadolint configuration file
 # See https://github.com/hadolint/hadolint for more information
 
@@ -6,7 +5,7 @@
 ignored:
   # Allow installing packages without pinning versions in development images
   - DL3008
-  
+
 # Configure specific rules
 failure-threshold: error
 
