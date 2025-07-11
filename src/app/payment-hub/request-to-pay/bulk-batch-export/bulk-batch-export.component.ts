@@ -1,13 +1,8 @@
-import { Component, ViewChild, OnInit } from "@angular/core";
 import {
   HttpClient,
-  HttpParams,
-  HttpHeaders,
-  JsonpClientBackend,
 } from "@angular/common/http";
+import { Component, OnInit, ViewChild } from "@angular/core";
 import { UntypedFormControl } from "@angular/forms";
-import { FormsModule } from "@angular/forms";
-import { MatLegacyTableModule as MatTableModule } from "@angular/material/legacy-table";
 
 import { MatLegacyPaginator as MatPaginator } from "@angular/material/legacy-paginator";
 import { MatLegacyTableDataSource as MatTableDataSource } from "@angular/material/legacy-table";
@@ -45,7 +40,7 @@ export class BulkBatchExportComponent implements OnInit {
   }
   fileName = "";
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   onFileSelected(event: any) {
     const file: File = event.target.files[0];
