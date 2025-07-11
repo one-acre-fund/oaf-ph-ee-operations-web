@@ -10,7 +10,7 @@ rules:
 
   # Allow truthy values like "on" in GitHub Actions
   truthy:
-    allowed-values: ['true', 'false', 'on', 'off', 'yes', 'no']
+    allowed-values: ["true", "false", "on", "off", "yes", "no"]
 
   # Line length can be a bit longer for readability
   line-length:

@@ -33,13 +33,21 @@
     "selector-pseudo-element-no-unknown": [
       true,
       {
-        "ignorePseudoElements": ["ng-deep"]
+        "ignorePseudoElements": [
+          "ng-deep"
+        ]
       }
     ],
     "function-no-unknown": [
       true,
       {
-        "ignoreFunctions": ["mat-color", "map-get", "map-keys", "map-values", "mat-get-color-from-palette"]
+        "ignoreFunctions": [
+          "mat-color",
+          "map-get",
+          "map-keys",
+          "map-values",
+          "mat-get-color-from-palette"
+        ]
       }
     ],
     "no-empty-source": null,
