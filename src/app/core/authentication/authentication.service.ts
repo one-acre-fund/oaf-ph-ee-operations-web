@@ -74,7 +74,7 @@ export class AuthenticationService {
     const savedCredentials = JSON.parse(
       this.getStoreageItem(this.credentialsStorageKey)
     );
-    
+
     if (!savedCredentials) {
       return;
     }
@@ -92,7 +92,7 @@ export class AuthenticationService {
 
   private setupAuthorizationToken(savedCredentials: any): void {
     const oAuthTokenDetailsString = this.getStoreageItem(this.oAuthTokenDetailsStorageKey);
-    
+
     if (!oAuthTokenDetailsString) {
       this.authorizationToken = `Basic ${savedCredentials.base64EncodedAuthenticationKey}`;
       return;
@@ -100,7 +100,7 @@ export class AuthenticationService {
 
     const oAuthTokenDetails = JSON.parse(oAuthTokenDetailsString);
     const oAuthRefreshToken = oAuthTokenDetails.refresh_token;
-    
+
     if (!oAuthRefreshToken) {
       this.authorizationToken = `Basic ${savedCredentials.base64EncodedAuthenticationKey}`;
       return;
@@ -230,10 +230,10 @@ export class AuthenticationService {
     // Calculate when to refresh the token (60 seconds before expiry, minimum 30 seconds)
     const refreshTime = Math.max(30, expiresInTime - 60);
 
-  
+
     // Set up automatic refresh before token expires
     this.refreshTimeout = setTimeout(() => {
-      
+
       this.refreshOAuthAccessToken().subscribe(
         (success) => {
           console.log('Token refreshed successfully');
@@ -409,6 +409,15 @@ export class AuthenticationService {
 
   getUsername() {
     return this.username;
+  }
+
+  /**
+   * Checks if a user is currently logged in.
+   * @returns {boolean} True if user is logged in, false otherwise.
+   */
+  public isUserLoggedIn(): boolean {
+    const credentials = this.getCredentials();
+    return !!credentials && credentials.authenticated === true;
   }
 
 }
