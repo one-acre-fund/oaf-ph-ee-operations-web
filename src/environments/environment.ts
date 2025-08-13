@@ -70,7 +70,7 @@ export let environment = {
       value: '8167094',
     },
     {
-      option: 'FINERACT_PAYBILL',
+      option: 'FINERACT_KE_PAYBILL',
       type: 'PAYBILL',
       value: '840706',
     },
