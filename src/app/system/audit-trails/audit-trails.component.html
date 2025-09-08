@@ -11,7 +11,8 @@
     (click)="downloadCSV()"
     matomoClick="Export,CSV Download,Audit Trails"
   >
-    <fa-icon icon="file"></fa-icon>&nbsp;&nbsp; Download CSV
+    <fa-icon icon="file"></fa-icon>&nbsp;&nbsp;
+    {{ "AUDIT_TRAILS.DOWNLOAD_CSV" | translate }}
   </button>
 </div>
 
@@ -23,7 +24,7 @@
   matomoForm
 >
   <mat-form-field fxFlex="48%">
-    <mat-label>Resource ID</mat-label>
+    <mat-label>{{ "AUDIT_TRAILS.RESOURCE_ID" | translate }}</mat-label>
     <input
       matInput
       [formControl]="resourceId"
@@ -33,7 +34,7 @@
   </mat-form-field>
 
   <mat-form-field fxFlex="48%">
-    <mat-label>Status</mat-label>
+    <mat-label>{{ "AUDIT_TRAILS.STATUS" | translate }}</mat-label>
     <mat-select
       [formControl]="processingResult"
       (selectionChange)="

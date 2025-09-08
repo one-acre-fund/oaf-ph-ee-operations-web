@@ -11,5 +11,228 @@
   "Username is required": "Identifiant requis",
   "Username or password incorrect.": "Identifiant ou mot de passe incorrect",
   "Remember me": "Rester connecté",
-  "Version": "Version"
+  "Version": "Version",
+  "PAYMENT_HUB_EE_OPERATIONS": "Opérations du Hub de Paiement EE",
+  "TOOLBAR": {
+    "TOGGLE_SIDENAV": "Basculer Masquer/Ouvrir",
+    "TOGGLE_COLLAPSE": "Basculer Réduire",
+    "PAYMENT_HUB_EE": "Hub de Paiement EE",
+    "ADMIN": "Administrateur",
+    "SEARCH": "Rechercher",
+    "NOTIFICATIONS": "Notifications",
+    "USERS": "Utilisateurs",
+    "SYSTEM": "Système",
+    "SETTINGS": "Paramètres",
+    "SIGN_OUT": "Se déconnecter"
+  },
+  "HOME": {
+    "DASHBOARD": "Tableau de bord",
+    "WELCOME_MESSAGE": "Bienvenue, {{username}} !"
+  },
+  "COMMON": {
+    "USERNAME": "Identifiant",
+    "PASSWORD": "Mot de passe",
+    "TENANT": "Locataire",
+    "REMEMBER_ME": "Rester connecté",
+    "LOGIN": "Connexion",
+    "FORGOT_PASSWORD": "Mot de passe oublié",
+    "CANCEL": "Annuler",
+    "SUBMIT": "Soumettre",
+    "SETTINGS": "Paramètres",
+    "SIGN_OUT": "Se déconnecter",
+    "SELECT_STATUS": "Sélectionner le Statut"
+  },
+  "VALIDATION": {
+    "USERNAME_REQUIRED": "Identifiant requis",
+    "PASSWORD_REQUIRED": "Mot de passe requis",
+    "TENANT_REQUIRED": "Locataire requis",
+    "EMAIL_INVALID": "L'email est invalide",
+    "EMAIL_REQUIRED": "L'email est requis",
+    "FIRST_NAME_PATTERN": "Le prénom ne peut pas commencer par un caractère spécial ou un chiffre",
+    "FIRST_NAME_REQUIRED": "Le prénom est requis",
+    "LAST_NAME_PATTERN": "Le nom de famille ne peut pas commencer par un caractère spécial ou un chiffre",
+    "LAST_NAME_REQUIRED": "Le nom de famille est requis",
+    "PASSWORDS_DO_NOT_MATCH": "Les mots de passe ne correspondent pas",
+    "CONFIRM_PASSWORD_REQUIRED": "La confirmation du mot de passe est requise",
+    "ROLES_REQUIRED": "Au moins un rôle doit être sélectionné"
+  },
+  "RESET_PASSWORD": {
+    "UPDATE_MESSAGE": "Veuillez mettre à jour votre mot de passe :",
+    "CONFIRM_PASSWORD": "Confirmer le mot de passe",
+    "RESET_PASSWORD": "Réinitialiser le mot de passe"
+  },
+  "USERS": {
+    "CREATE_USER": "Créer un Utilisateur",
+    "FILTER": "Filtrer",
+    "SEARCH_PLACEHOLDER": "Rechercher des utilisateurs par nom ou email",
+    "FIRST_NAME": "Prénom",
+    "LAST_NAME": "Nom de famille",
+    "EMAIL": "Email",
+    "STATUS": "Statut",
+    "ACTIVE": "Actif",
+    "DISABLED": "Désactivé",
+    "OVERRIDE_PASSWORD_EXPIRY": "Ignorer la politique d'expiration du mot de passe",
+    "AUTO_GENERATE_PASSWORD": "Générer automatiquement le mot de passe",
+    "REPEAT_PASSWORD": "Répéter le mot de passe",
+    "ROLES": "Rôles"
+  },
+  "USER_DETAILS": {
+    "EDIT": "Modifier",
+    "DELETE": "Supprimer",
+    "CHANGE_PASSWORD": "Changer le Mot de Passe",
+    "DEACTIVATE": "Désactiver",
+    "ACTIVATE": "Activer",
+    "LOGIN_NAME": "Nom de Connexion",
+    "OFFICE": "Bureau"
+  },
+  "SYSTEM": {
+    "MANAGE_ROLES_PERMISSIONS": "Gérer les Rôles et Permissions",
+    "MANAGE_ROLES_PERMISSIONS_DESCRIPTION": "Définir ou modifier les rôles et permissions associés",
+    "AUDIT_TRAILS": "Pistes d'Audit",
+    "AUDIT_TRAILS_DESCRIPTION": "Journaux d'audit de toutes les activités, comme créer un client, débourser des prêts, etc."
+  },
+  "SETTINGS": {
+    "MAIN_CONFIGURATION": "Configuration Principale",
+    "ORGANIZATION_NAME": "Nom de l'Organisation",
+    "DESCRIPTION": "Description",
+    "SUMMARY": "Résumé",
+    "DEFAULT_LANGUAGE": "Langue par Défaut",
+    "DEFAULT_DATE_FORMAT": "Format de Date par Défaut",
+    "IMAGES": "Images",
+    "FAVICON": "Favicon",
+    "COVER_IMAGE": "Image de Couverture",
+    "LOGO": "Logo",
+    "LOGO_WITH_ORGANIZATION_NAME": "Logo avec Nom de l'Organisation",
+    "THEME_AND_FONT": "Thème et Police",
+    "THEME": "Thème",
+    "DEFAULT_FONT": "Police par Défaut",
+    "CONTACT_INFORMATION": "Informations de Contact",
+    "WEBSITE": "Site Web",
+    "CONTACT_NO": "Numéro de Contact"
+  },
+  "NOT_FOUND": {
+    "SOMETHING_WENT_WRONG": "Quelque chose s'est mal passé."
+  },
+  "SIDENAV": {
+    "FREQUENTLY_ACCESSED": "Accès Fréquents",
+    "MAIN_ITEMS": "Éléments Principaux"
+  },
+  "PAYMENT_HUB": {
+    "INCOMING_TRANSACTIONS": {
+      "SEARCH": "Transactions Entrantes",
+      "SEARCH_DESCRIPTION": "Rechercher et consulter les détails des transactions entrantes",
+      "EXPORT": "Exporter les Transactions Entrantes"
+    },
+    "OUTGOING_TRANSACTIONS": {
+      "SEARCH": "Transactions Sortantes",
+      "SEARCH_DESCRIPTION": "Rechercher et consulter les détails des transactions sortantes"
+    },
+    "INCOMING_REQUEST_TO_PAY": {
+      "SEARCH": "Demandes de Paiement Entrantes",
+      "SEARCH_DESCRIPTION": "Rechercher et consulter les détails des demandes de paiement entrantes",
+      "EXPORT": "Exporter les Demandes de Paiement Entrantes"
+    },
+    "OUTGOING_REQUEST_TO_PAY": {
+      "SEARCH": "Demandes de Paiement Sortantes",
+      "SEARCH_DESCRIPTION": "Rechercher et consulter les détails des demandes de paiement sortantes"
+    },
+    "BATCHES": {
+      "TITLE": "Lots",
+      "CHOOSE_OPTION": "Choisir une Option",
+      "DOWNLOAD_CSV_TEMPLATE": "Télécharger le Modèle CSV",
+      "UPLOAD_BATCH_FILE": "Télécharger le fichier de lot ici",
+      "NO_FILE_UPLOADED": "Aucun fichier téléchargé pour le moment.",
+      "UPLOAD_FILE": "Télécharger un Fichier Ici"
+    }
+  },
+  "TRANSACTIONS": {
+    "PAYER_ID": "ID Payeur",
+    "EXTERNAL_ID": "ID Externe",
+    "AMS_BUSINESS_SHORT_CODE": "Code Court Métier AMS",
+    "PAYER_DFSP_NAME": "Nom DFSP Payeur",
+    "PAYEE_ID": "ID Bénéficiaire",
+    "PAYEE_DFSP_ID": "ID DFSP Bénéficiaire",
+    "PAYEE_DFSP_NAME": "Nom DFSP Bénéficiaire",
+    "TRANSACTION_ID": "ID Transaction",
+    "STATUS": "Statut",
+    "STATE": "État",
+    "AMOUNT": "Montant",
+    "CURRENCY": "Devise",
+    "CURRENCY_CODE": "Code Devise",
+    "START_TIME_UTC": "Heure de Début (UTC)",
+    "COMPLETED_TIME_UTC": "Heure de Fin (UTC)",
+    "START_DATE": "Date de Début",
+    "END_DATE": "Date de Fin",
+    "TRANSACTION_DATE_FROM": "Date de Transaction Depuis",
+    "TRANSACTION_DATE_TO": "Date de Transaction Jusqu'à"
+  },
+  "TRANSACTION_DETAILS": {
+    "REFUND": "Remboursement",
+    "BPMN_DIAGRAM": "Diagramme BPMN",
+    "PAYER": "Payeur",
+    "PAYEE": "Bénéficiaire",
+    "TRANSFER": "Transfert",
+    "FEES": "Frais",
+    "ID_TYPE": "Type d'ID",
+    "ID": "ID",
+    "DFSP_ID": "ID DFSP",
+    "DFSP_NAME": "Nom DFSP"
+  },
+  "AUDIT_TRAILS": {
+    "DOWNLOAD_CSV": "Télécharger CSV",
+    "RESOURCE_ID": "ID Ressource",
+    "STATUS": "Statut"
+  },
+  "DIALOGS": {
+    "DELETE": "Supprimer",
+    "DELETE_CONFIRMATION": "Êtes-vous sûr de vouloir supprimer",
+    "CONFIRMATION_MESSAGE": "Êtes-vous sûr de vouloir",
+    "CONFIRM": "Confirmer",
+    "CLOSE": "Fermer",
+    "ARE_YOU_SURE": "Êtes-vous sûr ? Vous voulez"
+  },
+  "ROLES": {
+    "ADD_ROLE": "Ajouter un Rôle",
+    "NAME": "Nom",
+    "DESCRIPTION": "Description",
+    "ENABLED": "Activé",
+    "DISABLED": "Désactivé"
+  },
+  "PAYMENT_HUB_ACTIONS": {
+    "RETRY": "Réessayer",
+    "RESOLVE": "Résoudre"
+  },
+  "LANGUAGE_SELECTOR": {
+    "LANGUAGE": "Langue"
+  },
+  "BPMN_DIALOG": {
+    "BROWSER_NOT_SUPPORTED": "Désolé, votre navigateur ne supporte pas les SVG en ligne."
+  },
+  "EXPORT": {
+    "COMMA_SEPARATED_LIST": "liste-séparée-par-des-virgules",
+    "WORKFLOW_INSTANCE_KEY": "CLÉ D'INSTANCE DE WORKFLOW",
+    "START_DATE": "DATE DE DÉBUT",
+    "END_DATE": "DATE DE FIN",
+    "FILTER_BY": "Filtrer Par",
+    "STATUS_ACCEPTED": "ACCEPTÉ",
+    "STATUS_NOT_AUTOSAVED": "NON SAUVEGARDÉ AUTO",
+    "STATUS_FAILED": "ÉCHOUÉ",
+    "STATUS_PENDING_INCOMPLETE": "EN ATTENTE/INCOMPLET",
+    "ERROR_DESCRIPTION": "Description d'Erreur",
+    "EXPORT_CSV": "Exporter CSV"
+  },
+  "FOOTER": {
+    "RESOURCES": "Ressources",
+    "COMMUNITY": "Communauté",
+    "CONTRIBUTE": "Contribuer",
+    "USER_MANUAL": "Manuel Utilisateur",
+    "FUNCTIONAL_SPECIFICATIONS": "Spécifications Fonctionnelles",
+    "DEVELOPER_ZONE": "Zone Développeur",
+    "USER_GROUP": "Groupe Utilisateurs",
+    "DEVELOPER_GROUP": "Groupe Développeurs",
+    "IRC": "IRC",
+    "KEY_DESIGN_PRINCIPLES": "Principes de Conception Clés",
+    "WORKING_WITH_CODE": "Travailler avec le Code",
+    "DONATE": "Faire un Don"
+  }
 }

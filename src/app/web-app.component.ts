@@ -1,8 +1,8 @@
 /** Angular Imports */
 import { Component, OnInit } from '@angular/core';
-import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
-import { Title } from '@angular/platform-browser';
 import { MatLegacySnackBar as MatSnackBar } from '@angular/material/legacy-snack-bar';
+import { Title } from '@angular/platform-browser';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 
 /** rxjs Imports */
 import { merge } from 'rxjs';
@@ -15,11 +15,13 @@ import { TranslateService } from '@ngx-translate/core';
 import { environment } from 'environments/environment';
 
 /** Custom Services */
-import { Logger } from './core/logger/logger.service';
-import { I18nService } from './core/i18n/i18n.service';
-import { ThemeStorageService } from './shared/theme-picker/theme-storage.service';
 import { AlertService } from './core/alert/alert.service';
 import { MatomoService } from './core/analytics/matomo.service';
+import { I18nService } from './core/i18n/i18n.service';
+import { Logger } from './core/logger/logger.service';
+import { SentryRouterService } from './core/services/sentry-router.service';
+import { SentryService } from './core/services/sentry.service';
+import { ThemeStorageService } from './shared/theme-picker/theme-storage.service';
 
 /** Custom Models */
 import { Alert } from './core/alert/alert.model';
@@ -46,6 +48,8 @@ export class WebAppComponent implements OnInit {
    * @param {MatSnackBar} snackBar Material Snackbar for notifications.
    * @param {AlertService} alertService Alert Service.
    * @param {MatomoService} matomoService Matomo Analytics Service.
+   * @param {SentryService} sentryService Sentry Error Reporting Service.
+   * @param {SentryRouterService} sentryRouterService Sentry Router Tracking Service.
    */
   constructor(
     private router: Router,
@@ -56,8 +60,10 @@ export class WebAppComponent implements OnInit {
     private themeStorageService: ThemeStorageService,
     public snackBar: MatSnackBar,
     private alertService: AlertService,
-    private matomoService: MatomoService
-  ) {}
+    private matomoService: MatomoService,
+    private sentryService: SentryService,
+    private sentryRouterService: SentryRouterService
+  ) { }
 
   /**
    * Initial Setup:
@@ -78,6 +84,9 @@ export class WebAppComponent implements OnInit {
       Logger.enableProductionMode();
     }
     log.debug('init');
+
+    // Initialize Sentry context
+    // this.initializeSentryContext();
 
     // Setup translations
     this.i18nService.init(
@@ -132,6 +141,33 @@ export class WebAppComponent implements OnInit {
         horizontalPosition: 'right',
         verticalPosition: 'top',
       });
+    });
+  }
+
+  /**
+   * Initialize Sentry context with application-specific information
+   */
+  private initializeSentryContext(): void {
+    // Set basic application context
+    this.sentryService.setContext('application', {
+      name: 'OAF Payment Hub Operations Web',
+      version: environment.version,
+      environment: environment.name
+    });
+
+    // Set initial tags
+    this.sentryService.setTag('application', 'payment-hub-web');
+    this.sentryService.setTag('version', environment.version);
+
+    // Add initial breadcrumb
+    this.sentryService.addBreadcrumb({
+      message: 'Application initialized',
+      level: 'info',
+      category: 'application',
+      data: {
+        version: environment.version,
+        environment: environment.name
+      }
     });
   }
 }

@@ -22,7 +22,7 @@ export let environment = {
   name: 'dev',
   production: false,
   version: env.npm_package_version + '-dev',
-  serverUrl: 'http://localhost:5000',
+  serverUrl: '',
   oauth: {
     enabled: true,  // For connecting to Mifos X using OAuth2 Authentication change the value to true
     serverUrl: (window as any)?.env?.authServerUrl || 'https://accounts.qa.oneacrefund.org',
@@ -84,5 +84,10 @@ export let environment = {
     url: 'https://analytics.oneacrefund.org',
     siteId: 18, // Replace with your site ID
     disabled: false,
+  },
+  sentry: {
+    dsn: (window as any)?.env?.sentryDsn || 'https://2eb6c3967dc4586bda6f9cd5f8d15ba4@o454511.ingest.us.sentry.io/4509881008455680', // Add your Sentry DSN here for development
+    enabled: true, // Set to true when you want to enable Sentry in development
+    environment: 'development',
   },
 };

@@ -2,7 +2,7 @@
   <mat-card
     ><div>
       <mat-form-field appearance="fill">
-        <mat-label>Choose an Option</mat-label>
+        <mat-label>{{ "BATCHES.CHOOSE_OPTION" | translate }}</mat-label>
         <mat-select [formControl]="template" multiple>
           <mat-option
             *ngFor="let templateItem of templates"
@@ -12,13 +12,13 @@
         </mat-select>
       </mat-form-field>
       <button mat-raised-button color="primary" class="bulk-download-btn">
-        Download CSV Template
+        {{ "BATCHES.DOWNLOAD_CSV_TEMPLATE" | translate }}
       </button>
     </div></mat-card
   >
   <mat-card
     ><div class="form-group">
-      <label>Upload Batch File here</label>
+      <label>{{ "BATCHES.UPLOAD_BATCH_FILE" | translate }}</label>
       <input
         type="file"
         class="file-input"
@@ -27,7 +27,7 @@
       />
 
       <div class="file-upload">
-        {{ fileName || "No file uploaded yet." }}
+        {{ fileName || ("BATCHES.NO_FILE_UPLOADED" | translate) }}
 
         <button
           mat-mini-fab
@@ -35,7 +35,7 @@
           class="upload-btn"
           (click)="fileUpload.click()"
         >
-          Upload A File Here
+          {{ "BATCHES.UPLOAD_FILE" | translate }}
           <mat-icon>attach_file</mat-icon>
         </button>
       </div>
@@ -43,7 +43,9 @@
   >
 </div>
 
-<div class="container"><mat-card-title>Batches</mat-card-title></div>
+<div class="container">
+  <mat-card-title>{{ "BATCHES.TITLE" | translate }}</mat-card-title>
+</div>
 <button (click)="getPosts()" class="hidden">GetPosts</button>
 <div class="container">
   <table

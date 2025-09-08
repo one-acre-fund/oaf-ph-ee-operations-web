@@ -1,5 +1,6 @@
 /** Angular Imports */
 import { CommonModule } from '@angular/common';
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
@@ -34,7 +35,7 @@ import { MaterialModule } from './material.module';
  * Modules and components that are shared throughout the application should be here.
  */
 @NgModule({
-    imports: [CommonModule, IconsModule, MaterialModule, ReactiveFormsModule, TranslateModule],
+    imports: [CommonModule, IconsModule, MaterialModule, ReactiveFormsModule, TranslateModule, HttpClientModule],
     declarations: [
         FormfieldComponent,
         FormDialogComponent,

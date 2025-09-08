@@ -2,36 +2,32 @@
 
 <!-- Global Web App Configuration Settings -->
 <div class="container">
-
   <mat-accordion>
-
     <mat-expansion-panel>
-
       <mat-expansion-panel-header>
         <mat-panel-title>
-          Main Configuration
+          {{ "SETTINGS.MAIN_CONFIGURATION" | translate }}
         </mat-panel-title>
       </mat-expansion-panel-header>
 
       <div fxLayout="column">
-
         <mat-form-field>
-          <mat-label>Name of the Organization</mat-label>
-          <input matInput>
+          <mat-label>{{ "SETTINGS.ORGANIZATION_NAME" | translate }}</mat-label>
+          <input matInput />
         </mat-form-field>
 
         <mat-form-field>
-          <mat-label>Description</mat-label>
+          <mat-label>{{ "SETTINGS.DESCRIPTION" | translate }}</mat-label>
           <textarea matInput></textarea>
         </mat-form-field>
 
         <mat-form-field>
-          <mat-label>Summary</mat-label>
+          <mat-label>{{ "SETTINGS.SUMMARY" | translate }}</mat-label>
           <textarea matInput></textarea>
         </mat-form-field>
 
         <mat-form-field>
-          <mat-label>Default Language</mat-label>
+          <mat-label>{{ "SETTINGS.DEFAULT_LANGUAGE" | translate }}</mat-label>
           <mat-select>
             <mat-option *ngFor="let language of languages" [value]="language">
               {{ language }}
@@ -40,99 +36,90 @@
         </mat-form-field>
 
         <mat-form-field>
-          <mat-label>Default Date Format</mat-label>
+          <mat-label>{{
+            "SETTINGS.DEFAULT_DATE_FORMAT" | translate
+          }}</mat-label>
           <mat-select>
-            <mat-option *ngFor="let dateFormat of dateFormats" [value]="dateFormat">
+            <mat-option
+              *ngFor="let dateFormat of dateFormats"
+              [value]="dateFormat"
+            >
               {{ dateFormat }}
             </mat-option>
           </mat-select>
         </mat-form-field>
-
       </div>
-
     </mat-expansion-panel>
 
     <mat-expansion-panel>
-
       <mat-expansion-panel-header>
         <mat-panel-title>
-          Images
+          {{ "SETTINGS.IMAGES" | translate }}
         </mat-panel-title>
       </mat-expansion-panel-header>
 
       <div fxLayout="column">
-
-        <span class="header">Favicon</span>
+        <span class="header">{{ "SETTINGS.FAVICON" | translate }}</span>
         <mifosx-file-upload></mifosx-file-upload>
 
-        <span class="header">Cover Image</span>
+        <span class="header">{{ "SETTINGS.COVER_IMAGE" | translate }}</span>
         <mifosx-file-upload></mifosx-file-upload>
 
-        <span class="header">Logo</span>
+        <span class="header">{{ "SETTINGS.LOGO" | translate }}</span>
         <mifosx-file-upload></mifosx-file-upload>
 
-        <span class="header">Logo with Organization Name</span>
+        <span class="header">{{
+          "SETTINGS.LOGO_WITH_ORGANIZATION_NAME" | translate
+        }}</span>
         <mifosx-file-upload></mifosx-file-upload>
-
       </div>
-
     </mat-expansion-panel>
 
     <mat-expansion-panel>
-
       <mat-expansion-panel-header>
         <mat-panel-title>
-          Theme and Font
+          {{ "SETTINGS.THEME_AND_FONT" | translate }}
         </mat-panel-title>
       </mat-expansion-panel-header>
 
       <div fxLayout="column">
-
-        <span class="header">Theme</span>
+        <span class="header">{{ "SETTINGS.THEME" | translate }}</span>
         <mifosx-theme-picker></mifosx-theme-picker>
 
         <mat-form-field>
-          <mat-label>Default Font</mat-label>
+          <mat-label>{{ "SETTINGS.DEFAULT_FONT" | translate }}</mat-label>
           <mat-select>
             <mat-option *ngFor="let font of fonts" [value]="font">
               {{ font }}
             </mat-option>
           </mat-select>
         </mat-form-field>
-
       </div>
-
     </mat-expansion-panel>
 
     <mat-expansion-panel>
-
       <mat-expansion-panel-header>
         <mat-panel-title>
-          Contact Information
+          {{ "SETTINGS.CONTACT_INFORMATION" | translate }}
         </mat-panel-title>
       </mat-expansion-panel-header>
 
       <div fxLayout="column">
-
         <mat-form-field>
-          <mat-label>Website</mat-label>
-          <input type="url" matInput>
+          <mat-label>{{ "SETTINGS.WEBSITE" | translate }}</mat-label>
+          <input type="url" matInput />
         </mat-form-field>
 
         <mat-form-field>
-          <mat-label>Email</mat-label>
-          <input type="email" matInput>
+          <mat-label>{{ "USERS.EMAIL" | translate }}</mat-label>
+          <input type="email" matInput />
         </mat-form-field>
 
         <mat-form-field>
-          <mat-label>Contact No</mat-label>
-          <input type="tel" matInput>
+          <mat-label>{{ "SETTINGS.CONTACT_NO" | translate }}</mat-label>
+          <input type="tel" matInput />
         </mat-form-field>
-
       </div>
-
     </mat-expansion-panel>
-
   </mat-accordion>
-
 </div>

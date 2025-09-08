@@ -6,7 +6,7 @@
   matomoForm="incoming-request-to-pay"
 >
   <mat-form-field fxFlex="20%">
-    <mat-label>Payer Id</mat-label>
+    <mat-label>{{ "TRANSACTIONS.PAYER_ID" | translate }}</mat-label>
     <input
       matInput
       [formControl]="payerPartyId"
@@ -17,7 +17,7 @@
   </mat-form-field>
 
   <mat-form-field fxFlex="20%">
-    <mat-label>External Id</mat-label>
+    <mat-label>{{ "TRANSACTIONS.EXTERNAL_ID" | translate }}</mat-label>
     <input
       matInput
       [formControl]="externalId"
@@ -28,7 +28,9 @@
   </mat-form-field>
 
   <mat-form-field fxFlex="20%">
-    <mat-label>AMS Business Short Code</mat-label>
+    <mat-label>{{
+      "TRANSACTIONS.AMS_BUSINESS_SHORT_CODE" | translate
+    }}</mat-label>
     <mat-select
       [formControl]="payerDfspId"
       matomoClick="rtp-filter-ams-code"
@@ -46,7 +48,7 @@
   </mat-form-field>
 
   <mat-form-field fxFlex="20%">
-    <mat-label>Payee Id</mat-label>
+    <mat-label>{{ "TRANSACTIONS.PAYEE_ID" | translate }}</mat-label>
     <input
       matInput
       [formControl]="payeePartyId"
@@ -57,7 +59,7 @@
   </mat-form-field>
 
   <mat-form-field fxFlex="20%">
-    <mat-label>Transaction ID</mat-label>
+    <mat-label>{{ "TRANSACTIONS.TRANSACTION_ID" | translate }}</mat-label>
     <input
       matInput
       [formControl]="transactionId"
@@ -68,7 +70,7 @@
   </mat-form-field>
 
   <mat-form-field fxFlex="20%">
-    <mat-label>Status</mat-label>
+    <mat-label>{{ "TRANSACTIONS.STATUS" | translate }}</mat-label>
     <mat-select
       [formControl]="status"
       matomoClick="rtp-filter-status"
@@ -76,7 +78,7 @@
       (selectionChange)="onFilterUsed('Status', $event.value)"
     >
       <mat-option [value]="" matomoClick="rtp-status-option-all"
-        >--Select Status--</mat-option
+        >--{{ "COMMON.SELECT_STATUS" | translate }}--</mat-option
       >
       <ng-container *ngFor="let filter of transactionStatusData">
         <mat-option
@@ -91,7 +93,7 @@
   </mat-form-field>
 
   <mat-form-field fxFlex="20%">
-    <mat-label>Amount</mat-label>
+    <mat-label>{{ "TRANSACTIONS.AMOUNT" | translate }}</mat-label>
     <input
       matInput
       [formControl]="amount"
