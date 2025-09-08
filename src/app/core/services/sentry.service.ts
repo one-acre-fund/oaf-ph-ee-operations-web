@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import * as Sentry from '@sentry/angular-ivy';
+import * as Sentry from '@sentry/angular';
+import { browserTracingIntegration } from '@sentry/angular';
 import { environment } from '../../../environments/environment';
 
 @Injectable({
@@ -18,20 +19,13 @@ export class SentryService {
                 dsn: environment.sentry.dsn,
                 environment: environment.sentry.environment,
                 integrations: [
-                    new Sentry.BrowserTracing({
-                        // Set tracing origins to connect sentry for performance monitoring
-                        tracePropagationTargets: [
-                            'localhost',
-                            /^https:\/\/yourapi-domain\.com\/api/,
-                            /^https:\/\/.*\.oneacrefund\.org/,
-                        ],
-                    }),
+                    browserTracingIntegration(),
                 ],
                 // Performance Monitoring
                 tracesSampleRate: environment.production ? 0.1 : 1.0,
                 // Release Health
                 release: environment.version,
-                beforeSend(event, hint) {
+                beforeSend(event: any, hint: any) {
                     // Enhanced logging for debugging
                     if (!environment.production) {
                         console.log('📤 Sentry beforeSend:', {
