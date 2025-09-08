@@ -35,7 +35,11 @@
         "ERROR": "Erreur",
         "SUCCESS": "Succès",
         "WARNING": "Avertissement",
-        "INFO": "Information"
+        "INFO": "Information",
+        "STATUS": "Statut",
+        "COMPLETED": "Terminé",
+        "FAILED": "Échoué",
+        "IN_PROGRESS": "En cours"
     },
     "VALIDATION": {
         "USERNAME_REQUIRED": "Le nom d'utilisateur est requis",
