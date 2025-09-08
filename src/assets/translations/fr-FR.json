@@ -113,6 +113,55 @@
         "WORKING_WITH_CODE": "Travailler avec le Code",
         "DONATE": "Faire un Don"
     },
+    "TOOLBAR": {
+        "TOGGLE_SIDENAV": "Basculer Masquer/Ouvrir",
+        "TOGGLE_COLLAPSE": "Basculer Réduire",
+        "PAYMENT_HUB_EE": "Hub de Paiement EE",
+        "ADMIN": "Administrateur",
+        "SEARCH": "Rechercher",
+        "NOTIFICATIONS": "Notifications",
+        "USERS": "Utilisateurs",
+        "SYSTEM": "Système",
+        "SETTINGS": "Paramètres",
+        "SIGN_OUT": "Se déconnecter"
+    },
+    "PAYMENT_HUB_ACTIONS": {
+        "RETRY": "Réessayer",
+        "RESOLVE": "Résoudre"
+    },
+    "LANGUAGE_SELECTOR": {
+        "LANGUAGE": "Langue"
+    },
+    "BPMN_DIALOG": {
+        "BROWSER_NOT_SUPPORTED": "Désolé, votre navigateur ne supporte pas les SVG en ligne."
+    },
+    "EXPORT": {
+        "COMMA_SEPARATED_LIST": "liste-séparée-par-des-virgules",
+        "WORKFLOW_INSTANCE_KEY": "CLÉ D'INSTANCE DE WORKFLOW",
+        "START_DATE": "DATE DE DÉBUT",
+        "END_DATE": "DATE DE FIN",
+        "FILTER_BY": "Filtrer Par",
+        "STATUS_ACCEPTED": "ACCEPTÉ",
+        "STATUS_NOT_AUTOSAVED": "NON SAUVEGARDÉ AUTO",
+        "STATUS_FAILED": "ÉCHOUÉ",
+        "STATUS_PENDING_INCOMPLETE": "EN ATTENTE/INCOMPLET",
+        "ERROR_DESCRIPTION": "Description d'Erreur",
+        "EXPORT_CSV": "Exporter CSV"
+    },
+    "TRANSACTIONS": {
+        "TRANSACTION_ID": "ID de Transaction",
+        "PAYER_ID": "ID du Payeur",
+        "PAYEE_ID": "ID du Bénéficiaire",
+        "AMS_BUSINESS_SHORT_CODE": "Code Court d'Entreprise AMS",
+        "COMPLETED_TIME_UTC": "Heure de Complétion (UTC)",
+        "STATUS": "Statut",
+        "PAYMENT_MODE": "Mode de Paiement",
+        "AMOUNT": "Montant",
+        "CURRENCY": "Devise",
+        "NOTE": "Note",
+        "FAILED": "Échoué",
+        "COMPLETED": "Terminé"
+    },
     "ABOUT_TEXT": {
         "MIFOS_DESCRIPTION": "Mifos X est conçu par l'Initiative Mifos. Une communauté mondiale qui vise à accélérer l'élimination de la pauvreté en permettant aux organisations de fournir plus efficacement et efficacement des services financiers responsables aux pauvres et aux non-bancarisés du monde. Cela semble intéressant ? Participez !"
     }
