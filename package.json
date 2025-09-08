@@ -22,8 +22,7 @@
     "e2e": "npm run env -s && ng e2e",
     "translations:extract": "ngx-translate-extract --input ./src --output ./src/translations/template.json --format=json --clean -sort --marker extract",
     "docs": "hads ./docs -o",
-    "env": "ngx-scripts env npm_package_version",
-    "sentry:check": "node scripts/check-sentry-config.js"
+    "env": "ngx-scripts env npm_package_version"
   },
   "dependencies": {
     "@angular-material-components/datetime-picker": "^16.0.1",

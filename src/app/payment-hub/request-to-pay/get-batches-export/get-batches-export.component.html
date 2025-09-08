@@ -2,7 +2,9 @@
   <mat-card
     ><div>
       <mat-form-field appearance="fill">
-        <mat-label>{{ "PAYMENT_HUB.BATCHES.CHOOSE_OPTION" | translate }}</mat-label>
+        <mat-label>{{
+          "PAYMENT_HUB.BATCHES.CHOOSE_OPTION" | translate
+        }}</mat-label>
         <mat-select [formControl]="template" multiple>
           <mat-option
             *ngFor="let templateItem of templates"
@@ -55,7 +57,9 @@
   >
     <!-- Position Column -->
     <ng-container matColumnDef="Batch Id">
-      <th mat-header-cell *matHeaderCellDef>{{ "PAYMENT_HUB.BATCHES.BATCH_ID" | translate }}</th>
+      <th mat-header-cell *matHeaderCellDef>
+        {{ "PAYMENT_HUB.BATCHES.BATCH_ID" | translate }}
+      </th>
       <td mat-cell *matCellDef="let element">
         <form class="batch-summary-wrap" #batchSummaryForm="ngForm">
           <mat-form-field class="example-full-width hidden" appearance="fill">
@@ -85,25 +89,35 @@
 
     <!-- Name Column -->
     <ng-container matColumnDef="Request Id">
-      <th mat-header-cell *matHeaderCellDef>{{ "PAYMENT_HUB.BATCHES.REQUEST_ID" | translate }}</th>
+      <th mat-header-cell *matHeaderCellDef>
+        {{ "PAYMENT_HUB.BATCHES.REQUEST_ID" | translate }}
+      </th>
       <td mat-cell *matCellDef="let element">{{ element.requestId }}</td>
     </ng-container>
     <ng-container matColumnDef="Completed">
-      <th mat-header-cell *matHeaderCellDef>{{ "PAYMENT_HUB.BATCHES.COMPLETED" | translate }}</th>
+      <th mat-header-cell *matHeaderCellDef>
+        {{ "PAYMENT_HUB.BATCHES.COMPLETED" | translate }}
+      </th>
       <td mat-cell *matCellDef="let element">{{ element.completed }}</td>
     </ng-container>
     <ng-container matColumnDef="Completion Time">
-      <th mat-header-cell *matHeaderCellDef>{{ "PAYMENT_HUB.BATCHES.COMPLETION_TIME" | translate }}</th>
+      <th mat-header-cell *matHeaderCellDef>
+        {{ "PAYMENT_HUB.BATCHES.COMPLETION_TIME" | translate }}
+      </th>
       <td mat-cell *matCellDef="let element">
         {{ formatDate(element.completedAt) }}
       </td>
     </ng-container>
     <ng-container matColumnDef="Failed">
-      <th mat-header-cell *matHeaderCellDef>{{ "PAYMENT_HUB.BATCHES.FAILED" | translate }}</th>
+      <th mat-header-cell *matHeaderCellDef>
+        {{ "PAYMENT_HUB.BATCHES.FAILED" | translate }}
+      </th>
       <td mat-cell *matCellDef="let element">{{ element.failed }}</td>
     </ng-container>
     <ng-container matColumnDef="Total">
-      <th mat-header-cell *matHeaderCellDef>{{ "PAYMENT_HUB.BATCHES.TOTAL" | translate }}</th>
+      <th mat-header-cell *matHeaderCellDef>
+        {{ "PAYMENT_HUB.BATCHES.TOTAL" | translate }}
+      </th>
       <td mat-cell *matCellDef="let element">
         {{ element.totalTransactions }}
       </td>

@@ -3,30 +3,39 @@
 
   <div *ngFor="let batches of BatchSummaryData">
     <mat-card class="batch-details-card"
-      ><mat-card-title>{{ "PAYMENT_HUB.BATCHES.BATCH_ID" | translate }} : {{ batches.batch_id }}</mat-card-title>
+      ><mat-card-title
+        >{{ "PAYMENT_HUB.BATCHES.BATCH_ID" | translate }} :
+        {{ batches.batch_id }}</mat-card-title
+      >
       <div class="batch-details-card_box">
         <mat-card-subtitle
-          ><span>{{ "PAYMENT_HUB.BATCHES.REQUEST_ID" | translate }} :</span> {{ batches.request_id }}</mat-card-subtitle
+          ><span>{{ "PAYMENT_HUB.BATCHES.REQUEST_ID" | translate }} :</span>
+          {{ batches.request_id }}</mat-card-subtitle
         >
         <mat-card-subtitle
-          ><span>{{ "PAYMENT_HUB.BATCHES.TOTAL" | translate }} :</span> {{ batches.total }}</mat-card-subtitle
+          ><span>{{ "PAYMENT_HUB.BATCHES.TOTAL" | translate }} :</span>
+          {{ batches.total }}</mat-card-subtitle
         >
         <mat-card-subtitle
           ><span>{{ "PAYMENT_HUB.BATCHES.AMOUNT_TOTAL" | translate }} :</span>
           {{ batches.totalAmount }}</mat-card-subtitle
         >
         <mat-card-subtitle
-          ><span>{{ "PAYMENT_HUB.BATCHES.STATUS" | translate }} : </span>{{ batches.status }}</mat-card-subtitle
+          ><span>{{ "PAYMENT_HUB.BATCHES.STATUS" | translate }} : </span
+          >{{ batches.status }}</mat-card-subtitle
         >
         <mat-card-subtitle
-          ><span>{{ "PAYMENT_HUB.BATCHES.SUCCESSFUL" | translate }} :</span> {{ batches.successful }}</mat-card-subtitle
+          ><span>{{ "PAYMENT_HUB.BATCHES.SUCCESSFUL" | translate }} :</span>
+          {{ batches.successful }}</mat-card-subtitle
         >
         <mat-card-subtitle
-          ><span>{{ "PAYMENT_HUB.BATCHES.FAILED" | translate }} :</span> {{ batches.failed }}</mat-card-subtitle
+          ><span>{{ "PAYMENT_HUB.BATCHES.FAILED" | translate }} :</span>
+          {{ batches.failed }}</mat-card-subtitle
         >
 
         <mat-card-subtitle
-          ><span>{{ "PAYMENT_HUB.BATCHES.ONGOING" | translate }} :</span> {{ batches.ongoing }}</mat-card-subtitle
+          ><span>{{ "PAYMENT_HUB.BATCHES.ONGOING" | translate }} :</span>
+          {{ batches.ongoing }}</mat-card-subtitle
         >
       </div>
       <button
@@ -48,62 +57,92 @@
 
         <!-- Name Column -->
         <ng-container matColumnDef="Request Id">
-          <th mat-header-cell *matHeaderCellDef>{{ "PAYMENT_HUB.BATCHES.REQUEST_ID" | translate }}</th>
-          <td mat-cell *matCellDef="let element">{{ element.transactionId }}</td>
+          <th mat-header-cell *matHeaderCellDef>
+            {{ "PAYMENT_HUB.BATCHES.REQUEST_ID" | translate }}
+          </th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.transactionId }}
+          </td>
         </ng-container>
         <ng-container matColumnDef="Transaction Id">
-          <th mat-header-cell *matHeaderCellDef>{{ "PAYMENT_HUB.BATCHES.TRANSACTION_ID" | translate }}</th>
-          <td mat-cell *matCellDef="let element">{{ element.transactionId }}</td>
+          <th mat-header-cell *matHeaderCellDef>
+            {{ "PAYMENT_HUB.BATCHES.TRANSACTION_ID" | translate }}
+          </th>
+          <td mat-cell *matCellDef="let element">
+            {{ element.transactionId }}
+          </td>
         </ng-container>
         <ng-container matColumnDef="Completion Time">
-          <th mat-header-cell *matHeaderCellDef>{{ "PAYMENT_HUB.BATCHES.COMPLETION_TIME" | translate }}</th>
+          <th mat-header-cell *matHeaderCellDef>
+            {{ "PAYMENT_HUB.BATCHES.COMPLETION_TIME" | translate }}
+          </th>
           <td mat-cell *matCellDef="let element">
             {{ formatDateSummary(element.completedAt) }}
           </td>
         </ng-container>
         <ng-container matColumnDef="Start Time">
-          <th mat-header-cell *matHeaderCellDef>{{ "PAYMENT_HUB.BATCHES.START_TIME" | translate }}</th>
+          <th mat-header-cell *matHeaderCellDef>
+            {{ "PAYMENT_HUB.BATCHES.START_TIME" | translate }}
+          </th>
           <td mat-cell *matCellDef="let element">
             {{ formatDateSummary(element.startedAt) }}
           </td>
         </ng-container>
         <ng-container matColumnDef="Amount">
-          <th mat-header-cell *matHeaderCellDef>{{ "PAYMENT_HUB.BATCHES.AMOUNT" | translate }}</th>
+          <th mat-header-cell *matHeaderCellDef>
+            {{ "PAYMENT_HUB.BATCHES.AMOUNT" | translate }}
+          </th>
           <td mat-cell *matCellDef="let element">{{ element.amount }}</td>
         </ng-container>
         <ng-container matColumnDef="Currency">
-          <th mat-header-cell *matHeaderCellDef>{{ "PAYMENT_HUB.BATCHES.CURRENCY" | translate }}</th>
+          <th mat-header-cell *matHeaderCellDef>
+            {{ "PAYMENT_HUB.BATCHES.CURRENCY" | translate }}
+          </th>
           <td mat-cell *matCellDef="let element">{{ element.currency }}</td>
         </ng-container>
         <ng-container matColumnDef="Status">
-          <th mat-header-cell *matHeaderCellDef>{{ "PAYMENT_HUB.BATCHES.STATUS" | translate }}</th>
+          <th mat-header-cell *matHeaderCellDef>
+            {{ "PAYMENT_HUB.BATCHES.STATUS" | translate }}
+          </th>
           <td mat-cell *matCellDef="let element">{{ element.status }}</td>
         </ng-container>
         <ng-container matColumnDef="Payer DFSP">
-          <th mat-header-cell *matHeaderCellDef>{{ "PAYMENT_HUB.BATCHES.PAYER_DFSP" | translate }}</th>
+          <th mat-header-cell *matHeaderCellDef>
+            {{ "PAYMENT_HUB.BATCHES.PAYER_DFSP" | translate }}
+          </th>
           <td mat-cell *matCellDef="let element">{{ element.payerDfspId }}</td>
         </ng-container>
         <ng-container matColumnDef="Payee DFSP">
-          <th mat-header-cell *matHeaderCellDef>{{ "PAYMENT_HUB.BATCHES.PAYEE_DFSP" | translate }}</th>
+          <th mat-header-cell *matHeaderCellDef>
+            {{ "PAYMENT_HUB.BATCHES.PAYEE_DFSP" | translate }}
+          </th>
           <td mat-cell *matCellDef="let element">{{ element.payeeDfspId }}</td>
         </ng-container>
 
         <ng-container matColumnDef="Payer Party ID">
-          <th mat-header-cell *matHeaderCellDef>{{ "PAYMENT_HUB.BATCHES.PAYER_PARTY_ID" | translate }}</th>
+          <th mat-header-cell *matHeaderCellDef>
+            {{ "PAYMENT_HUB.BATCHES.PAYER_PARTY_ID" | translate }}
+          </th>
           <td mat-cell *matCellDef="let element">{{ element.payerPartyId }}</td>
         </ng-container>
         <ng-container matColumnDef="Payee Party ID">
-          <th mat-header-cell *matHeaderCellDef>{{ "PAYMENT_HUB.BATCHES.PAYEE_PARTY_ID" | translate }}</th>
+          <th mat-header-cell *matHeaderCellDef>
+            {{ "PAYMENT_HUB.BATCHES.PAYEE_PARTY_ID" | translate }}
+          </th>
           <td mat-cell *matCellDef="let element">{{ element.payeePartyId }}</td>
         </ng-container>
         <ng-container matColumnDef="Payee Party ID Type">
-          <th mat-header-cell *matHeaderCellDef>{{ "PAYMENT_HUB.BATCHES.PAYEE_PARTY_ID_TYPE" | translate }}</th>
+          <th mat-header-cell *matHeaderCellDef>
+            {{ "PAYMENT_HUB.BATCHES.PAYEE_PARTY_ID_TYPE" | translate }}
+          </th>
           <td mat-cell *matCellDef="let element">
             {{ element.payeePartyIdType }}
           </td>
         </ng-container>
         <ng-container matColumnDef="WorkFlow Instance Key">
-          <th mat-header-cell *matHeaderCellDef>{{ "PAYMENT_HUB.BATCHES.WORKFLOW_INSTANCE_KEY" | translate }}</th>
+          <th mat-header-cell *matHeaderCellDef>
+            {{ "PAYMENT_HUB.BATCHES.WORKFLOW_INSTANCE_KEY" | translate }}
+          </th>
           <td mat-cell *matCellDef="let element">
             {{ shortenValueDetails(element.workflowInstanceKey) }}
           </td>
