@@ -54,6 +54,10 @@
         "HIDE_OPEN_MENU": "Masquer/Ouvrir Menu",
         "COLLAPSE_MENU": "Réduire Menu"
     },
+    "HOME": {
+        "WELCOME_MESSAGE": "Bienvenue, {{ username }} !",
+        "DASHBOARD": "Tableau de Bord"
+    },
     "PAYMENT_HUB": {
         "TITLE": "Payment Hub EE",
         "NAVIGATION_TITLE": "Navigation Payment Hub",

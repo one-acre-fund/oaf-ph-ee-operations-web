@@ -18,9 +18,8 @@
     >
       <mat-form-field>
         <mat-label>{{ "TRANSACTIONS.TRANSACTION_ID" | translate }}</mat-label>
-        <input
+        <textarea
           matInput
-          type="textArea"
           class="form-control col-sm-4"
           ngModel
           name="transactionid"
@@ -29,13 +28,13 @@
           matomoClick="export-filter-transaction-id"
           (focus)="onFilterUsed('Transaction ID')"
           (blur)="onFilterUsed('Transaction ID', $event.target.value)"
-        />
+          rows="3"
+        ></textarea>
       </mat-form-field>
       <mat-form-field>
         <mat-label>{{ "EXPORT.WORKFLOW_INSTANCE_KEY" | translate }}</mat-label>
-        <input
+        <textarea
           matInput
-          type="textArea"
           class="form-control col-sm-4"
           ngModel
           name="workflowinstancekey"
@@ -44,7 +43,8 @@
           matomoClick="export-filter-workflow-key"
           (focus)="onFilterUsed('Workflow Instance Key')"
           (blur)="onFilterUsed('Workflow Instance Key', $event.target.value)"
-        />
+          rows="3"
+        ></textarea>
       </mat-form-field>
       <mat-form-field
         (click)="startDatePicker.open(); onDatePickerUsed('start')"
@@ -52,7 +52,7 @@
         <mat-label>{{ "EXPORT.START_DATE" | translate }}</mat-label>
         <input
           matInput
-          type="textArea"
+          type="text"
           class="form-control col-sm-4"
           ngModel
           name="startdate"
@@ -74,7 +74,7 @@
         <mat-label>{{ "EXPORT.END_DATE" | translate }}</mat-label>
         <input
           matInput
-          type="textArea"
+          type="text"
           class="form-control col-sm-4"
           ngModel
           name="enddate"
@@ -128,9 +128,8 @@
       </mat-form-field>
       <mat-form-field>
         <mat-label>{{ "TRANSACTIONS.PAYER_ID" | translate }}</mat-label>
-        <input
+        <textarea
           matInput
-          type="textArea"
           class="form-control col-sm-4"
           ngModel
           name="payerid"
@@ -139,13 +138,13 @@
           matomoClick="export-filter-payer-id"
           (focus)="onFilterUsed('Payer ID')"
           (blur)="onFilterUsed('Payer ID', $event.target.value)"
-        />
+          rows="3"
+        ></textarea>
       </mat-form-field>
       <mat-form-field>
         <mat-label>{{ "TRANSACTIONS.PAYEE_ID" | translate }}</mat-label>
-        <input
+        <textarea
           matInput
-          type="textArea"
           class="form-control col-sm-4"
           ngModel
           name="payeeid"
@@ -154,7 +153,8 @@
           matomoClick="export-filter-payee-id"
           (focus)="onFilterUsed('Payee ID')"
           (blur)="onFilterUsed('Payee ID', $event.target.value)"
-        />
+          rows="3"
+        ></textarea>
       </mat-form-field>
       <mat-form-field>
         <mat-label>{{
