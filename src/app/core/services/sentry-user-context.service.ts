@@ -70,8 +70,8 @@ export class SentryUserContextService {
         this.sentryService.setUser(null);
 
         // Remove user-related tags
-        this.sentryService.setTag('user.tenant', '');
-        this.sentryService.setTag('user.role', '');
+        this.sentryService.setTag('user.tenant', undefined);
+        this.sentryService.setTag('user.role', undefined);
 
         // Add breadcrumb for user logout
         this.sentryService.addBreadcrumb({
