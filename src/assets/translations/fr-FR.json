@@ -54,6 +54,9 @@
         "HIDE_OPEN_MENU": "Masquer/Ouvrir Menu",
         "COLLAPSE_MENU": "Réduire Menu"
     },
+    "SIDENAV": {
+        "MAIN_ITEMS": "Éléments Principaux"
+    },
     "HOME": {
         "WELCOME_MESSAGE": "Bienvenue, {{ username }} !",
         "DASHBOARD": "Tableau de Bord"
