@@ -35,7 +35,7 @@ import { MaterialModule } from './material.module';
  * Modules and components that are shared throughout the application should be here.
  */
 @NgModule({
-    imports: [CommonModule, IconsModule, MaterialModule, ReactiveFormsModule, TranslateModule, HttpClientModule],
+    imports: [CommonModule, IconsModule, MaterialModule, FormsModule, ReactiveFormsModule, TranslateModule, HttpClientModule],
     declarations: [
         FormfieldComponent,
         FormDialogComponent,
@@ -61,6 +61,7 @@ import { MaterialModule } from './material.module';
         FormsModule,
         ReactiveFormsModule,
         TranslateModule,
+        HttpClientModule,
         MatomoClickDirective,
         MatomoFormDirective,
         MatomoDownloadDirective,

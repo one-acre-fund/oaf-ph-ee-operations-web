@@ -74,16 +74,16 @@
       "EXPORT_DESCRIPTION": "Export outgoing transactions data"
     },
     "INCOMING_REQUEST_TO_PAY": {
-      "SEARCH": "Search Incoming Request to Pay",
-      "SEARCH_DESCRIPTION": "Advanced search option for incoming request to pays",
-      "EXPORT": "Export Incoming Request to Pay",
-      "EXPORT_DESCRIPTION": "Export incoming request to pay data"
+      "SEARCH": "Search Incoming Requests to Pay",
+      "SEARCH_DESCRIPTION": "Advanced search option for incoming requests to pay",
+      "EXPORT": "Export Incoming Requests to Pay",
+      "EXPORT_DESCRIPTION": "Export incoming requests to pay data"
     },
     "OUTGOING_REQUEST_TO_PAY": {
-      "SEARCH": "Search Outgoing Request to Pay",
-      "SEARCH_DESCRIPTION": "Advanced search option for outgoing request to pays",
-      "EXPORT": "Export Outgoing Request to Pay",
-      "EXPORT_DESCRIPTION": "Export outgoing request to pay data"
+      "SEARCH": "Search Outgoing Requests to Pay",
+      "SEARCH_DESCRIPTION": "Advanced search option for outgoing requests to pay",
+      "EXPORT": "Export Outgoing Requests to Pay",
+      "EXPORT_DESCRIPTION": "Export outgoing requests to pay data"
     },
     "BATCHES": {
       "TITLE": "Batches",
@@ -128,7 +128,15 @@
   "USERS": {
     "TITLE": "Users",
     "CREATE_USER": "Create User",
-    "VIEW_USER": "View User"
+    "VIEW_USER": "View User",
+    "FILTER": "Filter",
+    "SEARCH_PLACEHOLDER": "Search users...",
+    "FIRST_NAME": "First Name",
+    "LAST_NAME": "Last Name",
+    "EMAIL": "Email",
+    "STATUS": "Status",
+    "ACTIVE": "Active",
+    "DISABLED": "Disabled"
   },
   "FOOTER": {
     "RESOURCES": "Resources",

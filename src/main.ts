@@ -11,8 +11,13 @@ import { AppModule } from './app/app.module';
 import { SentryService } from './app/core/services/sentry.service';
 import { environment } from './environments/environment';
 
-// Initialize Sentry before anything else
-SentryService.init();
+// Initialize Sentry conditionally based on configuration
+if (environment.sentry &&
+  environment.sentry.enabled === true &&
+  environment.sentry.dsn &&
+  environment.sentry.dsn.trim() !== '') {
+  SentryService.init();
+}
 
 if (environment.production) {
   enableProdMode();

@@ -114,7 +114,7 @@
             "DOWNLOAD_CSV_TEMPLATE": "Télécharger le Modèle CSV",
             "UPLOAD_BATCH_FILE": "Télécharger le Fichier de Lot",
             "NO_FILE_UPLOADED": "Aucun fichier téléchargé",
-            "UPLOAD_FILE": "Télécharger Fichier",
+            "UPLOAD_FILE": "Téléverser le fichier",
             "COMPLETED": "Terminé"
         }
     },
@@ -128,7 +128,15 @@
     "USERS": {
         "TITLE": "Utilisateurs",
         "CREATE_USER": "Créer un Utilisateur",
-        "VIEW_USER": "Voir l'Utilisateur"
+        "VIEW_USER": "Voir l'Utilisateur",
+        "FILTER": "Filtrer",
+        "SEARCH_PLACEHOLDER": "Rechercher des utilisateurs...",
+        "FIRST_NAME": "Prénom",
+        "LAST_NAME": "Nom de famille",
+        "EMAIL": "Email",
+        "STATUS": "Statut",
+        "ACTIVE": "Actif",
+        "DISABLED": "Désactivé"
     },
     "FOOTER": {
         "RESOURCES": "Ressources",
