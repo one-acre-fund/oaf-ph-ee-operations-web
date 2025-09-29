@@ -1,5 +1,5 @@
 /** Angular Imports */
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { APP_INITIALIZER, ErrorHandler, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -46,6 +46,7 @@ import { UsersModule } from './users/users.module';
 import { AppRoutingModule } from './app-routing.module';
 
 import { DatePipe } from '@angular/common';
+import { SentryHttpInterceptor } from './core/interceptors/sentry-http.interceptor';
 
 export function initConfig(config: AppConfig) {
   return () => config.load();
@@ -104,12 +105,12 @@ export function initKeycloak(keycloakAuthService: KeycloakAuthService) {
       provide: ErrorHandler,
       useClass: GlobalErrorHandler,
     },
-  /*   // Sentry HTTP Interceptor
+    // Sentry HTTP Interceptor
     {
       provide: HTTP_INTERCEPTORS,
       useClass: SentryHttpInterceptor,
       multi: true,
-    } */],
+    }],
   bootstrap: [WebAppComponent]
 })
 export class AppModule { }
