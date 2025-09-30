@@ -93,7 +93,7 @@ export class SentryService {
     /**
      * Set user context
      */
-    public setUser(user: Sentry.User): void {
+    public setUser(user: Sentry.User | null): void {
         if (environment.sentry?.enabled) {
             Sentry.setUser(user);
         }
@@ -101,8 +101,9 @@ export class SentryService {
 
     /**
      * Set tag
+     * Pass undefined as value to remove/clear the tag
      */
-    public setTag(key: string, value: string): void {
+    public setTag(key: string, value: string | undefined): void {
         if (environment.sentry?.enabled) {
             Sentry.setTag(key, value);
         }

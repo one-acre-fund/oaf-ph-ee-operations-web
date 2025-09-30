@@ -17,7 +17,7 @@ export class GlobalErrorHandler implements ErrorHandler {
         const actualError = this.extractError(error);
 
         // Send to Sentry if enabled
-        if (environment.sentry && environment.sentry.enabled) {
+        if (environment.sentry?.enabled) {
             this.sentryService.captureException(actualError);
         }
 

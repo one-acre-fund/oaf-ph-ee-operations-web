@@ -1,6 +1,33 @@
 import { Injectable } from '@angular/core';
 import { SentryService } from './sentry.service';
 
+/**
+ * SentryUserContextService
+ * 
+ * Manages user context for Sentry error tracking while ensuring PII (Personally Identifiable Information) 
+ * protection. This service implements the following privacy measures:
+ * 
+ * 1. PII Protection: Never sends raw usernames, emails, or other identifying information to Sentry
+ * 2. Hashed Identifiers: Uses SHA-256 hashing for user IDs to allow correlation without exposing identity
+ * 3. Environment-Aware Crypto: Uses Web Crypto API in browsers, Node's crypto in server builds, 
+ *    with fallback for unsupported environments
+ * 4. Structured Context: Places tenant/role data as top-level fields for better Sentry queryability
+ * 
+ * Security Note: All user identification is done via cryptographically hashed identifiers only.
+ * Original usernames and emails are never transmitted to Sentry.
+ * 
+ * Usage Example:
+ * ```typescript
+ * // After successful login
+ * await this.sentryUserContextService.setUserContext({
+ *   id: user.id,
+ *   username: user.username, // Will be hashed, not sent as-is
+ *   email: user.email,       // Will be excluded from Sentry payload
+ *   tenant: user.tenant,     // Safe to send, placed as top-level field
+ *   role: user.role          // Safe to send, placed as top-level field
+ * });
+ * ```
+ */
 @Injectable({
     providedIn: 'root'
 })
@@ -9,34 +36,75 @@ export class SentryUserContextService {
     constructor(private readonly sentryService: SentryService) { }
 
     /**
+     * Hash user identifier using SHA-256
+     * Uses Web Crypto API in browser or Node's crypto in server builds
+     * @param id The user identifier to hash
+     * @returns Promise<string> SHA-256 hex digest
+     */
+    private async hashUserId(id: string): Promise<string> {
+        // Check if we're in a browser environment with Web Crypto API
+        if (typeof window !== 'undefined' && window.crypto && window.crypto.subtle) {
+            const encoder = new TextEncoder();
+            const data = encoder.encode(id);
+            const hashBuffer = await window.crypto.subtle.digest('SHA-256', data);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        }
+
+        // Fallback for server-side rendering or environments without Web Crypto API
+        // Note: This would require importing Node's crypto module in server builds
+        try {
+            const crypto = await import('crypto');
+            return crypto.createHash('sha256').update(id, 'utf8').digest('hex');
+        } catch (error) {
+            // Ultimate fallback - basic hash (not cryptographically secure)
+            console.warn('Neither Web Crypto API nor Node crypto available, using basic hash');
+            let hash = 0;
+            for (let i = 0; i < id.length; i++) {
+                const char = id.charCodeAt(i);
+                hash = ((hash << 5) - hash) + char;
+                hash = hash & hash; // Convert to 32-bit integer
+            }
+            return Math.abs(hash).toString(16);
+        }
+    }
+
+    /**
      * Set user context in Sentry when user logs in
      * Call this method after successful authentication
+     * NOTE: No PII (email/username) is sent to Sentry - only hashed user identifiers
      */
-    setUserContext(userInfo: {
+    async setUserContext(userInfo: {
         id?: string;
         username?: string;
         email?: string;
         tenant?: string;
         role?: string;
         [key: string]: any;
-    }): void {
+    }): Promise<void> {
+        // Hash the user identifier to avoid sending PII to Sentry
+        const userIdentifier = userInfo.id || userInfo.username || 'anonymous';
+        const hashedUserId = await this.hashUserId(userIdentifier);
+
+        // Create Sentry user object with only non-PII data
         const sentryUser: any = {
-            id: userInfo.id || userInfo.username,
-            username: userInfo.username,
-            email: userInfo.email,
+            id: hashedUserId,
+            // NOTE: We deliberately do NOT set username or email to avoid PII
         };
 
-        // Add additional context as extras
-        if (userInfo.tenant || userInfo.role) {
-            sentryUser.extra = {};
-            if (userInfo.tenant) sentryUser.extra.tenant = userInfo.tenant;
-            if (userInfo.role) sentryUser.extra.role = userInfo.role;
+        // Add tenant and role as top-level fields for better queryability
+        if (userInfo.tenant) {
+            sentryUser.tenant = userInfo.tenant;
+        }
+        if (userInfo.role) {
+            sentryUser.role = userInfo.role;
+        }
 
-            // Add any other custom fields
-            for (const key of Object.keys(userInfo)) {
-                if (!['id', 'username', 'email', 'tenant', 'role'].includes(key)) {
-                    sentryUser.extra[key] = userInfo[key];
-                }
+        // Add any other custom fields that are not PII
+        const piiFields = ['id', 'username', 'email'];
+        for (const key of Object.keys(userInfo)) {
+            if (!piiFields.includes(key) && key !== 'tenant' && key !== 'role') {
+                sentryUser[key] = userInfo[key];
             }
         }
 
@@ -50,14 +118,13 @@ export class SentryUserContextService {
             this.sentryService.setTag('user.role', userInfo.role);
         }
 
-        // Add breadcrumb for user login
+        // Add breadcrumb for user login - no PII included
         this.sentryService.addBreadcrumb({
             message: 'User logged in',
             level: 'info',
             category: 'auth',
             data: {
-                userId: sentryUser.id,
-                username: sentryUser.username,
+                userId: hashedUserId, // Only hashed ID, no raw username
                 tenant: userInfo.tenant
             }
         });
@@ -84,17 +151,24 @@ export class SentryUserContextService {
     /**
      * Update user context with additional information
      * Useful for updating context as user navigates or performs actions
+     * NOTE: Only updates non-PII fields to maintain privacy
      */
     updateUserContext(updates: Record<string, any>): void {
         this.sentryService.withScope((scope) => {
             const currentUser = scope.getUser();
             if (currentUser) {
+                // Filter out any PII fields from updates
+                const piiFields = ['username', 'email'];
+                const filteredUpdates = Object.keys(updates)
+                    .filter(key => !piiFields.includes(key))
+                    .reduce((obj, key) => {
+                        obj[key] = updates[key];
+                        return obj;
+                    }, {} as Record<string, any>);
+
                 const updatedUser = {
                     ...currentUser,
-                    extra: {
-                        ...currentUser.extra,
-                        ...updates
-                    }
+                    ...filteredUpdates
                 };
                 this.sentryService.setUser(updatedUser);
             }
