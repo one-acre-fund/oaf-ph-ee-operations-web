@@ -8,7 +8,7 @@ import { SentryService } from '../services/sentry.service';
 @Injectable()
 export class SentryHttpInterceptor implements HttpInterceptor {
 
-    constructor(private sentryService: SentryService) { }
+    constructor(private readonly sentryService: SentryService) { }
 
     intercept(request: HttpRequest<any>, next: HttpHandler) {
         return next.handle(request).pipe(
@@ -90,13 +90,13 @@ export class SentryHttpInterceptor implements HttpInterceptor {
 
     private sanitizeHeaders(headers: string[]): Record<string, string> {
         const sanitized: Record<string, string> = {};
-        const excludeHeaders = ['authorization', 'cookie', 'x-api-key'];
+        const excludeHeaders = new Set(['authorization', 'cookie', 'x-api-key']);
 
-        headers.forEach(header => {
-            if (!excludeHeaders.includes(header.toLowerCase())) {
+        for (const header of headers) {
+            if (!excludeHeaders.has(header.toLowerCase())) {
                 sanitized[header] = '[Header Value]';
             }
-        });
+        }
 
         return sanitized;
     }

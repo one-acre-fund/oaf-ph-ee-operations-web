@@ -5,7 +5,7 @@ import { SentryService } from './sentry.service';
 @Injectable()
 export class GlobalErrorHandler implements ErrorHandler {
 
-    constructor(private sentryService: SentryService) { }
+    constructor(private readonly sentryService: SentryService) { }
 
     handleError(error: any): void {
         // Log to console for development
@@ -27,12 +27,12 @@ export class GlobalErrorHandler implements ErrorHandler {
 
     private extractError(error: any): any {
         // If it's a wrapped error, extract the original error
-        if (error && error.originalError) {
+        if (error?.originalError) {
             return error.originalError;
         }
 
         // If it's a rejection with a reason, extract the reason
-        if (error && error.rejection) {
+        if (error?.rejection) {
             return error.rejection;
         }
 

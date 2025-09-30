@@ -12,9 +12,8 @@ import { SentryService } from './app/core/services/sentry.service';
 import { environment } from './environments/environment';
 
 // Initialize Sentry conditionally based on configuration
-if (environment.sentry &&
-  environment.sentry.enabled === true &&
-  environment.sentry.dsn &&
+if (environment.sentry?.enabled === true &&
+  environment.sentry?.dsn &&
   environment.sentry.dsn.trim() !== '') {
   SentryService.init();
 }
@@ -27,7 +26,7 @@ platformBrowserDynamic().bootstrapModule(AppModule)
   .catch(err => {
     console.log(err);
     // If Sentry is enabled, capture the bootstrap error
-    if (environment.sentry && environment.sentry.enabled) {
+    if (environment.sentry?.enabled) {
       const sentryService = new SentryService();
       sentryService.captureException(err);
     }

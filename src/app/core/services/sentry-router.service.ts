@@ -9,8 +9,8 @@ import { SentryService } from '../services/sentry.service';
 export class SentryRouterService {
 
     constructor(
-        private router: Router,
-        private sentryService: SentryService
+        private readonly router: Router,
+        private readonly sentryService: SentryService
     ) {
         this.initRouterTracking();
     }

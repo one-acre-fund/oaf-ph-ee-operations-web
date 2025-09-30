@@ -14,7 +14,7 @@ export class SentryService {
      * Initialize Sentry with configuration
      */
     public static init(): void {
-        if (environment.sentry && environment.sentry.enabled && environment.sentry.dsn) {
+        if (environment.sentry?.enabled && environment.sentry?.dsn) {
             Sentry.init({
                 dsn: environment.sentry.dsn,
                 environment: environment.sentry.environment,
@@ -22,7 +22,7 @@ export class SentryService {
                     browserTracingIntegration(),
                 ],
                 // Performance Monitoring
-                tracesSampleRate: environment.production ? 0.1 : 1.0,
+                tracesSampleRate: environment.production ? 0.1 : 1,
                 // Release Health
                 release: environment.version,
                 beforeSend(event: any, hint: any) {
@@ -42,13 +42,13 @@ export class SentryService {
                         const error = hint.originalException;
 
                         // Skip common Angular hydration errors or other non-critical errors
-                        if (error && error.toString && error.toString().includes('hydration')) {
+                        if (error?.toString?.().includes('hydration')) {
                             console.log('🚫 Filtered out hydration error');
                             return null;
                         }
 
                         // Don't filter HTTP errors - these are important
-                        if (error && ((error as any).name === 'HttpError' || (error as any).name === 'HttpErrorResponse')) {
+                        if (error?.name === 'HttpError' || error?.name === 'HttpErrorResponse') {
                             console.log('✅ Allowing HTTP error through filter');
                             return event;
                         }
@@ -67,7 +67,7 @@ export class SentryService {
      * Capture a message
      */
     public captureMessage(message: string, level: Sentry.SeverityLevel = 'info'): void {
-        if (environment.sentry && environment.sentry.enabled) {
+        if (environment.sentry?.enabled) {
             Sentry.captureMessage(message, level);
         }
     }
@@ -76,7 +76,7 @@ export class SentryService {
      * Capture an exception
      */
     public captureException(error: any): void {
-        if (environment.sentry && environment.sentry.enabled) {
+        if (environment.sentry?.enabled) {
             Sentry.captureException(error);
         }
     }
@@ -85,7 +85,7 @@ export class SentryService {
      * Add breadcrumb
      */
     public addBreadcrumb(breadcrumb: Sentry.Breadcrumb): void {
-        if (environment.sentry && environment.sentry.enabled) {
+        if (environment.sentry?.enabled) {
             Sentry.addBreadcrumb(breadcrumb);
         }
     }
@@ -94,7 +94,7 @@ export class SentryService {
      * Set user context
      */
     public setUser(user: Sentry.User): void {
-        if (environment.sentry && environment.sentry.enabled) {
+        if (environment.sentry?.enabled) {
             Sentry.setUser(user);
         }
     }
@@ -103,7 +103,7 @@ export class SentryService {
      * Set tag
      */
     public setTag(key: string, value: string): void {
-        if (environment.sentry && environment.sentry.enabled) {
+        if (environment.sentry?.enabled) {
             Sentry.setTag(key, value);
         }
     }
@@ -112,7 +112,7 @@ export class SentryService {
      * Set context
      */
     public setContext(key: string, context: Record<string, any>): void {
-        if (environment.sentry && environment.sentry.enabled) {
+        if (environment.sentry?.enabled) {
             Sentry.setContext(key, context);
         }
     }
@@ -121,7 +121,7 @@ export class SentryService {
      * Create a new scope for isolated error reporting
      */
     public withScope(callback: (scope: Sentry.Scope) => void): void {
-        if (environment.sentry && environment.sentry.enabled) {
+        if (environment.sentry?.enabled) {
             Sentry.withScope(callback);
         }
     }

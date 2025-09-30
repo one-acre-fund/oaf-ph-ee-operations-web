@@ -52,17 +52,17 @@ export class WebAppComponent implements OnInit {
    * @param {SentryRouterService} sentryRouterService Sentry Router Tracking Service.
    */
   constructor(
-    private router: Router,
-    private activatedRoute: ActivatedRoute,
-    private titleService: Title,
-    private translateService: TranslateService,
-    private i18nService: I18nService,
-    private themeStorageService: ThemeStorageService,
+    private readonly router: Router,
+    private readonly activatedRoute: ActivatedRoute,
+    private readonly titleService: Title,
+    private readonly translateService: TranslateService,
+    private readonly i18nService: I18nService,
+    private readonly themeStorageService: ThemeStorageService,
     public snackBar: MatSnackBar,
-    private alertService: AlertService,
-    private matomoService: MatomoService,
-    private sentryService: SentryService,
-    private sentryRouterService: SentryRouterService
+    private readonly alertService: AlertService,
+    private readonly matomoService: MatomoService,
+    private readonly sentryService: SentryService,
+    private readonly sentryRouterService: SentryRouterService
   ) { }
 
   /**

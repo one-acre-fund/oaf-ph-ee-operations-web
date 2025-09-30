@@ -6,7 +6,7 @@ import { SentryService } from './sentry.service';
 })
 export class SentryUserContextService {
 
-    constructor(private sentryService: SentryService) { }
+    constructor(private readonly sentryService: SentryService) { }
 
     /**
      * Set user context in Sentry when user logs in
@@ -33,11 +33,11 @@ export class SentryUserContextService {
             if (userInfo.role) sentryUser.extra.role = userInfo.role;
 
             // Add any other custom fields
-            Object.keys(userInfo).forEach(key => {
+            for (const key of Object.keys(userInfo)) {
                 if (!['id', 'username', 'email', 'tenant', 'role'].includes(key)) {
                     sentryUser.extra[key] = userInfo[key];
                 }
-            });
+            }
         }
 
         this.sentryService.setUser(sentryUser);
