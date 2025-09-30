@@ -13,7 +13,7 @@ declare global {
       authServerUrl?: string;
       keycloakRealm?: string;
       keycloakClientId?: string;
-      homeURL?: string;
+      redirectUri?: string;
     };
   }
 }
@@ -28,8 +28,8 @@ export let environment = {
     serverUrl: (window as any)?.env?.authServerUrl || 'https://accounts.qa.oneacrefund.org',
     realm: (window as any)?.env?.keycloakRealm || 'OneAcreFund',
     client_id: (window as any)?.env?.keycloakClientId || 'paymenthub',
-    tokenUrl: `https://accounts.qa.oneacrefund.org/auth/realms/OneAcreFund/protocol/openid-connect/token`,
-    redirectUri: (window as any)?.env?.homeURL || 'http://localhost:4200/home'
+    tokenUrl: (window as any)?.env?.keycloakTokenUrl || `https://accounts.qa.oneacrefund.org/auth/realms/OneAcreFund/protocol/openid-connect/token`,
+    redirectUri: (window as any)?.env?.redirectUri || 'http://localhost:4200/home'
   },
   defaultLanguage: 'en-US',
   supportedLanguages: ['en-US', 'fr-FR'],

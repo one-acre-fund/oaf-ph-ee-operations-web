@@ -5,21 +5,21 @@ export let environment = {
   name: 'prod',
   production: true,
   version: env.npm_package_version,
-  serverUrl: '',
+  serverUrl: 'https://paymenthub.oneacrefund.org/opsapp',
   oauth: {
     enabled: true,  // For connecting to Mifos X using OAuth2 Authentication change the value to true
-    serverUrl: (window as any)?.env?.authServerUrl || 'https://accounts.integration.oneacrefund.org',
+    serverUrl: (window as any)?.env?.authServerUrl || 'https://accounts.oneacrefund.org',
     realm: (window as any)?.env?.keycloakRealm || 'OneAcreFund',
     client_id: (window as any)?.env?.keycloakClientId || 'paymenthub',
-    tokenUrl: `https://accounts.integration.oneacrefund.org/auth/realms/OneAcreFund/protocol/openid-connect/token`,
-    redirectUri: (window as any)?.env?.homeURL || 'http://localhost:4200/home'
+    tokenUrl: `https://accounts.oneacrefund.org/auth/realms/OneAcreFund/protocol/openid-connect/token`,
+    redirectUri: (window as any)?.env?.redirectUri || 'https://ph-web.oneacrefund.org/home'
   },
   defaultLanguage: 'en-US',
   supportedLanguages: ['en-US', 'fr-FR'],
   externalConfigurationFile: '',
   auth: {
-    enabled: true,
-    tenant: 'phdefault',
+    enabled: false,
+    tenant: 'oaf',
   },
   amsShortCodes: [
     {
