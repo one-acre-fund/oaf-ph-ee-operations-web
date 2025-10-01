@@ -5,7 +5,7 @@ export let environment = {
   name: 'prod',
   production: true,
   version: env.npm_package_version,
-  serverUrl: 'https://paymenthub.qa.oneacrefund.org/opsapp',
+  serverUrl: '',
   oauth: {
     enabled: true,  // For connecting to Mifos X using OAuth2 Authentication change the value to true
     serverUrl: (window as any)?.env?.authServerUrl || 'https://accounts.qa.oneacrefund.org',
