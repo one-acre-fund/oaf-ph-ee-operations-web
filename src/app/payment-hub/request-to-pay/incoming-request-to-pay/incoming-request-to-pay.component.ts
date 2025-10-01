@@ -126,10 +126,6 @@ export class IncomingRequestToPayComponent implements OnInit, AfterViewInit {
       type: 'payerDfspId',
       value: '',
     },
-    {
-      type: 'payerDfspId',
-      value: ''
-    }
   ];
   dateTimeFormat = 'YYYY-MM-DD HH:mm:ss';
 
