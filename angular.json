@@ -113,7 +113,7 @@
           },
           "configurations": {
             "production": {
-              "browserTarget": "mifosx-web-app:build:prod"
+              "browserTarget": "mifosx-web-app:build:production"
             },
             "kubernetes": {
               "browserTarget": "mifosx-web-app:build:kubernetes"
