@@ -67,7 +67,7 @@
             "namedChunks": true
           },
           "configurations": {
-            "prod": {
+            "production": {
               "budgets": [
                 {
                   "type": "anyComponentStyle",
@@ -86,72 +86,6 @@
                 {
                   "replace": "src/environments/environment.ts",
                   "with": "src/environments/environment.prod.ts"
-                }
-              ]
-            },
-            "uat": {
-              "budgets": [
-                {
-                  "type": "anyComponentStyle",
-                  "maximumWarning": "6kb"
-                }
-              ],
-              "optimization": true,
-              "outputHashing": "all",
-              "sourceMap": false,
-              "namedChunks": false,
-              "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true,
-              "serviceWorker": true,
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.uat.ts"
-                }
-              ]
-            },
-            "qa": {
-              "budgets": [
-                {
-                  "type": "anyComponentStyle",
-                  "maximumWarning": "6kb"
-                }
-              ],
-              "optimization": true,
-              "outputHashing": "all",
-              "sourceMap": false,
-              "namedChunks": false,
-              "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true,
-              "serviceWorker": true,
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.qa.ts"
-                }
-              ]
-            },
-            "test": {
-              "budgets": [
-                {
-                  "type": "anyComponentStyle",
-                  "maximumWarning": "6kb"
-                }
-              ],
-              "optimization": true,
-              "outputHashing": "all",
-              "sourceMap": false,
-              "namedChunks": false,
-              "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true,
-              "serviceWorker": true,
-              "fileReplacements": [
-                {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.test.ts"
                 }
               ]
             },
@@ -178,17 +112,8 @@
             "browserTarget": "mifosx-web-app:build"
           },
           "configurations": {
-            "prod": {
+            "production": {
               "browserTarget": "mifosx-web-app:build:prod"
-            },
-            "uat": {
-              "browserTarget": "mifosx-web-app:build:uat"
-            },
-            "qa": {
-              "browserTarget": "mifosx-web-app:build:qa"
-            },
-            "test": {
-              "browserTarget": "mifosx-web-app:build:test"
             },
             "kubernetes": {
               "browserTarget": "mifosx-web-app:build:kubernetes"

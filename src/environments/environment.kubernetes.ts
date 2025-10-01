@@ -8,23 +8,23 @@ import env from './.env';
 
 export let environment = {
   name: 'kubernetes',
-  production: false,
+  production: true,
   version: env.npm_package_version,
   serverUrl: '',
   oauth: {
     enabled: true,  // For connecting to Mifos X using OAuth2 Authentication change the value to true
-    serverUrl: (window as any)?.env?.authServerUrl || 'https://accounts.integration.oneacrefund.org',
+    serverUrl: (window as any)?.env?.authServerUrl || 'https://accounts.oneacrefund.org',
     realm: (window as any)?.env?.keycloakRealm || 'OneAcreFund',
-    client_id: (window as any)?.env?.keycloakClientId || 'fineract',
-    tokenUrl: `https://loans.integration.oneacrefund.org/auth/realms/OneAcreFund/protocol/openid-connect/token`,
-    redirectUri: (window as any)?.env?.redirectUri || 'http://localhost:4200/home'
+    client_id: (window as any)?.env?.keycloakClientId || 'paymenthub',
+    tokenUrl: (window as any)?.env?.tokenUrl || `https://accounts.oneacrefund.org/auth/realms/OneAcreFund/protocol/openid-connect/token`,
+    redirectUri: (window as any)?.env?.redirectUri || 'https://ph-web.oneacrefund.org/home'
   },
   defaultLanguage: 'en-US',
   supportedLanguages: ['en-US', 'fr-FR'],
   externalConfigurationFile: 'configuration.properties', // When provided, the external configuration file content will override this environment settings based on naming conventions
   auth: {
     enabled: false,
-    tenant: 'phdefault',
+    tenant: 'oaf',
   },
 
   amsShortCodes: [
