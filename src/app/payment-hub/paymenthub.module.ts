@@ -48,5 +48,31 @@ import { IncomingTransactionExportComponent } from './transactions/incoming-tran
         GetBatchesExportComponent,
         IncomingTransactionExportComponent,
     ]
+  imports: [
+    MatDialogModule,
+    SharedModule,
+    PaymentHubRoutingModule,
+    PipesModule,
+  ],
+  declarations: [
+    IncomingTransactionsComponent,
+    OutgoingTransactionsComponent,
+    TransactionDetailsComponent,
+    PaymentHubComponent,
+    BpmnDialogComponent,
+    RetryResolveDialogComponent,
+    IncomingRequestToPayComponent,
+    OutgoingRequestToPayComponent,
+    ViewRequestToPayComponent,
+    IncomingRequestExportComponent,
+    BulkBatchExportComponent,
+    GetBatchesExportComponent,
+    IncomingTransactionExportComponent,
+  ],
+  entryComponents: [
+    PaymentHubComponent,
+    BpmnDialogComponent,
+    RetryResolveDialogComponent,
+  ],
 })
 export class PaymentHubModule {}

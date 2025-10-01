@@ -1,4 +1,5 @@
 /** Angular Imports */
+<<<<<<< HEAD
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { UntypedFormControl } from '@angular/forms';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
@@ -12,18 +13,43 @@ import {
   startWith,
   tap,
 } from 'rxjs/operators';
+=======
+import { Component, OnInit, ViewChild } from "@angular/core";
+import { MatDialog } from "@angular/material/dialog";
+import { MatPaginator } from "@angular/material/paginator";
+import { MatSort } from "@angular/material/sort";
+import { FormControl } from "@angular/forms";
+import { ActivatedRoute } from "@angular/router";
+import { requestInterface } from "./incoming-request-to-pay-interface";
+import {
+  tap,
+  distinctUntilChanged,
+  debounceTime,
+  startWith,
+  map,
+} from "rxjs/operators";
+>>>>>>> main
 
 /** Custom Services */
 import { MatomoService } from 'app/core/analytics/matomo.service';
 import { RequestToPayDataSource } from '../dataSource/requestToPay.datasource';
 import { RequestToPayService } from '../service/request-to-pay.service';
 /** Custom Data Source */
+<<<<<<< HEAD
 import { formatUTCDate } from '../helper/date-format.helper';
 import { transactionStatusData as statuses } from '../helper/incoming-reqest.helper';
 
 import { amsShortCodes } from '../helper/ams-short-codes';
 import { DfspEntry } from '../model/dfsp.model';
 
+=======
+import { formatUTCDate } from "../helper/date-format.helper";
+import { transactionStatusData as statuses } from "../helper/incoming-reqest.helper";
+
+import { DfspEntry } from "../model/dfsp.model";
+import { amsShortCodes } from "../helper/ams-short-codes";
+
+>>>>>>> main
 @Component({
   selector: 'mifosx-incoming-request-to-pay',
   templateUrl: './incoming-request-to-pay.component.html',
@@ -125,6 +151,10 @@ export class IncomingRequestToPayComponent implements OnInit, AfterViewInit {
       type: 'payerDfspId',
       value: '',
     },
+    {
+      type: 'payerDfspId',
+      value: ''
+    }
   ];
   dateTimeFormat = 'YYYY-MM-DD HH:mm:ss';
 
@@ -136,11 +166,21 @@ export class IncomingRequestToPayComponent implements OnInit, AfterViewInit {
   constructor(
     private requestToPayService: RequestToPayService,
     private route: ActivatedRoute,
+<<<<<<< HEAD
     public dialog: MatDialog,
     private matomoService: MatomoService
   ) {
     this.route.data.subscribe(
       (data: { dfspEntries: DfspEntry[]; currencies: any }) => {
+=======
+    public dialog: MatDialog
+  ) {
+    this.route.data.subscribe(
+      (data: {
+        dfspEntries: DfspEntry[];
+        currencies: any;
+      }) => {
+>>>>>>> main
         this.currenciesData = data.currencies;
         this.dfspEntriesData = data.dfspEntries;
       }
@@ -148,8 +188,11 @@ export class IncomingRequestToPayComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
+<<<<<<< HEAD
     this.trackPageView();
     this.setupAnalytics();
+=======
+>>>>>>> main
     this.getRequestsPay();
     this.setFilteredCurrencies();
   }
@@ -158,6 +201,7 @@ export class IncomingRequestToPayComponent implements OnInit, AfterViewInit {
    * Sets filtered gl accounts for autocomplete.
    */
   setFilteredCurrencies() {
+<<<<<<< HEAD
     this.filteredCurrencies = this.currencyCode.valueChanges.pipe(
       startWith(''),
       map((currency: any) =>
@@ -171,6 +215,14 @@ export class IncomingRequestToPayComponent implements OnInit, AfterViewInit {
           : this.currenciesData
       )
     );
+=======
+    this.filteredCurrencies = this.currencyCode.valueChanges
+      .pipe(
+        startWith(''),
+        map((currency: any) => typeof currency === 'string' ? currency : currency.Currency + ' (' + currency.AlphabeticCode + ')'),
+        map((currency: string) => currency ? this.filterCurrencyAutocompleteData(currency) : this.currenciesData)
+      );
+>>>>>>> main
   }
 
   /**
@@ -179,6 +231,7 @@ export class IncomingRequestToPayComponent implements OnInit, AfterViewInit {
    * @returns {any} Filtered gl accounts.
    */
   private filterCurrencyAutocompleteData(currency: string): any {
+<<<<<<< HEAD
     return this.currenciesData.filter((option: any) =>
       (option.Currency + ' (' + option.AlphabeticCode + ')')
         .toLowerCase()
@@ -186,6 +239,12 @@ export class IncomingRequestToPayComponent implements OnInit, AfterViewInit {
     );
   }
 
+=======
+    return this.currenciesData.filter((option: any) => (option.Currency + ' (' + option.AlphabeticCode + ')').toLowerCase().includes(currency.toLowerCase()));
+  }
+
+  
+>>>>>>> main
   ngAfterViewInit() {
     this.paginator.page
       .pipe(tap(() => this.loadTransactionsPage()))
@@ -278,10 +337,17 @@ export class IncomingRequestToPayComponent implements OnInit, AfterViewInit {
         distinctUntilChanged(),
         tap((filterValue) => {
           filterValue = filterValue.AlphabeticCode;
+<<<<<<< HEAD
           if ('KES' === filterValue) {
             filterValue = 'KE';
           }
           this.applyFilter(filterValue, 'currency');
+=======
+          if('KES' === filterValue){
+            filterValue = 'KE'
+          }
+          this.applyFilter(filterValue, "currency");
+>>>>>>> main
         })
       )
       .subscribe();
@@ -448,6 +514,7 @@ export class IncomingRequestToPayComponent implements OnInit, AfterViewInit {
     return entry ? entry.name : undefined;
   }
   exportCSV(filterBy: any) {
+<<<<<<< HEAD
     const startTime = performance.now();
 
     try {
@@ -472,6 +539,10 @@ export class IncomingRequestToPayComponent implements OnInit, AfterViewInit {
       this.matomoService.trackEvent('Export', 'Error', 'Request to Pay CSV', 1);
       this.trackBusinessMetric('export_errors', 1, 'errors');
     }
+=======
+    filterBy[filterBy.cars] = filterBy.val;
+    this.requestToPayService.exportCSV(filterBy);
+>>>>>>> main
   }
   /**
    * Displays office name in form control input.
