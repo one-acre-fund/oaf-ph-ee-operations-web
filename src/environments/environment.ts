@@ -36,48 +36,58 @@ export let environment = {
   externalConfigurationFile: "configuration.properties",
   auth: {
     enabled: false,
-    tenant: "phdefault"
+    tenant: "oaf"
   },
   amsShortCodes: [
     {
       option: 'ERPLY_TILL',
       type: 'TILL',
       value: '9499081'
-  },
-  {
+    },
+    {
       option: 'TUPANDE_TILL',
       type: 'TILL',
       value: '6064956'
-  },
-  {
+    },
+    {
       option: 'PAYGOPS_USSD_KE_TILL',
       type: 'TILL',
       value: '9347335'
-  },
-  {
+    },
+    {
       option: 'ROSTER_USSD_KE_TILL',
       type: 'TILL',
       value: '9558723'
-  },
-  {
+    },
+    {
       option: 'ODOO_KE_TILL',
       type: 'TILL',
       value: '9491775'
-  },
-  {
+    },
+    {
       option: 'FINERACT_USSD_KE_TILL',
       type: 'TILL',
       value: '8167094'
-  },
-  {
+    },
+    {
       option: 'PAYGOPS_PAYBILL',
       type: 'PAYBILL',
       value: '840706'
-  },
-  {
+    },
+    {
       option: 'TEST_PAYBILL',
       type: 'PAYBILL',
       value: '840700'
-  }
-  ]
+    }
+  ],
+  matomo: {
+    url: 'https://analytics.oneacrefund.org',
+    siteId: 18, // Replace with your production site ID
+    disabled: false,
+  },
+  sentry: {
+    dsn: (window as any)?.env?.sentryDsn || 'https://2eb6c3967dc4586bda6f9cd5f8d15ba4@o454511.ingest.us.sentry.io/4509881008455680', // Add your Sentry DSN here for production
+    enabled: true, // Enable Sentry in production
+    environment: 'production',
+  },
 };

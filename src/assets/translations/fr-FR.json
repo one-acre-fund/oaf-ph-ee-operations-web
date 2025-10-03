@@ -44,8 +44,15 @@
     "VALIDATION": {
         "USERNAME_REQUIRED": "Le nom d'utilisateur est requis",
         "PASSWORD_REQUIRED": "Le mot de passe est requis",
+        "CONFIRM_PASSWORD_REQUIRED": "La confirmation du mot de passe est requise",
+        "PASSWORDS_DO_NOT_MATCH": "Les mots de passe ne correspondent pas",
         "TENANT_REQUIRED": "Le locataire est requis",
         "USERNAME_PASSWORD_INCORRECT": "Nom d'utilisateur ou mot de passe incorrect"
+    },
+    "RESET_PASSWORD": {
+        "UPDATE_MESSAGE": "Veuillez mettre à jour votre mot de passe",
+        "CONFIRM_PASSWORD": "Confirmer le mot de passe",
+        "RESET_PASSWORD": "Réinitialiser le mot de passe"
     },
     "NAVIGATION": {
         "FREQUENTLY_ACCESSED": "Fréquemment Consultés",
@@ -141,6 +148,15 @@
         "ACTIVE": "Actif",
         "DISABLED": "Désactivé"
     },
+    "USER_DETAILS": {
+        "EDIT": "Modifier",
+        "DELETE": "Supprimer",
+        "CHANGE_PASSWORD": "Changer le mot de passe",
+        "DEACTIVATE": "Désactiver",
+        "ACTIVATE": "Activer",
+        "LOGIN_NAME": "Nom de connexion",
+        "OFFICE": "Bureau"
+    },
     "FOOTER": {
         "RESOURCES": "Ressources",
         "COMMUNITY": "Communauté",
@@ -205,6 +221,7 @@
         "TRANSACTION_DATE_TO": "Date de Transaction À",
         "CHOOSE_DATE": "Choisir la Date",
         "STATUS": "Statut",
+        "STATE": "État",
         "SELECT_STATUS": "Sélectionner le Statut",
         "PAYMENT_MODE": "Mode de Paiement",
         "AMOUNT": "Montant",

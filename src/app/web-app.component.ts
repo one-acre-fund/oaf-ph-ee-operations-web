@@ -86,7 +86,7 @@ export class WebAppComponent implements OnInit {
     log.debug('init');
 
     // Initialize Sentry context
-    // this.initializeSentryContext();
+    this.initializeSentryContext();
 
     // Setup translations
     this.i18nService.init(

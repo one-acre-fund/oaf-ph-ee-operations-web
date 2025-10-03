@@ -44,8 +44,15 @@
   "VALIDATION": {
     "USERNAME_REQUIRED": "Username is required",
     "PASSWORD_REQUIRED": "Password is required",
+    "CONFIRM_PASSWORD_REQUIRED": "Confirm password is required",
+    "PASSWORDS_DO_NOT_MATCH": "Passwords do not match",
     "TENANT_REQUIRED": "Tenant is required",
     "USERNAME_PASSWORD_INCORRECT": "Username or password incorrect"
+  },
+  "RESET_PASSWORD": {
+    "UPDATE_MESSAGE": "Please update your password",
+    "CONFIRM_PASSWORD": "Confirm Password",
+    "RESET_PASSWORD": "Reset Password"
   },
   "NAVIGATION": {
     "FREQUENTLY_ACCESSED": "Frequently Accessed",
@@ -141,6 +148,15 @@
     "ACTIVE": "Active",
     "DISABLED": "Disabled"
   },
+  "USER_DETAILS": {
+    "EDIT": "Edit",
+    "DELETE": "Delete",
+    "CHANGE_PASSWORD": "Change Password",
+    "DEACTIVATE": "Deactivate",
+    "ACTIVATE": "Activate",
+    "LOGIN_NAME": "Login Name",
+    "OFFICE": "Office"
+  },
   "FOOTER": {
     "RESOURCES": "Resources",
     "COMMUNITY": "Community",
@@ -205,6 +221,7 @@
     "TRANSACTION_DATE_TO": "Transaction Date To",
     "CHOOSE_DATE": "Choose Date",
     "STATUS": "Status",
+    "STATE": "State",
     "SELECT_STATUS": "Select Status",
     "PAYMENT_MODE": "Payment Mode",
     "AMOUNT": "Amount",
