@@ -11,15 +11,15 @@ export let environment = {
     serverUrl: (window as any)?.env?.authServerUrl || 'https://accounts.qa.oneacrefund.org',
     realm: (window as any)?.env?.keycloakRealm || 'OneAcreFund',
     client_id: (window as any)?.env?.keycloakClientId || 'paymenthub',
-    tokenUrl: `https://accounts.qa.oneacrefund.org/auth/realms/OneAcreFund/protocol/openid-connect/token`,
-    redirectUri: (window as any)?.env?.homeURL || 'http://localhost:4200/home'
+    tokenUrl: (window as any)?.env?.tokenUrl || `https://accounts.qa.oneacrefund.org/auth/realms/OneAcreFund/protocol/openid-connect/token`,
+    redirectUri: (window as any)?.env?.redirectUri || 'https://ph-web.oneacrefund.org/home'
   },
   defaultLanguage: 'en-US',
   supportedLanguages: ['en-US', 'fr-FR'],
   externalConfigurationFile: '',
   auth: {
-    enabled: true,
-    tenant: 'phdefault',
+    enabled: false,
+    tenant: 'oaf',
   },
   amsShortCodes: [
     {
@@ -67,10 +67,5 @@ export let environment = {
     url: 'https://analytics.oneacrefund.org',
     siteId: 18, // Replace with your production site ID
     disabled: false,
-  },
-  sentry: {
-    dsn: (window as any)?.env?.sentryDsn || 'https://2eb6c3967dc4586bda6f9cd5f8d15ba4@o454511.ingest.us.sentry.io/4509881008455680', // Add your Sentry DSN here for production
-    enabled: true, // Enable Sentry in production
-    environment: 'production',
   },
 };
