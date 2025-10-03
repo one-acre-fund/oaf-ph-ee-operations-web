@@ -51,22 +51,9 @@ export class SentryUserContextService {
             return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
         }
 
-        // Fallback for server-side rendering or environments without Web Crypto API
-        // Note: This would require importing Node's crypto module in server builds
-        try {
-            const crypto = await import('crypto');
-            return crypto.createHash('sha256').update(id, 'utf8').digest('hex');
-        } catch (error) {
-            // Ultimate fallback - basic hash (not cryptographically secure)
-            console.warn('Neither Web Crypto API nor Node crypto available, using basic hash');
-            let hash = 0;
-            for (let i = 0; i < id.length; i++) {
-                const char = id.charCodeAt(i);
-                hash = ((hash << 5) - hash) + char;
-                hash = hash & hash; // Convert to 32-bit integer
-            }
-            return Math.abs(hash).toString(16);
-        }
+        // Fallback: avoid weak hashing and avoid importing Node 'crypto' in browser bundles
+        console.warn('Web Crypto API unavailable; using non-identifying user id');
+        return 'anonymous';
     }
 
     /**
