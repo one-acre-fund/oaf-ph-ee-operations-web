@@ -14,6 +14,9 @@ declare global {
       keycloakRealm?: string;
       keycloakClientId?: string;
       redirectUri?: string;
+      sentryDsn?: string;
+      sentryEnabled?: boolean;
+      sentryEnvironment?: string;
     };
   }
 }
@@ -86,8 +89,8 @@ export let environment = {
     disabled: false,
   },
   sentry: {
-    dsn: (window as any)?.env?.sentryDsn || 'https://2eb6c3967dc4586bda6f9cd5f8d15ba4@o454511.ingest.us.sentry.io/4509881008455680', // Add your Sentry DSN here for production
-    enabled: true, // Enable Sentry in production
-    environment: 'production',
+    dsn: (window as any)?.env?.sentryDsn || 'https://2eb6c3967dc4586bda6f9cd5f8d15ba4@o454511.ingest.us.sentry.io/4509881008455680',
+    enabled: (window as any)?.env?.sentryEnabled ?? false, // Disabled by default in development
+    environment: (window as any)?.env?.sentryEnvironment || 'development',
   },
 };

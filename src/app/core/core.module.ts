@@ -34,6 +34,7 @@ import { AuthenticationInterceptor } from './authentication/authentication.inter
 import { ApiPrefixInterceptor } from './http/api-prefix.interceptor';
 import { CacheInterceptor } from './http/cache.interceptor';
 import { ErrorHandlerInterceptor } from './http/error-handler.interceptor';
+import { SentryHttpInterceptor } from './interceptors/sentry-http.interceptor';
 import { ProgressInterceptor } from './progress-bar/progress.interceptor';
 
 /** Custom Strategies */
@@ -100,6 +101,11 @@ import { ToolbarComponent } from './shell/toolbar/toolbar.component';
     {
       provide: HTTP_INTERCEPTORS,
       useClass: ProgressInterceptor,
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: SentryHttpInterceptor,
       multi: true,
     },
     {

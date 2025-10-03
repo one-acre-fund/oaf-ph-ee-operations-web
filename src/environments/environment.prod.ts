@@ -69,8 +69,8 @@ export let environment = {
     disabled: false,
   },
   sentry: {
-    dsn: (window as any)?.env?.sentryDsn || 'https://2eb6c3967dc4586bda6f9cd5f8d15ba4@o454511.ingest.us.sentry.io/4509881008455680', // Add your Sentry DSN here for production
-    enabled: true, // Enable Sentry in production
-    environment: 'production',
+    dsn: (window as any)?.env?.sentryDsn || 'https://2eb6c3967dc4586bda6f9cd5f8d15ba4@o454511.ingest.us.sentry.io/4509881008455680',
+    enabled: (window as any)?.env?.sentryEnabled ?? true, // Enabled by default in production
+    environment: (window as any)?.env?.sentryEnvironment || 'production',
   },
 };
