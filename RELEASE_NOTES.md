@@ -5,7 +5,8 @@
         * [CP-3621] - Matomo integration
         * [CP-3641] - Updgrade to Angular 16
         * [CP-3750] - Rename Paygop Paybill to Fineract Paybill
-        * [CP-3281] -Sentry Integration
+        * [CP-3281] - Sentry Integration
+        * [CP-3662] - Add Keycloak authentication
 
 ## Version 1.1.7
 
@@ -45,12 +46,10 @@
         * [SER-2739] - Ensure transactions can be correctly filtered by currency and dates.
 
 ## Version 1.0.3
-
         * [SER-2208] - Fix bugs in searching incoming transactions in PaymentHub Service.
         * [SER-2257] - Standardize payment hub reports.
 
 ## Version 1.0.2
-
         * [SER-1596] - Filter incoming requests to pay by external Id
 
 ## Version 1.0.1
