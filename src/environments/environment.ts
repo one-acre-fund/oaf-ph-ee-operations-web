@@ -28,7 +28,7 @@ export let environment = {
   serverUrl: "https://paymenthub.qa.oneacrefund.org/opsapp",
   oauth: {
     enabled: true,  // For connecting to Mifos X using OAuth2 Authentication change the value to true
-    serverUrl: (window as any)?.env?.authServerUrl || 'https://accounts.qa.oneacrefund.org',
+    serverUrl: (window as any)?.env?.keycloakBaseUrl || 'https://accounts.qa.oneacrefund.org',
     realm: (window as any)?.env?.keycloakRealm || 'OneAcreFund',
     client_id: (window as any)?.env?.keycloakClientId || 'paymenthub',
     tokenUrl: (window as any)?.env?.keycloakTokenUrl || `https://accounts.qa.oneacrefund.org/auth/realms/OneAcreFund/protocol/openid-connect/token`,
