@@ -8,42 +8,40 @@
       <mat-card-content>
         <div fxLayout="row wrap" fxLayoutGap="2%" fxLayout.lt-md="column">
           <mat-form-field fxFlex="48%">
-            <mat-label>Email</mat-label>
+            <mat-label>{{ "USERS.EMAIL" | translate }}</mat-label>
             <input
               matInput
               [required]="userForm.controls.sendPasswordToEmail.value"
               formControlName="email"
             />
             <mat-error *ngIf="userForm.controls.email.hasError('email')">
-              Email is <strong>invalid</strong>
+              {{ "VALIDATION.EMAIL_INVALID" | translate }}
             </mat-error>
             <mat-error *ngIf="userForm.controls.email.hasError('required')">
-              Email is <strong>required</strong>
+              {{ "VALIDATION.EMAIL_REQUIRED" | translate }}
             </mat-error>
           </mat-form-field>
           <br />
 
           <mat-form-field fxFlex="48%">
-            <mat-label>First Name</mat-label>
+            <mat-label>{{ "USERS.FIRST_NAME" | translate }}</mat-label>
             <input matInput required formControlName="firstname" />
             <mat-error *ngIf="userForm.controls.firstname.hasError('pattern')">
-              First Name
-              <strong>cannot begin with a special character or number</strong>
+              {{ "VALIDATION.FIRST_NAME_PATTERN" | translate }}
             </mat-error>
             <mat-error *ngIf="userForm.controls.firstname.hasError('required')">
-              First Name is <strong>required</strong>
+              {{ "VALIDATION.FIRST_NAME_REQUIRED" | translate }}
             </mat-error>
           </mat-form-field>
 
           <mat-form-field fxFlex="48%">
-            <mat-label>Last Name</mat-label>
+            <mat-label>{{ "USERS.LAST_NAME" | translate }}</mat-label>
             <input matInput required formControlName="lastname" />
             <mat-error *ngIf="userForm.controls.lastname.hasError('pattern')">
-              Last Name
-              <strong>cannot begin with a special character or number</strong>
+              {{ "VALIDATION.LAST_NAME_PATTERN" | translate }}
             </mat-error>
             <mat-error *ngIf="userForm.controls.lastname.hasError('required')">
-              Last Name is <strong>required</strong>
+              {{ "VALIDATION.LAST_NAME_REQUIRED" | translate }}
             </mat-error>
           </mat-form-field>
 
@@ -52,7 +50,7 @@
               labelPosition="before"
               formControlName="passwordNeverExpires"
             >
-              Override password expiry policy
+              {{ "USERS.OVERRIDE_PASSWORD_EXPIRY" | translate }}
             </mat-checkbox>
           </div>
 
@@ -61,7 +59,7 @@
               labelPosition="before"
               formControlName="sendPasswordToEmail"
             >
-              Auto generate password
+              {{ "USERS.AUTO_GENERATE_PASSWORD" | translate }}
             </mat-checkbox>
           </div>
 
@@ -69,7 +67,7 @@
             fxFlex="48%"
             *ngIf="!userForm.controls.sendPasswordToEmail.value"
           >
-            <mat-label>Password</mat-label>
+            <mat-label>{{ "COMMON.PASSWORD" | translate }}</mat-label>
             <input
               matInput
               required
@@ -77,7 +75,7 @@
               formControlName="password"
             />
             <mat-error *ngIf="userForm.controls.password.hasError('required')">
-              Password is <strong>required</strong>
+              {{ "VALIDATION.PASSWORD_REQUIRED" | translate }}
             </mat-error>
           </mat-form-field>
 
@@ -85,7 +83,7 @@
             fxFlex="48%"
             *ngIf="!userForm.controls.sendPasswordToEmail.value"
           >
-            <mat-label>Repeat Password</mat-label>
+            <mat-label>{{ "USERS.REPEAT_PASSWORD" | translate }}</mat-label>
             <input
               matInput
               required
@@ -95,7 +93,7 @@
             <mat-error
               *ngIf="userForm.controls.repeatPassword.hasError('required')"
             >
-              Password is <strong>required</strong>
+              {{ "VALIDATION.PASSWORD_REQUIRED" | translate }}
             </mat-error>
           </mat-form-field>
 
@@ -105,21 +103,21 @@
             *ngIf="
               userForm.errors?.passwordsDoNotMatch &&
               !userForm.controls.password.hasError('required') &&
-                !userForm.controls.repeatPassword.hasError('required')
+              !userForm.controls.repeatPassword.hasError('required')
             "
           >
-            Passwords <strong>do not match</strong>
+            {{ "VALIDATION.PASSWORDS_DO_NOT_MATCH" | translate }}
           </p>
 
           <mat-form-field fxFlex="48%">
-            <mat-label>Roles</mat-label>
+            <mat-label>{{ "USERS.ROLES" | translate }}</mat-label>
             <mat-select required formControlName="roles" multiple>
               <mat-option *ngFor="let role of rolesData" [value]="role.id">
                 {{ role.name }}
               </mat-option>
             </mat-select>
             <mat-error *ngIf="userForm.controls.roles.hasError('required')">
-              At least one role <strong>must be selected</strong>
+              {{ "VALIDATION.ROLES_REQUIRED" | translate }}
             </mat-error>
           </mat-form-field>
         </div>
@@ -132,10 +130,10 @@
         fxLayoutGap="5px"
       >
         <button type="button" mat-raised-button [routerLink]="['../']">
-          Cancel
+          {{ "COMMON.CANCEL" | translate }}
         </button>
         <button mat-raised-button color="primary" [disabled]="!userForm.valid">
-          Submit
+          {{ "COMMON.SUBMIT" | translate }}
         </button>
       </mat-card-actions>
     </form>

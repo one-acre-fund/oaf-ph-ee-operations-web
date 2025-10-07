@@ -17,46 +17,46 @@
       fxLayout.lt-md="column"
     >
       <mat-form-field>
-        <mat-label>TRANSACTION ID</mat-label>
-        <input
+        <mat-label>{{ "TRANSACTIONS.TRANSACTION_ID" | translate }}</mat-label>
+        <textarea
           matInput
-          type="textArea"
           class="form-control col-sm-4"
           ngModel
           name="transactionid"
-          placeholder="comma-separated-list"
+          placeholder="{{ 'EXPORT.COMMA_SEPARATED_LIST' | translate }}"
           id="transactionid"
           matomoClick="export-filter-transaction-id"
           (focus)="onFilterUsed('Transaction ID')"
           (blur)="onFilterUsed('Transaction ID', $event.target.value)"
-        />
+          rows="3"
+        ></textarea>
       </mat-form-field>
       <mat-form-field>
-        <mat-label>WORKFLOW INSTANCE KEY</mat-label>
-        <input
+        <mat-label>{{ "EXPORT.WORKFLOW_INSTANCE_KEY" | translate }}</mat-label>
+        <textarea
           matInput
-          type="textArea"
           class="form-control col-sm-4"
           ngModel
           name="workflowinstancekey"
-          placeholder="comma-separated-list"
+          placeholder="{{ 'EXPORT.COMMA_SEPARATED_LIST' | translate }}"
           id="workflowinstancekey"
           matomoClick="export-filter-workflow-key"
           (focus)="onFilterUsed('Workflow Instance Key')"
           (blur)="onFilterUsed('Workflow Instance Key', $event.target.value)"
-        />
+          rows="3"
+        ></textarea>
       </mat-form-field>
       <mat-form-field
         (click)="startDatePicker.open(); onDatePickerUsed('start')"
       >
-        <mat-label>START DATE</mat-label>
+        <mat-label>{{ "EXPORT.START_DATE" | translate }}</mat-label>
         <input
           matInput
-          type="textArea"
+          type="text"
           class="form-control col-sm-4"
           ngModel
           name="startdate"
-          placeholder="Start Date"
+          placeholder="{{ 'EXPORT.START_DATE' | translate }}"
           id="startdate"
           [matDatepicker]="startDatePicker"
           matomoClick="export-filter-start-date"
@@ -71,14 +71,14 @@
         <mat-datepicker #startDatePicker></mat-datepicker>
       </mat-form-field>
       <mat-form-field (click)="endDatePicker.open(); onDatePickerUsed('end')">
-        <mat-label>END DATE</mat-label>
+        <mat-label>{{ "EXPORT.END_DATE" | translate }}</mat-label>
         <input
           matInput
-          type="textArea"
+          type="text"
           class="form-control col-sm-4"
           ngModel
           name="enddate"
-          placeholder="End Date"
+          placeholder="{{ 'EXPORT.END_DATE' | translate }}"
           id="enddate"
           [matDatepicker]="endDatePicker"
           matomoClick="export-filter-end-date"
@@ -93,7 +93,9 @@
         <mat-datepicker #endDatePicker></mat-datepicker>
       </mat-form-field>
       <mat-form-field>
-        <mat-label for="querytype" class="form-control">Filter By</mat-label>
+        <mat-label for="querytype" class="form-control">{{
+          "EXPORT.FILTER_BY" | translate
+        }}</mat-label>
         <select
           id="querytype"
           name="status"
@@ -105,62 +107,64 @@
           (change)="onFilterUsed('Status', $event.target.value)"
         >
           <option value="" matomoClick="export-status-option-all">
-            STATUS
+            {{ "COMMON.STATUS" | translate }}
           </option>
           <option
             value="COMPLETED"
             matomoClick="export-status-option-completed"
           >
-            COMPLETED
+            {{ "COMMON.COMPLETED" | translate }}
           </option>
           <option value="FAILED" matomoClick="export-status-option-failed">
-            FAILED
+            {{ "COMMON.FAILED" | translate }}
           </option>
           <option
             value="IN_PROGRESS"
             matomoClick="export-status-option-in-progress"
           >
-            IN PROGRESS
+            {{ "COMMON.IN_PROGRESS" | translate }}
           </option>
         </select>
       </mat-form-field>
       <mat-form-field>
-        <mat-label>Payer Id</mat-label>
-        <input
+        <mat-label>{{ "TRANSACTIONS.PAYER_ID" | translate }}</mat-label>
+        <textarea
           matInput
-          type="textArea"
           class="form-control col-sm-4"
           ngModel
           name="payerid"
-          placeholder="comma-separated-list"
+          placeholder="{{ 'EXPORT.COMMA_SEPARATED_LIST' | translate }}"
           id="payerid"
           matomoClick="export-filter-payer-id"
           (focus)="onFilterUsed('Payer ID')"
           (blur)="onFilterUsed('Payer ID', $event.target.value)"
-        />
+          rows="3"
+        ></textarea>
       </mat-form-field>
       <mat-form-field>
-        <mat-label>Payee Id</mat-label>
-        <input
+        <mat-label>{{ "TRANSACTIONS.PAYEE_ID" | translate }}</mat-label>
+        <textarea
           matInput
-          type="textArea"
           class="form-control col-sm-4"
           ngModel
           name="payeeid"
-          placeholder="comma-separated-list"
+          placeholder="{{ 'EXPORT.COMMA_SEPARATED_LIST' | translate }}"
           id="payeeid"
           matomoClick="export-filter-payee-id"
           (focus)="onFilterUsed('Payee ID')"
           (blur)="onFilterUsed('Payee ID', $event.target.value)"
-        />
+          rows="3"
+        ></textarea>
       </mat-form-field>
       <mat-form-field>
-        <mat-label>AMS Business Short Code</mat-label>
+        <mat-label>{{
+          "TRANSACTIONS.AMS_BUSINESS_SHORT_CODE" | translate
+        }}</mat-label>
         <mat-select
           class="form-control col-sm-4"
           ngModel
           name="payerdfspid"
-          placeholder="comma-separated-list"
+          placeholder="{{ 'EXPORT.COMMA_SEPARATED_LIST' | translate }}"
           id="payerdfspid"
           multiple
           matomoClick="export-filter-ams-code"
@@ -188,7 +192,7 @@
       matomoClick="export-csv-submit-button"
       (click)="onFormValidationChange(postForm.valid)"
     >
-      Export CSV
+      {{ "EXPORT.EXPORT_CSV" | translate }}
     </button>
   </form>
 </div>

@@ -1,5 +1,5 @@
 <mat-form-field id="language-selector">
-  <mat-label>Language</mat-label>
+  <mat-label>{{ "LANGUAGE_SELECTOR.LANGUAGE" | translate }}</mat-label>
   <mat-select
     [formControl]="languageSelector"
     (selectionChange)="setLanguage($event.value)"

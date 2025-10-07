@@ -1,8 +1,8 @@
 /** Angular Imports */
-import { NgModule, APP_INITIALIZER } from '@angular/core';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { APP_INITIALIZER, ErrorHandler, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClientModule } from '@angular/common/http';
 import { ServiceWorkerModule } from '@angular/service-worker';
 
 /** Keycloak Imports */
@@ -29,20 +29,24 @@ import { AppConfig } from './app.config';
 /** Keycloak Services */
 import { KeycloakAuthService } from './core/authentication/keycloak.service';
 
+/** Sentry Services */
+import { GlobalErrorHandler } from './core/services/global-error-handler.service';
+
 /** Custom Modules */
 import { CoreModule } from './core/core.module';
 import { HomeModule } from './home/home.module';
 import { LoginModule } from './login/login.module';
+import { PaymentHubModule } from './payment-hub/paymenthub.module';
 import { SettingsModule } from './settings/settings.module';
 import { SystemModule } from './system/system.module';
 import { UsersModule } from './users/users.module';
-import { PaymentHubModule } from './payment-hub/paymenthub.module';
 
 
 /** Main Routing Module */
 import { AppRoutingModule } from './app-routing.module';
 
 import { DatePipe } from '@angular/common';
+import { SentryHttpInterceptor } from './core/interceptors/sentry-http.interceptor';
 
 export function initConfig(config: AppConfig) {
   return () => config.load();
@@ -95,6 +99,17 @@ export function initKeycloak(keycloakAuthService: KeycloakAuthService) {
       useFactory: initKeycloak,
       deps: [KeycloakAuthService],
       multi: true
+    },
+    // Sentry Error Handler
+    {
+      provide: ErrorHandler,
+      useClass: GlobalErrorHandler,
+    },
+    // Sentry HTTP Interceptor
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: SentryHttpInterceptor,
+      multi: true,
     }],
   bootstrap: [WebAppComponent]
 })

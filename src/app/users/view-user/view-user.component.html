@@ -14,7 +14,8 @@
     name="Edit User Button"
     [value]="userData.id"
   >
-    <fa-icon icon="edit"></fa-icon>&nbsp;&nbsp; Edit
+    <fa-icon icon="edit"></fa-icon>&nbsp;&nbsp;
+    {{ "USER_DETAILS.EDIT" | translate }}
   </button>
   <button
     mat-raised-button
@@ -25,7 +26,8 @@
     name="Delete User Button"
     [value]="userData.id"
   >
-    <fa-icon icon="trash"></fa-icon>&nbsp;&nbsp; Delete
+    <fa-icon icon="trash"></fa-icon>&nbsp;&nbsp;
+    {{ "USER_DETAILS.DELETE" | translate }}
   </button>
   <button
     mat-raised-button
@@ -36,7 +38,8 @@
     name="Change Password Button"
     [value]="userData.id"
   >
-    <fa-icon icon="cog"></fa-icon>&nbsp;&nbsp; Change Password
+    <fa-icon icon="cog"></fa-icon>&nbsp;&nbsp;
+    {{ "USER_DETAILS.CHANGE_PASSWORD" | translate }}
   </button>
 
   <button
@@ -49,7 +52,8 @@
     name="Deactivate User Button"
     [value]="userData.id"
   >
-    <fa-icon icon="toggle-off"></fa-icon>&nbsp;&nbsp; Deactivate
+    <fa-icon icon="toggle-off"></fa-icon>&nbsp;&nbsp;
+    {{ "USER_DETAILS.DEACTIVATE" | translate }}
   </button>
   <button
     mat-raised-button
@@ -61,7 +65,8 @@
     name="Activate User Button"
     [value]="userData.id"
   >
-    <fa-icon icon="toggle-on"></fa-icon>&nbsp;&nbsp; Activate
+    <fa-icon icon="toggle-on"></fa-icon>&nbsp;&nbsp;
+    {{ "USER_DETAILS.ACTIVATE" | translate }}
   </button>
 </div>
 
@@ -69,31 +74,41 @@
   <mat-card>
     <mat-card-content>
       <div fxLayout="row wrap" class="content">
-        <div fxFlex="50%" class="mat-body-strong">Login Name</div>
+        <div fxFlex="50%" class="mat-body-strong">
+          {{ "USER_DETAILS.LOGIN_NAME" | translate }}
+        </div>
 
         <div fxFlex="50%">
           {{ userData.username }}
         </div>
 
-        <div fxFlex="50%" class="mat-body-strong">First Name</div>
+        <div fxFlex="50%" class="mat-body-strong">
+          {{ "USERS.FIRST_NAME" | translate }}
+        </div>
 
         <div fxFlex="50%">
           {{ userData.firstname }}
         </div>
 
-        <div fxFlex="50%" class="mat-body-strong">Last Name</div>
+        <div fxFlex="50%" class="mat-body-strong">
+          {{ "USERS.LAST_NAME" | translate }}
+        </div>
 
         <div fxFlex="50%">
           {{ userData.lastname }}
         </div>
 
-        <div fxFlex="50%" class="mat-body-strong">Email</div>
+        <div fxFlex="50%" class="mat-body-strong">
+          {{ "USERS.EMAIL" | translate }}
+        </div>
 
         <div fxFlex="50%">
           {{ userData.email }}
         </div>
 
-        <div fxFlex="50%" class="mat-body-strong">Office</div>
+        <div fxFlex="50%" class="mat-body-strong">
+          {{ "USER_DETAILS.OFFICE" | translate }}
+        </div>
 
         <div fxFlex="50%">
           {{ userData.officeName }}
