@@ -6,7 +6,7 @@
   matomoForm="outgoing-transactions-search"
 >
   <mat-form-field fxFlex="20%">
-    <mat-label>Payer Id</mat-label>
+    <mat-label>{{ "TRANSACTIONS.PAYER_ID" | translate }}</mat-label>
     <input
       matInput
       [formControl]="payerPartyId"
@@ -18,7 +18,7 @@
   </mat-form-field>
 
   <mat-form-field fxFlex="20%">
-    <mat-label>Payee Id</mat-label>
+    <mat-label>{{ "TRANSACTIONS.PAYEE_ID" | translate }}</mat-label>
     <input
       matInput
       [formControl]="payeePartyId"
@@ -30,7 +30,7 @@
   </mat-form-field>
 
   <mat-form-field fxFlex="20%">
-    <mat-label>Payee DFSP Id</mat-label>
+    <mat-label>{{ "TRANSACTIONS.PAYEE_DFSP_ID" | translate }}</mat-label>
     <input
       matInput
       [formControl]="payeeDfspId"
@@ -42,7 +42,7 @@
   </mat-form-field>
 
   <mat-form-field fxFlex="20%">
-    <mat-label>Payee DFSP name</mat-label>
+    <mat-label>{{ "TRANSACTIONS.PAYEE_DFSP_NAME" | translate }}</mat-label>
     <input
       matInput
       [formControl]="payeeDfspName"
@@ -55,7 +55,7 @@
   </mat-form-field>
 
   <mat-form-field fxFlex="20%">
-    <mat-label>Transaction ID</mat-label>
+    <mat-label>{{ "TRANSACTIONS.TRANSACTION_ID" | translate }}</mat-label>
     <input
       matInput
       [formControl]="transactionId"
@@ -67,7 +67,7 @@
   </mat-form-field>
 
   <mat-form-field fxFlex="20%">
-    <mat-label>Status</mat-label>
+    <mat-label>{{ "TRANSACTIONS.STATUS" | translate }}</mat-label>
     <mat-select
       [formControl]="status"
       matomoClick="filter-status"
@@ -90,7 +90,7 @@
   </mat-form-field>
 
   <mat-form-field fxFlex="20%">
-    <mat-label>Amount</mat-label>
+    <mat-label>{{ "TRANSACTIONS.AMOUNT" | translate }}</mat-label>
     <input
       matInput
       [formControl]="amount"
@@ -102,7 +102,7 @@
   </mat-form-field>
 
   <mat-form-field fxFlex="20%">
-    <mat-label>Currency</mat-label>
+    <mat-label>{{ "TRANSACTIONS.CURRENCY" | translate }}</mat-label>
     <input
       matInput
       [formControl]="currencyCode"
@@ -115,7 +115,9 @@
   </mat-form-field>
 
   <mat-form-field fxFlex="20%">
-    <mat-label>Transaction Date From</mat-label>
+    <mat-label>{{
+      "TRANSACTIONS.TRANSACTION_DATE_FROM" | translate
+    }}</mat-label>
     <input
       matInput
       [ngxMatDatetimePicker]="transactionDateFromPicker"
@@ -146,7 +148,7 @@
   </mat-form-field>
 
   <mat-form-field fxFlex="20%">
-    <mat-label>Transaction Date To</mat-label>
+    <mat-label>{{ "TRANSACTIONS.TRANSACTION_DATE_TO" | translate }}</mat-label>
     <input
       matInput
       [ngxMatDatetimePicker]="transactionDateToPicker"
@@ -232,7 +234,7 @@
         name="Sort by Start Time"
         (click)="onColumnSort('startedAt', sort.direction)"
       >
-        Start Time (UTC)
+        {{ "TRANSACTIONS.START_TIME_UTC" | translate }}
       </th>
       <td mat-cell *matCellDef="let transaction">
         {{ formatDate(convertTimestampToUTCDate(transaction.startedAt)) }}
@@ -249,7 +251,7 @@
         name="Sort by Completed Time"
         (click)="onColumnSort('completedAt', sort.direction)"
       >
-        Completed Time (UTC)
+        {{ "TRANSACTIONS.COMPLETED_TIME_UTC" | translate }}
       </th>
       <td mat-cell *matCellDef="let transaction">
         {{ formatDate(convertTimestampToUTCDate(transaction.completedAt)) }}
@@ -266,7 +268,7 @@
         name="Sort by Transaction ID"
         (click)="onColumnSort('transactionId', sort.direction)"
       >
-        Transaction ID
+        {{ "TRANSACTIONS.TRANSACTION_ID" | translate }}
       </th>
       <td
         mat-cell
@@ -287,7 +289,7 @@
         name="Sort by Payer ID"
         (click)="onColumnSort('payerPartyId', sort.direction)"
       >
-        Payer Id
+        {{ "TRANSACTIONS.PAYER_ID" | translate }}
       </th>
       <td mat-cell *matCellDef="let transaction">
         {{ transaction.payerPartyId }}
@@ -304,7 +306,7 @@
         name="Sort by Payee ID"
         (click)="onColumnSort('payeePartyId', sort.direction)"
       >
-        Payee Id
+        {{ "TRANSACTIONS.PAYEE_ID" | translate }}
       </th>
       <td mat-cell *matCellDef="let transaction">
         {{ transaction.payeePartyId }}
@@ -321,7 +323,7 @@
         name="Sort by Payee DFSP ID"
         (click)="onColumnSort('payeeDfspId', sort.direction)"
       >
-        Payee DFSP Id
+        {{ "TRANSACTIONS.PAYEE_DFSP_ID" | translate }}
       </th>
       <td mat-cell *matCellDef="let transaction">
         {{ transaction.payeeDfspId }}
@@ -338,7 +340,7 @@
         name="Sort by Payee DFSP Name"
         (click)="onColumnSort('payeeDfspName', sort.direction)"
       >
-        Payee DFSP Name
+        {{ "TRANSACTIONS.PAYEE_DFSP_NAME" | translate }}
       </th>
       <td mat-cell *matCellDef="let transaction">
         {{ displayDfspName(getDfpsEntry(transaction.payeeDfspId)) }}
@@ -355,7 +357,7 @@
         name="Sort by Amount"
         (click)="onColumnSort('amount', sort.direction)"
       >
-        Amount
+        {{ "TRANSACTIONS.AMOUNT" | translate }}
       </th>
       <td mat-cell *matCellDef="let transaction">{{ transaction.amount }}</td>
     </ng-container>
@@ -368,7 +370,7 @@
         category="Table Headers"
         name="Currency Header"
       >
-        Currency
+        {{ "TRANSACTIONS.CURRENCY" | translate }}
       </th>
       <td mat-cell *matCellDef="let transaction">{{ transaction.currency }}</td>
     </ng-container>
@@ -383,7 +385,7 @@
         name="Sort by Status"
         (click)="onColumnSort('status', sort.direction)"
       >
-        Status
+        {{ "TRANSACTIONS.STATUS" | translate }}
       </th>
       <td
         mat-cell

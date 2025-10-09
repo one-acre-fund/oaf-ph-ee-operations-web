@@ -13,7 +13,7 @@
     category="Transaction Management"
     name="Refund Button"
   >
-    Refund
+    {{ "TRANSACTION_DETAILS.REFUND" | translate }}
   </button>
 
   <button
@@ -24,7 +24,7 @@
     category="Transaction Management"
     name="BPMN Diagram Button"
   >
-    BPMN Diagram
+    {{ "TRANSACTION_DETAILS.BPMN_DIAGRAM" | translate }}
   </button>
 </div>
 
@@ -32,7 +32,9 @@
   <mat-grid-list cols="2" rowHeight="350">
     <mat-grid-tile [colspan]="1" [rowspan]="1">
       <mat-card class="mat-elevation-z8" *ngIf="datasource.transfer">
-        <mat-card-title>Payer</mat-card-title>
+        <mat-card-title>{{
+          "TRANSACTION_DETAILS.PAYER" | translate
+        }}</mat-card-title>
         <mat-card-content>
           <div fxLayout="row wrap" class="content">
             <div
@@ -41,7 +43,7 @@
               class="header"
               *ngIf="datasource.transfer.payerPartyIdType !== undefined"
             >
-              Id Type
+              {{ "TRANSACTION_DETAILS.ID_TYPE" | translate }}
             </div>
 
             <div
@@ -58,7 +60,7 @@
               class="header"
               *ngIf="datasource.transfer.payerPartyId !== undefined"
             >
-              Id
+              {{ "TRANSACTION_DETAILS.ID" | translate }}
             </div>
 
             <div
@@ -75,7 +77,7 @@
               class="header"
               *ngIf="datasource.transfer.payerDfspId !== undefined"
             >
-              DFSP Id
+              {{ "TRANSACTION_DETAILS.DFSP_ID" | translate }}
             </div>
 
             <div
@@ -92,7 +94,7 @@
               class="header"
               *ngIf="datasource.transfer.payerDfspId !== undefined"
             >
-              DFSP Name
+              {{ "TRANSACTION_DETAILS.DFSP_NAME" | translate }}
             </div>
 
             <div
@@ -161,7 +163,9 @@
     </mat-grid-tile>
     <mat-grid-tile [colspan]="1" [rowspan]="1">
       <mat-card class="mat-elevation-z8" *ngIf="datasource.transfer">
-        <mat-card-title>Payee</mat-card-title>
+        <mat-card-title>{{
+          "TRANSACTION_DETAILS.PAYEE" | translate
+        }}</mat-card-title>
         <mat-card-content>
           <div fxLayout="row wrap" class="content">
             <div
@@ -292,7 +296,9 @@
   <mat-grid-list cols="2" rowHeight="450">
     <mat-grid-tile [colspan]="1" [rowspan]="1">
       <mat-card class="mat-elevation-z8" *ngIf="datasource.transfer">
-        <mat-card-title>Transfer</mat-card-title>
+        <mat-card-title>{{
+          "TRANSACTION_DETAILS.TRANSFER" | translate
+        }}</mat-card-title>
         <mat-card-content>
           <div fxLayout="row wrap" class="content">
             <div
@@ -435,7 +441,9 @@
     </mat-grid-tile>
     <mat-grid-tile [colspan]="1" [rowspan]="1">
       <mat-card class="mat-elevation-z8" *ngIf="datasource.transfer">
-        <mat-card-title>Fees</mat-card-title>
+        <mat-card-title>{{
+          "TRANSACTION_DETAILS.FEES" | translate
+        }}</mat-card-title>
         <mat-card-content>
           <div fxLayout="row wrap" class="content">
             <div

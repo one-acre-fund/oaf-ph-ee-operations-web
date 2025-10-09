@@ -3,7 +3,7 @@
     mat-icon-button
     *ngIf="!sidenavCollapsed"
     (click)="toggleSidenav()"
-    matTooltip="Toggle Hide/Open"
+    matTooltip="{{ 'TOOLBAR.TOGGLE_SIDENAV' | translate }}"
     matomoTrack
     category="Navigation"
     action="Toggle Sidenav"
@@ -16,7 +16,7 @@
     mat-icon-button
     *ngIf="sidenav.opened"
     (click)="toggleSidenavCollapse()"
-    matTooltip="Toggle Collapse"
+    matTooltip="{{ 'TOOLBAR.TOGGLE_COLLAPSE' | translate }}"
     fxHide.lt-md="true"
     matomoTrack
     category="Navigation"
@@ -39,7 +39,7 @@
         name="Payment Hub EE"
       >
         <fa-icon class="mr-05" icon="money-bill-alt" size="lg"></fa-icon>
-        Payment Hub EE
+        {{ "TOOLBAR.PAYMENT_HUB_EE" | translate }}
       </a>
 
       <a
@@ -54,7 +54,7 @@
         name="Admin"
       >
         <fa-icon class="mr-05" icon="shield-alt" size="lg"></fa-icon>
-        Admin
+        {{ "TOOLBAR.ADMIN" | translate }}
       </a>
     </span>
   </nav>
@@ -74,7 +74,7 @@
     [@fadeInOut]
   >
     <mat-form-field class="search">
-      <mat-label>Search</mat-label>
+      <mat-label>{{ "TOOLBAR.SEARCH" | translate }}</mat-label>
       <input matInput type="text" />
     </mat-form-field>
   </div>
@@ -107,7 +107,7 @@
   <button
     mat-icon-button
     class="ml-1"
-    matTooltip="Notifications"
+    matTooltip="{{ 'TOOLBAR.NOTIFICATIONS' | translate }}"
     matomoTrack
     category="Navigation"
     action="Click"
@@ -131,8 +131,12 @@
 </mat-toolbar>
 
 <mat-menu #adminMenu="matMenu" [overlapTrigger]="false">
-  <button mat-menu-item [routerLink]="['/users']">Users</button>
-  <button mat-menu-item [routerLink]="['/system']">System</button>
+  <button mat-menu-item [routerLink]="['/users']">
+    {{ "TOOLBAR.USERS" | translate }}
+  </button>
+  <button mat-menu-item [routerLink]="['/system']">
+    {{ "TOOLBAR.SYSTEM" | translate }}
+  </button>
 </mat-menu>
 
 <!-- Application User Help Menu -->
@@ -141,12 +145,12 @@
     <mat-icon>
       <fa-icon icon="cog" size="sm"></fa-icon>
     </mat-icon>
-    <span>Settings</span>
+    <span>{{ "TOOLBAR.SETTINGS" | translate }}</span>
   </button>
   <button mat-menu-item (click)="logout()">
     <mat-icon>
       <fa-icon icon="sign-out-alt" size="sm"></fa-icon>
     </mat-icon>
-    <span>Sign Out</span>
+    <span>{{ "TOOLBAR.SIGN_OUT" | translate }}</span>
   </button>
 </mat-menu>
