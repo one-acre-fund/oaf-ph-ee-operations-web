@@ -13,11 +13,11 @@ export let environment = {
   serverUrl: '',
   oauth: {
     enabled: true,  // For connecting to Mifos X using OAuth2 Authentication change the value to true
-    serverUrl: (window as any)?.env?.keycloakBaseUrl || 'https://accounts.oneacrefund.org',
+    serverUrl: (window as any)?.env?.keycloakBaseUrl || 'https://accounts.qa.oneacrefund.org',
     realm: (window as any)?.env?.keycloakRealm || 'OneAcreFund',
     client_id: (window as any)?.env?.keycloakClientId || 'paymenthub',
-    tokenUrl: (window as any)?.env?.tokenUrl || `https://accounts.oneacrefund.org/auth/realms/OneAcreFund/protocol/openid-connect/token`,
-    redirectUri: (window as any)?.env?.redirectUri || 'https://ph-web.oneacrefund.org/home'
+    tokenUrl: (window as any)?.env?.tokenUrl || `https://accounts.qa.oneacrefund.org/auth/realms/OneAcreFund/protocol/openid-connect/token`,
+    redirectUri: (window as any)?.env?.redirectUri || 'https://ph-web.qa.oneacrefund.org/home'
   },
   defaultLanguage: 'en-US',
   supportedLanguages: ['en-US', 'fr-FR'],
