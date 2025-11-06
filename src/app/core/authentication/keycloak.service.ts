@@ -25,8 +25,7 @@ export class KeycloakAuthService {
           clientId: environment.oauth.client_id
         },
         initOptions: {
-          onLoad: 'check-sso',
-          silentCheckSsoRedirectUri: window.location.origin + '/assets/silent-check-sso.html',
+          onLoad: 'login-required',
           checkLoginIframe: false,
           pkceMethod: 'S256'
         },
@@ -54,6 +53,8 @@ export class KeycloakAuthService {
     this.keycloakService.login({
       redirectUri: environment.oauth.redirectUri,
       prompt: 'login'
+    }).catch(error => {
+      console.error('Keycloak login failed:', error);
     });
   }
 
@@ -79,8 +80,8 @@ export class KeycloakAuthService {
   /**
    * Get user profile
    */
-  getUserProfile(): Observable<KeycloakProfile> {
-    return from(this.keycloakService.loadUserProfile().catch(error => {
+  getUserProfile(): Observable<KeycloakProfile | null> {
+    return from(this.keycloakService.loadUserProfile().catch((error: any): KeycloakProfile | null => {
       console.warn('Failed to load user profile:', error);
       return null;
     }));

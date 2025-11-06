@@ -141,13 +141,17 @@ export class AuthenticationService {
     }
   }
 
-  hasAccess(permission: String): Boolean {
-    const credentials = JSON.parse(this.getStoreageItem(this.credentialsStorageKey));
-    const decoded = jwt_decode(credentials.accessToken) as any;
-    const authorities = decoded['authorities'];
-    return authorities.includes('ALL_FUNCTIONS') || authorities.includes(permission);
+hasAccess(permission: string): boolean {
+  const credentials = JSON.parse(this.getStoreageItem(this.credentialsStorageKey));
+  if (!credentials || !credentials.accessToken) {
+    return false;
   }
-
+  const decoded: any = jwt_decode(credentials.accessToken);
+  const realmRoles: string[] = decoded?.realm_access?.roles || [];
+  const resourceRoles: string[] = []
+  const allRoles = [...realmRoles, ...resourceRoles];
+  return allRoles.includes('ALL_FUNCTIONS') || allRoles.includes(permission);
+}
   /**
    * Authenticates the user.
    * @param {LoginContext} loginContext Login parameters.
@@ -300,7 +304,7 @@ export class AuthenticationService {
   }
 
   /**
-   * Logs out the authenticated user and clears the credentials from storage.
+   * Logs out the authenticated user and clears the credentials from storage and cache.
    * @returns {Observable<boolean>} True if the user was logged out successfully.
    */
   logout(): Observable<boolean> {
@@ -312,6 +316,15 @@ export class AuthenticationService {
 
     if (environment.oauth.enabled) {
       this.keycloakAuthService.logout();
+
+      localStorage.clear();
+      sessionStorage.clear();
+
+      document.cookie.split(";").forEach(cookie => {
+        const eqPos = cookie.indexOf("=");
+        const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+        document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
+      });
     }
 
     this.loggedIn = false;

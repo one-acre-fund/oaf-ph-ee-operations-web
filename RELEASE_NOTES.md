@@ -7,6 +7,7 @@
         * [CP-3750] - Rename Paygop Paybill to Fineract Paybill
         * [CP-3281] - Sentry Integration
         * [CP-3662] - Add Keycloak authentication
+        * [CP-3922] - Fix Keycloak authentication redirection on login
 
 ## Version 1.1.7
 
