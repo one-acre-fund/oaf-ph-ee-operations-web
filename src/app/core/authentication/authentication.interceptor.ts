@@ -71,7 +71,7 @@ export class AuthenticationInterceptor implements HttpInterceptor {
           catchError(err => {
           
             this.authService.logout();
-            this.router.navigate(['/'], { replaceUrl: true });
+            this.router.navigate(['/home'], { replaceUrl: true });
             return throwError(err);
           }),
           switchMap((authResponse) => {

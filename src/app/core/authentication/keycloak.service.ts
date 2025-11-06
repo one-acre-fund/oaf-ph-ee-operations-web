@@ -26,8 +26,8 @@ export class KeycloakAuthService {
         },
         initOptions: {
           onLoad: 'login-required',
-          checkLoginIframe: false,
-          pkceMethod: 'S256'
+          checkLoginIframe: true,
+          redirectUri: `${environment.oauth.redirectUri}`,
         },
         loadUserProfileAtStartUp: false
       });
