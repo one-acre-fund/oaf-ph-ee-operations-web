@@ -47,7 +47,7 @@ export class AuthenticationInterceptor implements HttpInterceptor {
     if (request.url.indexOf('assets') !== -1 || 
         request.url.indexOf('/oauth/token') !== -1 ||
         request.url.indexOf('keycloak') !== -1 ||
-        request.url.match("/accounts\..*\.oneacrefund\.org/")) {
+        /accounts\..*\.oneacrefund\.org/.test(request.url)) {
       return next.handle(request);
     }
 

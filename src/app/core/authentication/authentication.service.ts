@@ -142,15 +142,15 @@ export class AuthenticationService {
   }
 
 hasAccess(permission: string): boolean {
-  const credentials = JSON.parse(this.getStoreageItem(this.credentialsStorageKey));
-  if (!credentials || !credentials.accessToken) {
+  const credentials = JSON.parse(this.getStoreageItem(this.credentialsStorageKey) ?? '{}');
+  if (!credentials?.accessToken) {
     return false;
   }
   const decoded: any = jwt_decode(credentials.accessToken);
   const realmRoles: string[] = decoded?.realm_access?.roles || [];
-  const resourceRoles: string[] = []
-  const allRoles = [...realmRoles, ...resourceRoles];
-  return allRoles.includes('ALL_FUNCTIONS') || allRoles.includes(permission);
+  const resourceRoles: string[] = [];
+  const allRoles = new Set([...realmRoles, ...resourceRoles]);
+  return allRoles.has('ALL_FUNCTIONS') || allRoles.has(permission);
 }
   /**
    * Authenticates the user.
@@ -320,11 +320,11 @@ hasAccess(permission: string): boolean {
       localStorage.clear();
       sessionStorage.clear();
 
-      document.cookie.split(";").forEach(cookie => {
+      for (const cookie of document.cookie.split(";")) {
         const eqPos = cookie.indexOf("=");
-        const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
-        document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
-      });
+        const name = eqPos > -1 ? cookie.substring(0, eqPos) : cookie;
+        document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/`;
+      }
     }
 
     this.loggedIn = false;
