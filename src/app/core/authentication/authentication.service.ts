@@ -146,11 +146,16 @@ hasAccess(permission: string): boolean {
   if (!credentials?.accessToken) {
     return false;
   }
-  const decoded: any = jwt_decode(credentials.accessToken);
-  const realmRoles: string[] = decoded?.realm_access?.roles || [];
-  const resourceRoles: string[] = [];
-  const allRoles = new Set([...realmRoles, ...resourceRoles]);
-  return allRoles.has('ALL_FUNCTIONS') || allRoles.has(permission);
+    try {
+      const decoded: any = jwt_decode(credentials.accessToken);
+      const realmRoles: string[] = decoded?.realm_access?.roles || [];
+      const resourceRoles: string[] = [];
+      const allRoles = [...realmRoles, ...resourceRoles];
+      return allRoles.includes('ALL_FUNCTIONS') || allRoles.includes(permission);
+    } catch (error) {
+      console.warn('Failed to decode access token:', error);
+      return false;
+    }
 }
   /**
    * Authenticates the user.
