@@ -149,7 +149,7 @@ export class ToolbarComponent implements OnInit {
 
     this.authenticationService
       .logout()
-      .subscribe(() => this.router.navigate(['/login'], { replaceUrl: true }));
+      .subscribe(() => this.router.navigate(['/home'], { replaceUrl: true }));
   }
 
   /**

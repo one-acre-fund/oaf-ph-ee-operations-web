@@ -47,7 +47,7 @@ export class AuthenticationInterceptor implements HttpInterceptor {
     if (request.url.indexOf('assets') !== -1 || 
         request.url.indexOf('/oauth/token') !== -1 ||
         request.url.indexOf('keycloak') !== -1 ||
-        request.url.indexOf('accounts.integration.oneacrefund.org') !== -1) {
+        /accounts\..*\.oneacrefund\.org/.test(request.url)) {
       return next.handle(request);
     }
 
@@ -71,7 +71,7 @@ export class AuthenticationInterceptor implements HttpInterceptor {
           catchError(err => {
           
             this.authService.logout();
-            this.router.navigate(['/login'], { replaceUrl: true });
+            this.router.navigate(['/home'], { replaceUrl: true });
             return throwError(err);
           }),
           switchMap((authResponse) => {

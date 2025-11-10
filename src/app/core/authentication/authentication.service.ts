@@ -74,7 +74,7 @@ export class AuthenticationService {
   init() {
     this.rememberMe = false;
     const savedCredentials = JSON.parse(
-      this.getStoreageItem(this.credentialsStorageKey)
+      this.getStorageItem(this.credentialsStorageKey)
     );
 
     if (!savedCredentials) {
@@ -93,7 +93,7 @@ export class AuthenticationService {
   }
 
   private setupAuthorizationToken(savedCredentials: any): void {
-    const oAuthTokenDetailsString = this.getStoreageItem(this.oAuthTokenDetailsStorageKey);
+    const oAuthTokenDetailsString = this.getStorageItem(this.oAuthTokenDetailsStorageKey);
 
     if (!oAuthTokenDetailsString) {
       this.authorizationToken = `Basic ${savedCredentials.base64EncodedAuthenticationKey}`;
@@ -141,13 +141,22 @@ export class AuthenticationService {
     }
   }
 
-  hasAccess(permission: String): Boolean {
-    const credentials = JSON.parse(this.getStoreageItem(this.credentialsStorageKey));
-    const decoded = jwt_decode(credentials.accessToken) as any;
-    const authorities = decoded['authorities'];
-    return authorities.includes('ALL_FUNCTIONS') || authorities.includes(permission);
+hasAccess(permission: string): boolean {
+  const credentials = JSON.parse(this.getStorageItem(this.credentialsStorageKey) ?? '{}');
+  if (!credentials?.accessToken) {
+    return false;
   }
-
+  try {
+    const decoded: any = jwt_decode(credentials.accessToken);
+    const realmRoles: string[] = decoded?.realm_access?.roles || [];
+    const resourceRoles: string[] = [];
+    const allRoles = [...realmRoles, ...resourceRoles];
+    return allRoles.includes('ALL_FUNCTIONS') || allRoles.includes(permission);
+  } catch (error) {
+    console.warn('Failed to decode access token:', error);
+    return false;
+  }
+}
   /**
    * Authenticates the user.
    * @param {LoginContext} loginContext Login parameters.
@@ -235,7 +244,7 @@ export class AuthenticationService {
     }, refreshTime * 1000);
   }
 
-  private getStoreageItem(item: string): any {
+  private getStorageItem(item: string): any {
     return sessionStorage.getItem(item) || localStorage.getItem(item);
   }
 
@@ -243,11 +252,11 @@ export class AuthenticationService {
    * Refreshes the oauth2 authorization token.
    */
   public refreshOAuthAccessToken() {
-    const oAuth = this.getStoreageItem(this.oAuthTokenDetailsStorageKey);
+    const oAuth = this.getStorageItem(this.oAuthTokenDetailsStorageKey);
     const oAuthData = JSON.parse(oAuth);
 
     const oAuthRefreshToken = oAuthData.refresh_token;
-    this.tenantId = JSON.parse(this.getStoreageItem(this.credentialsStorageKey)).tenantId;
+    this.tenantId = JSON.parse(this.getStorageItem(this.credentialsStorageKey)).tenantId;
     let httpParams = new HttpParams();
     httpParams = httpParams.set('grant_type', 'refresh_token');
     httpParams = httpParams.set('refresh_token', oAuthRefreshToken);
@@ -264,7 +273,7 @@ export class AuthenticationService {
         this.storage.setItem(this.oAuthTokenDetailsStorageKey, JSON.stringify(tokenWithTimestamp));
         this.authorizationToken = `Bearer ${tokenResponse.access_token}`;
         this.refreshTokenOnExpiry(tokenResponse.expires_in);
-        const credentials = JSON.parse(this.getStoreageItem(this.credentialsStorageKey));
+        const credentials = JSON.parse(this.getStorageItem(this.credentialsStorageKey));
         credentials.accessToken = tokenResponse.access_token;
         this.storage.setItem(this.credentialsStorageKey, JSON.stringify(credentials));
         return true;
@@ -300,7 +309,7 @@ export class AuthenticationService {
   }
 
   /**
-   * Logs out the authenticated user and clears the credentials from storage.
+   * Logs out the authenticated user and clears the credentials from storage and cache.
    * @returns {Observable<boolean>} True if the user was logged out successfully.
    */
   logout(): Observable<boolean> {
@@ -312,6 +321,16 @@ export class AuthenticationService {
 
     if (environment.oauth.enabled) {
       this.keycloakAuthService.logout();
+
+      localStorage.removeItem(this.credentialsStorageKey);
+      localStorage.removeItem(this.oAuthTokenDetailsStorageKey);
+      sessionStorage.removeItem(this.credentialsStorageKey);
+      sessionStorage.removeItem(this.oAuthTokenDetailsStorageKey);
+
+      const authCookies = ['KEYCLOAK_SESSION', 'KEYCLOAK_IDENTITY', 'AUTH_SESSION_ID'];
+      authCookies.forEach(name => {
+        document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/`;
+      });
     }
 
     this.loggedIn = false;
@@ -328,7 +347,7 @@ export class AuthenticationService {
       return await this.keycloakAuthService.isAuthenticated();
     } else {
       return !!(JSON.parse(
-        sessionStorage.getItem(this.credentialsStorageKey) || this.getStoreageItem(this.credentialsStorageKey)
+        sessionStorage.getItem(this.credentialsStorageKey) || this.getStorageItem(this.credentialsStorageKey)
       ));
     }
   }
@@ -338,7 +357,7 @@ export class AuthenticationService {
    * @returns {Credentials} The user credentials if the user is authenticated otherwise null.
    */
   getCredentials(): Credentials | null {
-    return JSON.parse(this.getStoreageItem(this.credentialsStorageKey));
+    return JSON.parse(this.getStorageItem(this.credentialsStorageKey));
   }
 
   /**
