@@ -149,7 +149,6 @@ hasAccess(permission: string): boolean {
   try {
     const decoded: any = jwt_decode(credentials.accessToken);
     const realmRoles: string[] = decoded?.realm_access?.roles || [];
-    console.log('Decoded roles:', realmRoles);
     const resourceRoles: string[] = [];
     const allRoles = [...realmRoles, ...resourceRoles];
     return allRoles.includes('ALL_FUNCTIONS') || allRoles.includes(permission);
@@ -322,7 +321,7 @@ hasAccess(permission: string): boolean {
 
     if (environment.oauth.enabled) {
       this.keycloakAuthService.logout();
-      
+
       localStorage.removeItem(this.credentialsStorageKey);
       localStorage.removeItem(this.oAuthTokenDetailsStorageKey);
       sessionStorage.removeItem(this.credentialsStorageKey);
