@@ -43,7 +43,8 @@ export class AddRoleComponent implements OnInit {
   createRoleForm() {
     this.roleForm = this.formBuilder.group({
       'name': ['', Validators.required],
-      'description': ['', Validators.required]
+      'description': ['', Validators.required],
+      'disabled': false
     });
   }
 
@@ -52,9 +53,14 @@ export class AddRoleComponent implements OnInit {
    * if successful redirects back to roles and permission.
    */
   submit() {
-    this.systemService.createRole(this.roleForm.value)
-      .subscribe((response: any) => {
-        this.router.navigate(['../'], { relativeTo: this.route });
+    const roleData = {
+    ...this.roleForm.value,
+    name: this.roleForm.value.name.trim().toLowerCase()
+  };
+  
+  this.systemService.createRole(roleData)
+    .subscribe((response: any) => {
+      this.router.navigate(['../'], { relativeTo: this.route });
     });
   }
 

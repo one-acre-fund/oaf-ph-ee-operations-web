@@ -39,7 +39,9 @@
     "STATUS": "Status",
     "COMPLETED": "Completed",
     "FAILED": "Failed",
-    "IN_PROGRESS": "In Progress"
+    "IN_PROGRESS": "In Progress",
+    "ACTIONS": "Actions",
+    "CONFIRM": "Confirm"
   },
   "VALIDATION": {
     "USERNAME_REQUIRED": "Username is required",
@@ -130,9 +132,11 @@
   },
   "SYSTEM": {
     "TITLE": "System",
-    "ROLES_PERMISSIONS": "Roles and Permissions",
+    "MANAGE_ROLES_PERMISSIONS": "Roles and Permissions",
+    "MANAGE_ROLES_PERMISSIONS_DESCRIPTION": "Define or modify roles and associated permissions",
     "ADD_ROLE": "Add Role",
     "AUDIT_TRAILS": "Audit Trails",
+    "AUDIT_TRAILS_DESCRIPTION": "View and manage audit trails",
     "VIEW_AUDIT": "View Audit"
   },
   "USERS": {
@@ -146,7 +150,10 @@
     "EMAIL": "Email",
     "STATUS": "Status",
     "ACTIVE": "Active",
-    "DISABLED": "Disabled"
+    "DISABLED": "Disabled",
+    "OVERRIDE_PASSWORD_EXPIRY": "Override Password Expiry",
+    "AUTO_GENERATE_PASSWORD": "Auto-generate Password",
+    "ROLES": "Roles"
   },
   "USER_DETAILS": {
     "EDIT": "Edit",
@@ -232,5 +239,20 @@
   },
   "ABOUT_TEXT": {
     "MIFOS_DESCRIPTION": "Mifos X is designed by the Mifos Initiative. A global community that aims to speed the elimination of poverty by enabling Organizations to more effectively and efficiently deliver responsible financial services to the world's poor and unbanked. Sounds interesting? Get involved!"
+  },
+  "ROLES": {
+    "NAME": "Name",
+    "DESCRIPTION": "Description",
+    "DISABLED": "Disabled",
+    "ENABLED": "Enabled",
+    "ADD_ROLE": "Add Role",
+    "EDIT_ROLE": "Edit Role",
+    "DISABLE_ROLE": "Disable Role",
+    "ENABLE_ROLE": "Enable Role",
+    "PERMISSIONS": "Permissions",
+    "SELECT_ALL": "Select All",
+    "DESELECT_ALL": "Deselect All",
+    "DELETE_ROLE": "Delete Role",
+    "CONFIRM_DELETE": "Are you sure you want to delete this role? This action is irreversible."
   }
 }

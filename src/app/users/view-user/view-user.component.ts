@@ -12,6 +12,7 @@ import { DeleteDialogComponent } from 'app/shared/delete-dialog/delete-dialog.co
 import { ConfirmDialogComponent } from 'app/shared/confirm-dialog/confirm-dialog.component';
 import { FormfieldBase } from 'app/shared/form-dialog/formfield/model/formfield-base';
 import { InputBase } from 'app/shared/form-dialog/formfield/model/input-base';
+import { SelectBase } from 'app/shared/form-dialog/formfield/model/select-base';
 import { FormDialogComponent } from 'app/shared/form-dialog/form-dialog.component';
 import { AlertService } from 'app/core/alert/alert.service';
 
@@ -27,6 +28,8 @@ export class ViewUserComponent implements OnInit {
   /** User Data. */
   userData: any;
   amsList: any[];
+  rolesData: any[];
+  userRoles: any[] = [];
 
   /**
    * Retrieves the user data from `resolve`.
@@ -72,6 +75,15 @@ export class ViewUserComponent implements OnInit {
 
     this.usersService.fetchAmsList().subscribe((res) => {
       this.amsList = res;
+    });
+
+    // Fetch roles data
+    this.usersService.getUsersTemplate().subscribe((roles) => {
+      this.rolesData = roles;
+    });
+
+    this.usersService.getUserRoles(this.userData.id).subscribe((roles) => {
+      this.userRoles = roles;
     });
   }
 
@@ -489,19 +501,36 @@ export class ViewUserComponent implements OnInit {
       1
     );
 
+    // Get current role IDs for pre-population
+    const currentRoleIds = this.userRoles ? this.userRoles.map((role: any) => role.id) : [];
+
     const formfields: FormfieldBase[] = [
       new InputBase({
         controlName: 'firstName',
         label: 'First Name',
+        value: this.userData.firstname,
         type: 'text',
         required: true,
       }),
       new InputBase({
         controlName: 'lastName',
         label: 'Last Name',
+        value: this.userData.lastname,
         type: 'text',
         required: true,
       }),
+      new SelectBase({
+        controlName: 'roles',
+        label: 'Roles',
+        value: currentRoleIds,
+        options: {
+          label: 'name',
+          value: 'id',
+          data: this.rolesData || []
+        },
+        required: true,
+        multiple: true
+      })
     ];
     const data = {
       title: 'Edit User Details',
@@ -524,20 +553,58 @@ export class ViewUserComponent implements OnInit {
           firstname: response.data.value.firstName,
           lastname: response.data.value.lastName,
         };
+        
+        // Update user details
         this.usersService.editUserDetails(this.userData.id, appUser).subscribe(
           (res) => {
-            // Track successful user details update
-            this.matomoService.trackEvent(
-              'User Management',
-              'User Details Updated',
-              `User ID: ${this.userData.id}`,
-              1
-            );
-            this.alertService.alert({
-              type: 'Edit Success',
-              message: `Edit User Request was successful!`,
-            });
-            this.reloadCurrentUserData();
+            // Update roles if changed
+            const newRoleIds = response.data.value.roles;
+            if (JSON.stringify(newRoleIds) !== JSON.stringify(currentRoleIds)) {
+              const rolesData = { entityIds: newRoleIds };
+              this.usersService.assignRoles(this.userData.id, rolesData).subscribe(
+                (roleResponse: any) => {
+                  // Track successful user details and roles update
+                  this.matomoService.trackEvent(
+                    'User Management',
+                    'User Details and Roles Updated',
+                    `User ID: ${this.userData.id}`,
+                    1
+                  );
+                  this.alertService.alert({
+                    type: 'Edit Success',
+                    message: `Edit User Request was successful!`,
+                  });
+                  this.reloadCurrentUserData();
+                },
+                (roleError: any) => {
+                  // Track role assignment failure
+                  this.matomoService.trackEvent(
+                    'User Management',
+                    'Role Assignment Failed',
+                    `User ID: ${this.userData.id}`,
+                    1
+                  );
+                  this.alertService.alert({
+                    type: 'Edit Error',
+                    message: `User updated but role assignment failed`,
+                  });
+                  this.reloadCurrentUserData();
+                }
+              );
+            } else {
+              // Track successful user details update (no role change)
+              this.matomoService.trackEvent(
+                'User Management',
+                'User Details Updated',
+                `User ID: ${this.userData.id}`,
+                1
+              );
+              this.alertService.alert({
+                type: 'Edit Success',
+                message: `Edit User Request was successful!`,
+              });
+              this.reloadCurrentUserData();
+            }
           },
           (err) => {
             // Track user details update failure
@@ -576,6 +643,9 @@ export class ViewUserComponent implements OnInit {
 
     this.usersService.getUser(this.userData.id).subscribe((res) => {
       this.userData = res;
+      this.usersService.getUserRoles(this.userData.id).subscribe((roles) => {
+        this.userRoles = roles;
+      });
     });
   }
 

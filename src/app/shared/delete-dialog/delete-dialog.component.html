@@ -1,7 +1,7 @@
-<h1 mat-dialog-title>{{ "DIALOGS.DELETE" | translate }}</h1>
+<h1 mat-dialog-title>{{ "COMMON.DELETE" | translate }}</h1>
 <div mat-dialog-content>
   <p>
-    {{ "DIALOGS.DELETE_CONFIRMATION" | translate }} {{ data.deleteContext }}?
+    {{ "COMMON.CONFIRM" | translate }} {{ data.deleteContext }}?
   </p>
 </div>
 <mat-dialog-actions align="end">
@@ -9,6 +9,6 @@
     {{ "COMMON.CANCEL" | translate }}
   </button>
   <button mat-raised-button color="warn" [mat-dialog-close]="{ delete: true }">
-    {{ "DIALOGS.CONFIRM" | translate }}
+    {{ "COMMON.CONFIRM" | translate }}
   </button>
 </mat-dialog-actions>

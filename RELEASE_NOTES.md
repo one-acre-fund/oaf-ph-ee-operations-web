@@ -1,5 +1,9 @@
 # Release Notes
 
+## Version 1.1.9
+
+        * [CP-3675] - Role management and user role assignment
+
 ## Version 1.1.8
 
         * [CP-3621] - Matomo integration

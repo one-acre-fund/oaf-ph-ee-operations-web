@@ -30,7 +30,57 @@ export class SystemService {
    * @returns {Observable<any>}
    */
   createRole(role: any): Observable<any> {
-    return this.http.post('/roles', role);
+    return this.http.post('/role', role);
+  }
+
+  /**
+   * @param {string} roleId Role ID.
+   * @param {any} role Role to be updated.
+   * @returns {Observable<any>}
+   */
+  updateRole(roleId: string, role: any): Observable<any> {
+    return this.http.put(`/role/${roleId}`, role);
+  }
+
+  /**
+   * @param {string} roleId Role ID.
+   * @returns {Observable<any>}
+   */
+  getRole(roleId: string): Observable<any> {
+    return this.http.get(`/role/${roleId}/permissions`);
+  }
+
+  /**
+   * @param roleId Role ID.
+   * @returns {Observable<any>}
+   */
+  deleteRole(roleId: string): Observable<any> {
+    return this.http.delete(`/role/${roleId}`);
+  }
+
+  /**
+   * @param {string} roleId Role ID.
+   * @param {any} permissionData Permission data to update.
+   * @returns {Observable<any>}
+   */
+  updateRolePermission(roleId: string, permissionData: any): Observable<any> {
+    return this.http.put(`/role/${roleId}/permissions`, permissionData);
+  }
+
+  /**
+   * @param {string} roleId Role ID.
+   * @returns {Observable<any>}
+   */
+  enableRole(roleId: string): Observable<any> {
+    return this.http.post(`/role/${roleId}?command=enable`, {});
+  }
+
+  /**
+   * @param {string} roleId Role ID.
+   * @returns {Observable<any>}
+   */
+  disableRole(roleId: string): Observable<any> {
+    return this.http.post(`/role/${roleId}?command=disable`, {});
   }
 
   /**

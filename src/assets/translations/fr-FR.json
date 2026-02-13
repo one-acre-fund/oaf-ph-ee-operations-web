@@ -39,7 +39,9 @@
         "STATUS": "Statut",
         "COMPLETED": "Terminé",
         "FAILED": "Échoué",
-        "IN_PROGRESS": "En cours"
+        "IN_PROGRESS": "En cours",
+        "ACTIONS": "Actes",
+        "CONFIRM": "Confirmer"
     },
     "VALIDATION": {
         "USERNAME_REQUIRED": "Le nom d'utilisateur est requis",
@@ -130,10 +132,12 @@
     },
     "SYSTEM": {
         "TITLE": "Système",
-        "ROLES_PERMISSIONS": "Rôles et Permissions",
+        "MANAGE_ROLES_PERMISSIONS": "Rôles et Permissions",
+        "MANAGE_ROLES_PERMISSIONS_DESCRIPTION": "Définir ou modifier les rôles et les permissions associées",
         "ADD_ROLE": "Ajouter un Rôle",
         "AUDIT_TRAILS": "Pistes d'Audit",
-        "VIEW_AUDIT": "Voir l'Audit"
+        "VIEW_AUDIT": "Voir l'Audit",
+        "AUDIT_TRAILS_DESCRIPTION": "Voir et gérer les pistes d'audit"
     },
     "USERS": {
         "TITLE": "Utilisateurs",
@@ -146,7 +150,10 @@
         "EMAIL": "Email",
         "STATUS": "Statut",
         "ACTIVE": "Actif",
-        "DISABLED": "Désactivé"
+        "DISABLED": "Désactivé",
+        "OVERRIDE_PASSWORD_EXPIRY": "Remplacer l'Expiration du Mot de Passe",
+        "AUTO_GENERATE_PASSWORD": "Générer Automatiquement le Mot de Passe",
+        "ROLES": "Rôles"
     },
     "USER_DETAILS": {
         "EDIT": "Modifier",
@@ -232,5 +239,20 @@
     },
     "ABOUT_TEXT": {
         "MIFOS_DESCRIPTION": "Mifos X est conçu par l'Initiative Mifos. Une communauté mondiale qui vise à accélérer l'élimination de la pauvreté en permettant aux organisations de fournir plus efficacement et efficacement des services financiers responsables aux pauvres et aux non-bancarisés du monde. Cela semble intéressant ? Participez !"
+    },
+    "ROLES": {
+        "NAME": "Nom",
+        "DESCRIPTION": "Description",
+        "DISABLED": "Désactivé",
+        "ENABLED": "Activé",
+        "ADD_ROLE": "Ajouter un Rôle",
+        "EDIT_ROLE": "Modifier le Rôle",
+        "DISABLE_ROLE": "Désactiver le Rôle",
+        "ENABLE_ROLE": "Activer le Rôle",
+        "PERMISSIONS": "Permissions",
+        "SELECT_ALL": "Sélectionner Tout",
+        "DESELECT_ALL": "Désélectionner Tout",
+        "DELETE_ROLE": "Supprimer le Rôle",
+        "CONFIRM_DELETE": "Êtes-vous sûr de vouloir supprimer ce rôle ? Cette action est irréversible."
     }
 }
