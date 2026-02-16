@@ -162,14 +162,15 @@ export class ViewRoleComponent implements OnInit {
    * Backups the valued
    */
   backupCheckValues() {
-    this.backupform = _.cloneDeep(this.formGroup) as UntypedFormGroup;
+    this.backupform = this.formGroup.getRawValue();
   }
 
   /**
    * Restores the checkboxes to previous data on clicking cancel
    */
   restoreCheckboxes() {
-    this.formGroup = _.cloneDeep(this.backupform) as UntypedFormGroup;
+    this.formGroup.patchValue(this.backupform);
+    this.formGroup.controls.roster.disable();
   }
 
   isRoleEnable(value: any) {

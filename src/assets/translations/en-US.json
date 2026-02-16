@@ -41,7 +41,8 @@
     "FAILED": "Failed",
     "IN_PROGRESS": "In Progress",
     "ACTIONS": "Actions",
-    "CONFIRM": "Confirm"
+    "CONFIRM": "Confirm",
+    "DELETE_CONFIRMATION": "Are you sure you want to delete"
   },
   "VALIDATION": {
     "USERNAME_REQUIRED": "Username is required",

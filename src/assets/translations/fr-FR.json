@@ -40,8 +40,9 @@
         "COMPLETED": "Terminé",
         "FAILED": "Échoué",
         "IN_PROGRESS": "En cours",
-        "ACTIONS": "Actes",
-        "CONFIRM": "Confirmer"
+        "ACTIONS": "Actions",
+        "CONFIRM": "Confirmer",
+        "DELETE_CONFIRMATION": "Êtes-vous sûr de vouloir supprimer"
     },
     "VALIDATION": {
         "USERNAME_REQUIRED": "Le nom d'utilisateur est requis",
