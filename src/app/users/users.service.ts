@@ -126,4 +126,12 @@ export class UsersService {
    editUserDetails(id: any, appUser: any): Observable<any> {
     return this.http.put('/api/v1/user/' + id, appUser);
   }
+
+  /**
+   * @param {string} userId user ID of user.
+   * @returns {Observable<any>} User's roles.
+   */
+  getUserRoles(userId: string): Observable<any> {
+    return this.http.get(`/api/v1/user/${userId}/roles`);
+  }
 }

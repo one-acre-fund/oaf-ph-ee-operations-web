@@ -3,7 +3,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatLegacyPaginator as MatPaginator } from '@angular/material/legacy-paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatLegacyTableDataSource as MatTableDataSource } from '@angular/material/legacy-table';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 /** rxjs Imports */
 import { of } from 'rxjs';
@@ -21,7 +21,7 @@ export class RolesAndPermissionsComponent implements OnInit {
   /** Role data. */
   roleData: any;
   /** Columns to be displayed in roles and permissions table. */
-  displayedColumns: string[] = ['name', 'description', 'disabled'];
+  displayedColumns: string[] = ['name', 'description', 'disabled', 'actions'];
   /** Data source for roles and permissions table. */
   dataSource: MatTableDataSource<any>;
 
@@ -33,8 +33,9 @@ export class RolesAndPermissionsComponent implements OnInit {
   /**
    * Retrieves the roles data from `resolve`.
    * @param {ActivatedRoute} route Activated Route.
+   * @param {Router} router Router for navigation.
    */
-  constructor(private route: ActivatedRoute) {
+  constructor(private route: ActivatedRoute, private router: Router) {
     this.route.data.subscribe(( data: { roles: any }) => {
       this.roleData = data.roles;
     });
@@ -63,5 +64,22 @@ export class RolesAndPermissionsComponent implements OnInit {
     this.dataSource.paginator = this.paginator;
     this.dataSource.sort = this.sort;
   }
+
+  /**
+   * Navigates to view role page
+   * @param roleId Role ID
+   */
+  viewRole(roleId: string) {
+    this.router.navigate([roleId], { relativeTo: this.route });
+  }
+
+  /**
+   * Stops the propagation to view roles and permissions
+   * @param event Mouse Event
+   */
+  routeEdit(event: MouseEvent) {
+    event.stopPropagation();
+  }
+
 
 }

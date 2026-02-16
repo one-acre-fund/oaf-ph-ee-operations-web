@@ -8,10 +8,12 @@ export class SelectBase extends FormfieldBase {
     value: string,
     data: {}[]
   };
+  multiple: boolean;
 
-  constructor(options: {} = {}) {
+  constructor(options: any = {}) {
     super(options);
     this.options = options['options'];
+    this.multiple = options['multiple'] || false;
   }
 
 }

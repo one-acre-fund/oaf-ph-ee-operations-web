@@ -264,6 +264,7 @@ export class TransactionDetailsComponent implements OnInit {
 
   hasRefundAccess() {
     return (
+      this.datasource.transfer.direction != undefined  &&
       this.datasource.transfer.direction === 'INCOMING' &&
       this.authService.hasAccess('REFUND')
     );

@@ -10,7 +10,7 @@
         [formControlName]="formfield.controlName" [required]="formfield.required">
 
       <mat-select *ngIf="formfield.controlType==='select'" [formControlName]="formfield.controlName"
-        [required]="formfield.required">
+        [required]="formfield.required" [multiple]="formfield.multiple">
         <mat-option *ngFor="let option of formfield.options.data" [value]="option[formfield.options.value]">
           {{ option[formfield.options.label] }}
         </mat-option>
