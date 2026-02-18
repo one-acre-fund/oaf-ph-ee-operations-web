@@ -3,6 +3,7 @@
 ## Version 1.1.9
 
         * [CP-3675] - Role management and user role assignment
+        * [CP-4023] - Create a way to switch countries on PH Web
 
 ## Version 1.1.8
 
