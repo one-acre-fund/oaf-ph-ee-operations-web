@@ -189,7 +189,8 @@
     "USERS": "Users",
     "SYSTEM": "System",
     "SETTINGS": "Settings",
-    "SIGN_OUT": "Sign Out"
+    "SIGN_OUT": "Sign Out",
+    "COUNTRY": "Country"
   },
   "PAYMENT_HUB_ACTIONS": {
     "RETRY": "Retry",

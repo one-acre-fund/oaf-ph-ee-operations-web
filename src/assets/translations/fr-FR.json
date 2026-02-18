@@ -189,7 +189,8 @@
         "USERS": "Utilisateurs",
         "SYSTEM": "Système",
         "SETTINGS": "Paramètres",
-        "SIGN_OUT": "Se déconnecter"
+        "SIGN_OUT": "Se déconnecter",
+        "COUNTRY": "Pays"
     },
     "PAYMENT_HUB_ACTIONS": {
         "RETRY": "Réessayer",

@@ -50,6 +50,15 @@ export class UsersService {
   }
 
   /**
+   * @param {any} id id of user to be updated.
+   * @param {any} roleData Roles to be revoked.
+   * @returns {Observable<any>}
+   */
+  revokeRoles(id: any, roleData: any): Observable<any> {
+    return this.http.put('/api/v1/user/' + id + '/roles?action=REVOKE', roleData);
+  }
+
+  /**
    * @param {string} userId user ID of user.
    * @returns {Observable<any>} User.
    */

@@ -73,4 +73,5 @@ export let environment = {
     enabled: (window as any)?.env?.sentryEnabled ?? true, // Enabled by default in production
     environment: (window as any)?.env?.sentryEnvironment || 'production',
   },
+  TENANTS: ['oaf', 'kenya', 'rwanda', 'burundi', 'malawi', 'usa', 'zambia', 'nigeria'],
 };

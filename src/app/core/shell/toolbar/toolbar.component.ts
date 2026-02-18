@@ -51,6 +51,10 @@ export class ToolbarComponent implements OnInit {
   /** Sets the initial state of sidenav as collapsed. Not collapsed if false. */
   sidenavCollapsed = true;
 
+  /** Tenant selector */
+  tenants: string[] = environment.TENANTS;
+  selectedTenant: string;
+
   /** Instance of sidenav. */
   @Input() sidenav: MatSidenav;
   /** Sidenav collapse event. */
@@ -76,6 +80,8 @@ export class ToolbarComponent implements OnInit {
    * Subscribes to breakpoint for handset.
    */
   async ngOnInit() {
+    this.selectedTenant = localStorage.getItem('selectedTenant') || environment.auth.tenant;
+
     if (environment.oauth.enabled) {
       // Try to get username immediately
       this.updateUsername();
@@ -150,6 +156,16 @@ export class ToolbarComponent implements OnInit {
     this.authenticationService
       .logout()
       .subscribe(() => this.router.navigate(['/home'], { replaceUrl: true }));
+  }
+
+  /**
+   * Handles tenant selection change.
+   */
+  onTenantChange(tenant: string) {
+    if (tenant === this.selectedTenant) { return; }
+    this.selectedTenant = tenant;
+    localStorage.setItem('selectedTenant', tenant);
+    window.location.reload();
   }
 
   /**
