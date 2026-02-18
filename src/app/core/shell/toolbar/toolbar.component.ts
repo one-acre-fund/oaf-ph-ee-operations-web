@@ -162,6 +162,7 @@ export class ToolbarComponent implements OnInit {
    * Handles tenant selection change.
    */
   onTenantChange(tenant: string) {
+    if (tenant === this.selectedTenant) { return; }
     this.selectedTenant = tenant;
     localStorage.setItem('selectedTenant', tenant);
     window.location.reload();

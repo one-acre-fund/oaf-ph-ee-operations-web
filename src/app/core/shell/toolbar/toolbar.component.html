@@ -43,7 +43,7 @@
       </a>
 
       <a
-        *ngIf="authorities.includes('super_user')"
+        *ngIf="authorities.includes('user')"
         mat-tab-link
         class="tab-link"
         [matMenuTriggerFor]="adminMenu"
@@ -60,7 +60,7 @@
 
     <span>
       <mat-form-field class="tenant-selector ml-1" appearance="outline" fxHide.lt-md="true">
-        <mat-label>Country</mat-label>
+        <mat-label>{{ "TOOLBAR.COUNTRY" | translate }}</mat-label>
         <mat-select [value]="selectedTenant" (selectionChange)="onTenantChange($event.value)">
           <mat-option *ngFor="let tenant of tenants" [value]="tenant">{{ tenant | uppercase }}</mat-option>
         </mat-select>
