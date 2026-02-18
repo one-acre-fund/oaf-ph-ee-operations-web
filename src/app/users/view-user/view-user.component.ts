@@ -3,6 +3,9 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 
+/** rxjs Imports */
+import { Observable, forkJoin } from 'rxjs';
+
 /** Custom Services */
 import { UsersService } from '../users.service';
 import { MatomoService } from 'app/core/analytics/matomo.service';
@@ -558,12 +561,22 @@ export class ViewUserComponent implements OnInit {
         this.usersService.editUserDetails(this.userData.id, appUser).subscribe(
           (res) => {
             // Update roles if changed
-            const newRoleIds = response.data.value.roles;
-            if (JSON.stringify(newRoleIds) !== JSON.stringify(currentRoleIds)) {
-              const rolesData = { entityIds: newRoleIds };
-              this.usersService.assignRoles(this.userData.id, rolesData).subscribe(
-                (roleResponse: any) => {
-                  // Track successful user details and roles update
+            const newRoleIds: number[] = response.data.value.roles;
+            const rolesToAssign = newRoleIds.filter((id: number) => !currentRoleIds.includes(id));
+            const rolesToRevoke = currentRoleIds.filter((id: number) => !newRoleIds.includes(id));
+
+            if (rolesToAssign.length > 0 || rolesToRevoke.length > 0) {
+              const rolePromises: Observable<any>[] = [];
+
+              if (rolesToAssign.length > 0) {
+                rolePromises.push(this.usersService.assignRoles(this.userData.id, { entityIds: rolesToAssign }));
+              }
+              if (rolesToRevoke.length > 0) {
+                rolePromises.push(this.usersService.revokeRoles(this.userData.id, { entityIds: rolesToRevoke }));
+              }
+
+              forkJoin(rolePromises).subscribe(
+                () => {
                   this.matomoService.trackEvent(
                     'User Management',
                     'User Details and Roles Updated',
@@ -577,7 +590,6 @@ export class ViewUserComponent implements OnInit {
                   this.reloadCurrentUserData();
                 },
                 (roleError: any) => {
-                  // Track role assignment failure
                   this.matomoService.trackEvent(
                     'User Management',
                     'Role Assignment Failed',
@@ -586,7 +598,7 @@ export class ViewUserComponent implements OnInit {
                   );
                   this.alertService.alert({
                     type: 'Edit Error',
-                    message: `User updated but role assignment failed`,
+                    message: `User updated but role changes failed`,
                   });
                   this.reloadCurrentUserData();
                 }
