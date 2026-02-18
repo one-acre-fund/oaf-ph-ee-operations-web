@@ -57,6 +57,16 @@
         {{ "TOOLBAR.ADMIN" | translate }}
       </a>
     </span>
+
+    <span>
+      <mat-form-field class="tenant-selector ml-1" appearance="outline" fxHide.lt-md="true">
+        <mat-label>Country</mat-label>
+        <mat-select [value]="selectedTenant" (selectionChange)="onTenantChange($event.value)">
+          <mat-option *ngFor="let tenant of tenants" [value]="tenant">{{ tenant | uppercase }}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </span>
+
   </nav>
 
   <span fxFlex="auto" class="username">{{ displayUser() }}</span>

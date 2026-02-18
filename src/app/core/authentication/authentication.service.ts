@@ -414,7 +414,7 @@ hasAccess(permission: string): boolean {
   }
 
   getTenantId() {
-    return this.tenantId;
+    return localStorage.getItem('selectedTenant') || this.tenantId;
   }
 
   getUsername() {
