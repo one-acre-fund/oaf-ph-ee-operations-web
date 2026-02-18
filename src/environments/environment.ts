@@ -93,4 +93,5 @@ export let environment = {
     enabled: (window as any)?.env?.sentryEnabled ?? false, // Disabled by default in development
     environment: (window as any)?.env?.sentryEnvironment || 'development',
   },
+  TENANTS: ['oaf', 'kenya', 'rwanda', 'burundi', 'malawi', 'usa', 'zambia', 'nigeria'],
 };

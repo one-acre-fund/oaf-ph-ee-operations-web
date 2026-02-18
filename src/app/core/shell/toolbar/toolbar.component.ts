@@ -52,7 +52,7 @@ export class ToolbarComponent implements OnInit {
   sidenavCollapsed = true;
 
   /** Tenant selector */
-  tenants: string[] = ['oaf', 'kenya', 'rwanda', 'burundi', 'malawi', 'usa', 'zambia', 'nigeria'];
+  tenants: string[] = environment.TENANTS;
   selectedTenant: string;
 
   /** Instance of sidenav. */
