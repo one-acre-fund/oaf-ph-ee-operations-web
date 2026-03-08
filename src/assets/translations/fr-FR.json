@@ -256,5 +256,15 @@
         "DESELECT_ALL": "Désélectionner Tout",
         "DELETE_ROLE": "Supprimer le Rôle",
         "CONFIRM_DELETE": "Êtes-vous sûr de vouloir supprimer ce rôle ? Cette action est irréversible."
-    }
+    },
+    "DIALOGS": {
+        "DELETE": "Supprimer",
+        "DELETE_CONFIRMATION": "Êtes-vous sûr de vouloir supprimer ",
+        "CLOSE": "Fermer",
+        "CONFIRM": "Confirmer",
+        "ARE_YOU_SURE": "Êtes-vous sûr ?",
+        "YES": "Oui",
+        "NO": "Non",
+        "CANCEL": "Annuler"
+  }
 }
