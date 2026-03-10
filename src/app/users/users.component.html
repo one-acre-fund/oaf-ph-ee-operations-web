@@ -15,6 +15,16 @@
     <fa-icon icon="plus"></fa-icon>&nbsp;&nbsp;
     {{ "USERS.CREATE_USER" | translate }}
   </button>
+  <button
+    mat-raised-button
+    color="accent"
+    matomoClick="download-users-button"
+    (click)="downloadUsers()"
+    [disabled]="isDownloading"
+  >
+    <fa-icon icon="download"></fa-icon>&nbsp;&nbsp;
+    {{ isDownloading ? ('USERS.DOWNLOADING' | translate) : ('USERS.DOWNLOAD_USERS' | translate) }}
+  </button>
 </div>
 
 <div class="container" matomoForm="users-main-container">

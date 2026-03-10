@@ -17,6 +17,8 @@ import { takeUntil } from 'rxjs/operators';
 
 /** Custom Imports */
 import { MatomoService } from '../core/analytics/matomo.service';
+import { AuthenticationService } from '../core/authentication/authentication.service';
+import { UsersService } from './users.service';
 
 /**
  * Users component.
@@ -29,6 +31,8 @@ import { MatomoService } from '../core/analytics/matomo.service';
 export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
   /** Users data. */
   usersData: any;
+  /** Whether a download is in progress. */
+  isDownloading = false;
   /** Columns to be displayed in users table. */
   displayedColumns: string[] = ['firstname', 'lastname', 'email', 'enabled'];
   /** Data source for users table. */
@@ -49,7 +53,9 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
    */
   constructor(
     private route: ActivatedRoute,
-    private matomoService: MatomoService
+    private matomoService: MatomoService,
+    private usersService: UsersService,
+    private authenticationService: AuthenticationService
   ) {
     this.route.data.subscribe((data: { users: any }) => {
       this.usersData = data.users;
@@ -274,6 +280,29 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
     } catch (error) {
       console.warn('Matomo user click tracking failed:', error);
     }
+  }
+
+  /**
+   * Downloads users with roles as a file.
+   */
+  downloadUsers(): void {
+    this.isDownloading = true;
+    this.usersService.downloadUsersWithRoles().subscribe({
+      next: (blob: Blob) => {
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        const tenantId = this.authenticationService.getTenantId() || 'default';
+        a.download = `${tenantId}-users-with-roles.csv`;
+        a.click();
+        window.URL.revokeObjectURL(url);
+        this.isDownloading = false;
+      },
+      error: (err: any) => {
+        console.error('Failed to download users:', err);
+        this.isDownloading = false;
+      }
+    });
   }
 
   /**
