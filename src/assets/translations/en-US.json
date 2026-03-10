@@ -154,7 +154,9 @@
     "DISABLED": "Disabled",
     "OVERRIDE_PASSWORD_EXPIRY": "Override Password Expiry",
     "AUTO_GENERATE_PASSWORD": "Auto-generate Password",
-    "ROLES": "Roles"
+    "ROLES": "Roles",
+    "DOWNLOAD_USERS": "Download Users",
+    "DOWNLOADING": "Downloading..."
   },
   "USER_DETAILS": {
     "EDIT": "Edit",

@@ -23,7 +23,7 @@
     [disabled]="isDownloading"
   >
     <fa-icon icon="download"></fa-icon>&nbsp;&nbsp;
-    {{ isDownloading ? 'Downloading...' : 'Download Users' }}
+    {{ isDownloading ? ('USERS.DOWNLOADING' | translate) : ('USERS.DOWNLOAD_USERS' | translate) }}
   </button>
 </div>
 

@@ -154,7 +154,9 @@
         "DISABLED": "Désactivé",
         "OVERRIDE_PASSWORD_EXPIRY": "Remplacer l'Expiration du Mot de Passe",
         "AUTO_GENERATE_PASSWORD": "Générer Automatiquement le Mot de Passe",
-        "ROLES": "Rôles"
+        "ROLES": "Rôles",
+        "DOWNLOAD_USERS": "Télécharger les Utilisateurs",
+        "DOWNLOADING": "Téléchargement..."
     },
     "USER_DETAILS": {
         "EDIT": "Modifier",
