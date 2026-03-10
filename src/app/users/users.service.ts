@@ -143,4 +143,12 @@ export class UsersService {
   getUserRoles(userId: string): Observable<any> {
     return this.http.get(`/api/v1/user/${userId}/roles`);
   }
+
+  /**
+   * Downloads users with roles as a file.
+   * @returns {Observable<Blob>} Downloadable file blob.
+   */
+  downloadUsersWithRoles(): Observable<Blob> {
+    return this.http.get('/api/v1/users-with-roles', { responseType: 'blob' });
+  }
 }

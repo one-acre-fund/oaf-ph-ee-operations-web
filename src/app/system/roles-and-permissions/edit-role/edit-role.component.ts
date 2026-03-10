@@ -62,7 +62,7 @@ export class EditRoleComponent implements OnInit {
    */
   submit() {
     const updatedRole = {
-      name: this.roleData.name,
+      name: this.roleData.name.trim().toLowerCase(),
       description: this.roleForm.get('description').value,
       disabled: this.roleData.disabled
     };
