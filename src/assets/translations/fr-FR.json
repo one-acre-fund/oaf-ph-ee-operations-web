@@ -156,7 +156,11 @@
         "AUTO_GENERATE_PASSWORD": "Générer Automatiquement le Mot de Passe",
         "ROLES": "Rôles",
         "DOWNLOAD_USERS": "Télécharger les Utilisateurs",
-        "DOWNLOADING": "Téléchargement..."
+        "DOWNLOADING": "Téléchargement...",
+        "ROLE_FILTER": "Rôle",
+        "ENABLED_FILTER": "Statut",
+        "ALL": "Tous",
+        "CLEAR_FILTERS": "Effacer les filtres"
     },
     "USER_DETAILS": {
         "EDIT": "Modifier",

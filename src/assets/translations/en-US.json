@@ -156,7 +156,11 @@
     "AUTO_GENERATE_PASSWORD": "Auto-generate Password",
     "ROLES": "Roles",
     "DOWNLOAD_USERS": "Download Users",
-    "DOWNLOADING": "Downloading..."
+    "DOWNLOADING": "Downloading...",
+    "ROLE_FILTER": "Role",
+    "ENABLED_FILTER": "Status",
+    "ALL": "All",
+    "CLEAR_FILTERS": "Clear filters"
   },
   "USER_DETAILS": {
     "EDIT": "Edit",

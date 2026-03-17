@@ -4,6 +4,7 @@
 
         * [CP-3675] - Role management and user role assignment
         * [CP-4023] - Create a way to switch countries on PH Web
+        * [CP-3677] - Filter users by role and status
 
 ## Version 1.1.8
 
