@@ -19,10 +19,19 @@ export class UsersService {
   constructor(private http: HttpClient) { }
 
   /**
+   * @param {string | null} role Optional role filter.
+   * @param {boolean | null} enabled Optional enabled filter.
    * @returns {Observable<any>} Users data
    */
-  getUsers(): Observable<any> {
-    return this.http.get('/api/v1/users');
+  getUsers(role?: string | null, enabled?: boolean | null): Observable<any> {
+    let params = new HttpParams();
+    if (role != null && role !== '') {
+      params = params.set('role', role);
+    }
+    if (enabled != null) {
+      params = params.set('enabled', String(enabled));
+    }
+    return this.http.get('/api/v1/users', { params });
   }
 
   /**

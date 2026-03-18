@@ -31,12 +31,21 @@ import { UsersService } from './users.service';
 export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
   /** Users data. */
   usersData: any;
+  /** Roles data for filter dropdown. */
+  rolesData: any[] = [];
   /** Whether a download is in progress. */
   isDownloading = false;
   /** Columns to be displayed in users table. */
   displayedColumns: string[] = ['firstname', 'lastname', 'email', 'enabled'];
   /** Data source for users table. */
   dataSource: MatTableDataSource<any>;
+
+  /** Current text filter value. */
+  textFilter = '';
+  /** Current role filter value (null means no filter). */
+  roleFilter: string | null = null;
+  /** Current enabled filter value (null means no filter). */
+  enabledFilter: boolean | null = null;
 
   /** Paginator for users table. */
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -57,18 +66,49 @@ export class UsersComponent implements OnInit, AfterViewInit, OnDestroy {
     private usersService: UsersService,
     private authenticationService: AuthenticationService
   ) {
-    this.route.data.subscribe((data: { users: any }) => {
+    this.route.data.subscribe((data: { users: any; usersTemplate: any }) => {
       this.usersData = data.users;
+      this.rolesData = data.usersTemplate || [];
     });
   }
 
   /**
-   * Filters data in users table based on passed value.
+   * Filters data in users table locally based on passed value.
    * @param {string} filterValue Value to filter data.
    */
   applyFilter(filterValue: string) {
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+    this.textFilter = filterValue.trim().toLowerCase();
+    this.dataSource.filter = this.textFilter;
     this.onFilterUsed(filterValue);
+  }
+
+  /**
+   * Calls the API with the current role and enabled filters and refreshes the table.
+   */
+  searchUsers() {
+    this.usersService.getUsers(this.roleFilter, this.enabledFilter)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((users: any) => {
+        this.usersData = users;
+        this.dataSource.data = users;
+        this.dataSource.filter = this.textFilter;
+        if (this.dataSource.paginator) {
+          this.dataSource.paginator.firstPage();
+        }
+      });
+  }
+
+  /**
+   * Clears all active filters and reloads users from the API.
+   * @param {HTMLInputElement} filterInput The text filter input element to reset.
+   */
+  clearFilters(filterInput: HTMLInputElement) {
+    filterInput.value = '';
+    this.textFilter = '';
+    this.roleFilter = null;
+    this.enabledFilter = null;
+    this.dataSource.filter = '';
+    this.searchUsers();
   }
 
   /**

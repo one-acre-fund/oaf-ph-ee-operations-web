@@ -29,7 +29,8 @@ const routes: Routes = [
           path: '',
           component: UsersComponent,
           resolve: {
-            users: UsersResolver
+            users: UsersResolver,
+            usersTemplate: UsersTemplateResolver
           }
         },
         {

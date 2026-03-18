@@ -33,11 +33,47 @@
       <mat-label>{{ "USERS.FILTER" | translate }}</mat-label>
       <input
         matInput
+        #filterInput
         (keyup)="applyFilter($event.target.value)"
         matomoClick="users-filter-input"
         placeholder="{{ 'USERS.SEARCH_PLACEHOLDER' | translate }}"
       />
     </mat-form-field>
+
+    <mat-form-field fxFlex>
+      <mat-label>{{ "USERS.ROLE_FILTER" | translate }}</mat-label>
+      <mat-select
+        [value]="roleFilter"
+        (selectionChange)="roleFilter = $event.value; searchUsers()"
+      >
+        <mat-option [value]="null">{{ "USERS.ALL" | translate }}</mat-option>
+        <mat-option *ngFor="let role of rolesData" [value]="role.name">
+          {{ role.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field fxFlex>
+      <mat-label>{{ "USERS.ENABLED_FILTER" | translate }}</mat-label>
+      <mat-select
+        [value]="enabledFilter"
+        (selectionChange)="enabledFilter = $event.value; searchUsers()"
+      >
+        <mat-option [value]="null">{{ "USERS.ALL" | translate }}</mat-option>
+        <mat-option [value]="true">{{ "USERS.ACTIVE" | translate }}</mat-option>
+        <mat-option [value]="false">{{ "USERS.DISABLED" | translate }}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <button
+      mat-icon-button
+      *ngIf="textFilter || roleFilter !== null || enabledFilter !== null"
+      (click)="clearFilters(filterInput)"
+      [matTooltip]="'USERS.CLEAR_FILTERS' | translate"
+      matomoClick="users-clear-filters-button"
+    >
+      <fa-icon icon="times" size="lg"></fa-icon>
+    </button>
   </div>
 
   <div class="mat-elevation-z8" matomoForm="users-table-container">
