@@ -43,6 +43,7 @@ const routes: Routes = [
         },
         {
           path: "incomingtransactions",
+          canActivate: [PermissionGuard],
           data: {
             title: extract("Search Incoming Transactions"),
             breadcrumb: "Incoming Transactions",
@@ -73,6 +74,7 @@ const routes: Routes = [
         },
         {
           path: "outgoingtransactions",
+          canActivate: [PermissionGuard],
           data: {
             title: extract("Search Outgoing Transactions"),
             breadcrumb: "Outgoing Transactions",
@@ -103,6 +105,7 @@ const routes: Routes = [
         },
         {
           path: "incomingrequesttopay",
+          canActivate: [PermissionGuard],
           data: {
             title: extract("Search Incoming Request To Pay"),
             breadcrumb: "Incoming Request To Pay",
@@ -133,6 +136,7 @@ const routes: Routes = [
         },
         {
           path: "outgoingrequesttopay",
+          canActivate: [PermissionGuard],
           data: {
             title: extract("Search Outgoing Request To Pay"),
             breadcrumb: "Outgoing Request To Pay",
@@ -164,6 +168,7 @@ const routes: Routes = [
         },
         {
           path: "incomingrequesttopayexport",
+          canActivate: [PermissionGuard],
           data: {
             title: extract(""),
             breadcrumb: "Export Incoming Request to Pay",
@@ -178,6 +183,7 @@ const routes: Routes = [
         },
         {
           path: "incomingtransactionexport",
+          canActivate: [PermissionGuard],
           data: {
             title: extract(""),
             breadcrumb: "Export Incoming Transactions",

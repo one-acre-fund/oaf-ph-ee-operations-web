@@ -3,11 +3,12 @@ import { Injectable } from '@angular/core';
 
 
 /** rxjs Imports */
-import { Observable, of } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 /** Custom Services */
 import { UsersService } from './users.service';
+import {HttpErrorResponse} from "@angular/common/http";
 
 /**
  * Users template data resolver.
@@ -27,7 +28,12 @@ export class UsersTemplateResolver  {
    */
   resolve(): Observable<any> {
     return this.usersService.getUsersTemplate().pipe(
-      catchError(() => of([]))
+        catchError((error: HttpErrorResponse) => {
+            if (error.status === 401 || error.status === 403) {
+                return of([]);
+            }
+            return throwError(() => error);
+        })
     );
   }
 

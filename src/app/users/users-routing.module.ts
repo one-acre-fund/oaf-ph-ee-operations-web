@@ -37,6 +37,7 @@ const routes: Routes = [
         },
         {
           path: 'create',
+          canActivate: [PermissionGuard],
           component: CreateUserComponent,
           data: { title: extract('Create User'), breadcrumb: 'Create User', permissions: ['ALL_FUNCTIONS', 'CREATE_USER'] },
           resolve: {
@@ -45,6 +46,7 @@ const routes: Routes = [
         },
         {
           path: ':id',
+          canActivate: [PermissionGuard],
           data: { title: extract('View User'), routeResolveBreadcrumb: ['user', 'username'], permissions: ['ALL_FUNCTIONS', 'READ_USER'] },
           resolve: {
             user: UserResolver

@@ -25,7 +25,7 @@ import { AuditTrailResolver } from './audit-trails/view-audit/audit-trail.resolv
 const routes: Routes = [
   Route.withShell([
     {
-      path: 'system',
+      path: 'system/roles-and-permissions',
       canActivate: [PermissionGuard],
       data: { title: extract('System'), breadcrumb: 'System', permissions: ['ALL_FUNCTIONS', 'READ_AUDIT', 'READ_ROLE'] },
       children: [
@@ -35,6 +35,7 @@ const routes: Routes = [
         },
         {
           path: 'roles-and-permissions',
+          canActivate: [PermissionGuard],
           data: { title:  extract('Roles and Permissions'), breadcrumb: 'Roles and Permissions', permissions: ['ALL_FUNCTIONS', 'READ_ROLE'] },
           children: [
             {
@@ -46,12 +47,14 @@ const routes: Routes = [
             },
             {
               path: 'add',
+              canActivate: [PermissionGuard],
               component: AddRoleComponent,
               data: { title: extract('Add Role'), breadcrumb: 'Add', permissions: ['ALL_FUNCTIONS', 'CREATE_ROLE'] }
             },
             {
               path: ':id',
               component: ViewRoleComponent,
+              canActivate: [PermissionGuard],
               data: { title: extract('View Role'), routeParamBreadcrumb: 'id', permissions: ['ALL_FUNCTIONS', 'READ_ROLE'] },
               resolve: {
                 role: ViewRoleResolver
@@ -60,6 +63,7 @@ const routes: Routes = [
             {
               path: ':id/edit',
               component: EditRoleComponent,
+              canActivate: [PermissionGuard],
               data: { title: extract('Edit Role'), routeParamBreadcrumb: 'id', permissions: ['ALL_FUNCTIONS', 'UPDATE_ROLE'] },
               resolve: {
                 role: ViewRoleResolver
@@ -69,6 +73,7 @@ const routes: Routes = [
         },
         {
           path: 'audit-trails',
+          canActivate: [PermissionGuard],
           data: { title: extract('Audit Trails'), breadcrumb: 'Audit Trails', permissions: ['ALL_FUNCTIONS', 'READ_AUDIT'] },
           children: [
             {
@@ -81,7 +86,8 @@ const routes: Routes = [
             {
              path: ':id',
              component: ViewAuditComponent,
-             data: { title: extract('View Audit'), routeParamBreadcrumb: 'id' },
+             canActivate: [PermissionGuard],
+             data: { title: extract('View Audit'), routeParamBreadcrumb: 'id', permissions: ['ALL_FUNCTIONS', 'READ_AUDIT'] },
              resolve: {
                auditTrail: AuditTrailResolver
              }
