@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 /** Routing Imports */
 import { Routes, RouterModule } from '@angular/router';
 import { Route } from '../core/route/route.service';
+import { PermissionGuard } from '../core/authentication/permission.guard';
 import { extract } from '../core/i18n/i18n.service';
 
 /** Component Imports */
@@ -25,7 +26,8 @@ const routes: Routes = [
   Route.withShell([
     {
       path: 'system',
-      data: { title: extract('System'), breadcrumb: 'System' },
+      canActivate: [PermissionGuard],
+      data: { title: extract('System'), breadcrumb: 'System', permissions: ['ALL_FUNCTIONS', 'READ_AUDIT', 'READ_ROLE'] },
       children: [
         {
           path: '',
@@ -33,7 +35,7 @@ const routes: Routes = [
         },
         {
           path: 'roles-and-permissions',
-          data: { title:  extract('Roles and Permissions'), breadcrumb: 'Roles and Permissions' },
+          data: { title:  extract('Roles and Permissions'), breadcrumb: 'Roles and Permissions', permissions: ['ALL_FUNCTIONS', 'READ_ROLE'] },
           children: [
             {
               path: '',
@@ -45,12 +47,12 @@ const routes: Routes = [
             {
               path: 'add',
               component: AddRoleComponent,
-              data: { title: extract('Add Role'), breadcrumb: 'Add' }
+              data: { title: extract('Add Role'), breadcrumb: 'Add', permissions: ['ALL_FUNCTIONS', 'CREATE_ROLE'] }
             },
             {
               path: ':id',
               component: ViewRoleComponent,
-              data: { title: extract('View Role'), routeParamBreadcrumb: 'id' },
+              data: { title: extract('View Role'), routeParamBreadcrumb: 'id', permissions: ['ALL_FUNCTIONS', 'READ_ROLE'] },
               resolve: {
                 role: ViewRoleResolver
               }
@@ -58,7 +60,7 @@ const routes: Routes = [
             {
               path: ':id/edit',
               component: EditRoleComponent,
-              data: { title: extract('Edit Role'), routeParamBreadcrumb: 'id' },
+              data: { title: extract('Edit Role'), routeParamBreadcrumb: 'id', permissions: ['ALL_FUNCTIONS', 'UPDATE_ROLE'] },
               resolve: {
                 role: ViewRoleResolver
               }
@@ -67,7 +69,7 @@ const routes: Routes = [
         },
         {
           path: 'audit-trails',
-          data: { title: extract('Audit Trails'), breadcrumb: 'Audit Trails' },
+          data: { title: extract('Audit Trails'), breadcrumb: 'Audit Trails', permissions: ['ALL_FUNCTIONS', 'READ_AUDIT'] },
           children: [
             {
               path: '',

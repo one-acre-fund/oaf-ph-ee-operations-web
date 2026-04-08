@@ -4,6 +4,7 @@ import { Routes, RouterModule } from '@angular/router';
 
 /** Routing Imports */
 import { Route } from '../core/route/route.service';
+import { PermissionGuard } from '../core/authentication/permission.guard';
 
 /** Translation Imports */
 import { extract } from '../core/i18n/i18n.service';
@@ -23,7 +24,8 @@ const routes: Routes = [
   Route.withShell([
     {
       path: 'users',
-      data: { title: extract('Users'), breadcrumb: 'Users' },
+      canActivate: [PermissionGuard],
+      data: { title: extract('Users'), breadcrumb: 'Users', permissions: ['ALL_FUNCTIONS', 'READ_USER'] },
       children: [
         {
           path: '',
@@ -36,14 +38,14 @@ const routes: Routes = [
         {
           path: 'create',
           component: CreateUserComponent,
-          data: { title: extract('Create User'), breadcrumb: 'Create User' },
+          data: { title: extract('Create User'), breadcrumb: 'Create User', permissions: ['ALL_FUNCTIONS', 'CREATE_USER'] },
           resolve: {
             usersTemplate: UsersTemplateResolver
           }
         },
         {
           path: ':id',
-          data: { title: extract('View User'), routeResolveBreadcrumb: ['user', 'username'] },
+          data: { title: extract('View User'), routeResolveBreadcrumb: ['user', 'username'], permissions: ['ALL_FUNCTIONS', 'READ_USER'] },
           resolve: {
             user: UserResolver
           },
