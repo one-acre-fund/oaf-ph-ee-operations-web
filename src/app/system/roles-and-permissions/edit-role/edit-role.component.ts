@@ -50,19 +50,19 @@ export class EditRoleComponent implements OnInit {
    */
   createRoleForm() {
     this.roleForm = this.formBuilder.group({
-      name: [{ value: this.roleData.name, disabled: true }, Validators.required],
+      name: [this.roleData.name, Validators.required],
       description: [this.roleData.description, Validators.required],
       disabled: [{ value: this.roleData.disabled, disabled: true }]
     });
   }
 
   /**
-   * Submits the role form and updates role description,
+   * Submits the role form and updates role details.,
    * if successful redirects to view updated roles and permissions.
    */
   submit() {
     const updatedRole = {
-      name: this.roleData.name.trim().toLowerCase(),
+      name: this.roleForm.get('name').value.trim(),
       description: this.roleForm.get('description').value,
       disabled: this.roleData.disabled
     };

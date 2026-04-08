@@ -18,6 +18,7 @@ import { AppConfig } from 'app/app.config';
 import { Credentials } from './credentials.model';
 import { LoginContext } from './login-context.model';
 import { OAuth2Token } from './o-auth2-token.model';
+import { UserPermissionsService } from './user-permissions.service';
 
 import { Router } from '@angular/router';
 import jwt_decode from 'jwt-decode';
@@ -62,7 +63,8 @@ export class AuthenticationService {
    */
   constructor(private http: HttpClient,
     private alertService: AlertService, private config: AppConfig, private router: Router,
-    private keycloakAuthService: KeycloakAuthService) {
+    private keycloakAuthService: KeycloakAuthService,
+    private userPermissionsService: UserPermissionsService) {
     this.storage = sessionStorage;
 
     config.load().then(value => {
@@ -142,6 +144,9 @@ export class AuthenticationService {
   }
 
 hasAccess(permission: string): boolean {
+  if (environment.oauth.enabled) {
+    return  this.userPermissionsService.hasPermission('ALL_FUNCTIONS') ||  this.userPermissionsService.hasPermission(permission);
+  }
   const credentials = JSON.parse(this.getStorageItem(this.credentialsStorageKey) ?? '{}');
   if (!credentials?.accessToken) {
     return false;

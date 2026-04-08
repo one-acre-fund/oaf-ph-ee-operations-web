@@ -196,7 +196,9 @@
         "SYSTEM": "Système",
         "SETTINGS": "Paramètres",
         "SIGN_OUT": "Se déconnecter",
-        "COUNTRY": "Pays"
+        "COUNTRY": "Pays",
+        "SWITCH_COUNTRY_TITLE": "Changer de pays",
+        "SWITCH_COUNTRY_WARNING": "Passer à {{country}} réinitialisera votre session actuelle et rechargera la page. Continuer?"
     },
     "PAYMENT_HUB_ACTIONS": {
         "RETRY": "Réessayer",

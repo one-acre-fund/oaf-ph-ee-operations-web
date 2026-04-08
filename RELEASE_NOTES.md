@@ -5,6 +5,7 @@
         * [CP-3675] - Role management and user role assignment
         * [CP-4023] - Create a way to switch countries on PH Web
         * [CP-3677] - Filter users by role and status
+        * [CP-4069] - Menu items should be controlled by permissions and switching country should warn the user that they will lose context
 
 ## Version 1.1.8
 

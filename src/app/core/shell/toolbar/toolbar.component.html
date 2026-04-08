@@ -30,6 +30,7 @@
   <nav mat-tab-nav-bar backgroundColor="primary" class="ml-1">
     <span>
       <a
+        *ngIf="canViewPaymentHubMenu()"
         mat-tab-link
         class="tab-link"
         [routerLink]="['/paymenthubee']"
@@ -43,7 +44,7 @@
       </a>
 
       <a
-        *ngIf="authorities.includes('super_user')"
+        *ngIf="canViewAdmin()"
         mat-tab-link
         class="tab-link"
         [matMenuTriggerFor]="adminMenu"
@@ -141,10 +142,14 @@
 </mat-toolbar>
 
 <mat-menu #adminMenu="matMenu" [overlapTrigger]="false">
-  <button mat-menu-item [routerLink]="['/users']">
+  <button 
+    *ngIf="canViewUsers()"
+    mat-menu-item [routerLink]="['/users']">
     {{ "TOOLBAR.USERS" | translate }}
   </button>
-  <button mat-menu-item [routerLink]="['/system']">
+  <button 
+    *ngIf="canViewSystem()"
+    mat-menu-item [routerLink]="['/system']">
     {{ "TOOLBAR.SYSTEM" | translate }}
   </button>
 </mat-menu>

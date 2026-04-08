@@ -5,13 +5,17 @@ import { environment } from '../../../environments/environment';
 import { Observable, from } from 'rxjs';
 import { map } from 'rxjs/operators';
 import jwt_decode from 'jwt-decode';
+import { UserPermissionsService } from './user-permissions.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class KeycloakAuthService {
 
-  constructor(private keycloakService: KeycloakAngularService) {}
+  constructor(
+    private keycloakService: KeycloakAngularService,
+    private userPermissionsService: UserPermissionsService
+  ) {}
 
   /**
    * Initialize Keycloak
@@ -34,6 +38,8 @@ export class KeycloakAuthService {
 
       if (authenticated) {
         console.log('User is authenticated');
+        const email = this.getUsername('email');
+        await this.userPermissionsService.loadPermissions(email);
         return true;
       } else {
         console.log('User is not authenticated');
@@ -115,25 +121,28 @@ export class KeycloakAuthService {
   }
 
   /**
-   * Get username
+   * Get a field from the decoded token, falling back to the Keycloak username.
+   * @param field Token claim to return. Defaults to 'preferred_username'.
    */
-  getUsername(): string {
+  getUsername(field: string = 'preferred_username'): string {
     try {
       const token = this.getToken();
       if (token) {
-        const decoded = jwt_decode(token) as any;
-        return decoded.preferred_username || decoded.username || decoded.email || 'Keycloak User';
+        const decoded = jwt_decode(token) as Record<string, any>;
+        if (decoded[field]) {
+          return decoded[field];
+        }
       }
     } catch (tokenError) {
-      console.warn('Could not decode token for username:', tokenError);
+      console.warn('Could not decode token for field:', field, tokenError);
     }
-    
+
     try {
       return this.keycloakService.getUsername();
     } catch (error) {
       console.warn('Could not get username from Keycloak service:', error);
     }
-    
+
     return 'Keycloak User';
   }
 

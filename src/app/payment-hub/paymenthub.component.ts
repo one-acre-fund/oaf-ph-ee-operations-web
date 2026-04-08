@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 
 /** Analytics Imports */
 import { MatomoService } from '../core/analytics/matomo.service';
+import { UserPermissionsService } from 'app/core/authentication/user-permissions.service';
 
 /**
  * Payment HUB component.
@@ -13,7 +14,9 @@ import { MatomoService } from '../core/analytics/matomo.service';
   styleUrls: ['./paymenthub.component.scss'],
 })
 export class PaymentHubComponent implements OnInit {
-  constructor(private matomoService: MatomoService) {}
+  constructor(private matomoService: MatomoService,
+              private userPermissionsService: UserPermissionsService
+  ) {}
 
   ngOnInit() {
     this.trackPageView();
@@ -118,5 +121,21 @@ export class PaymentHubComponent implements OnInit {
     } catch (error) {
       console.warn('Export tracking failed:', error);
     }
+  }
+
+  canViewTransfers(): boolean {
+    return this.userPermissionsService.hasPermission('READ_TRANSFER');
+  }
+
+  canViewTransactions(): boolean {
+    return this.userPermissionsService.hasPermission('READ_TRANSACTION_REQUEST');
+  }
+
+  canExportTransfers(): boolean {
+    return this.userPermissionsService.hasPermission('EXPORT_TRANSFER');
+  }
+
+  canExportTransactions(): boolean {
+    return this.userPermissionsService.hasPermission('EXPORT_TRANSACTION_REQUEST');
   }
 }

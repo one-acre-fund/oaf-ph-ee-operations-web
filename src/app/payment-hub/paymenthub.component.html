@@ -1,9 +1,12 @@
 <div class="container" matomoForm="payment-hub-navigation">
   <mat-card>
     <div fxLayout="row" fxLayout.lt-md="column" class="payment-hub-ee-wrap">
-      <div fxFlex="50%">
+      <div fxFlex="50%"
+      *ngIf="canViewTransfers() || canExportTransfers()"
+      >
         <mat-nav-list>
           <mat-list-item
+            *ngIf="canViewTransfers()"
             [routerLink]="['incomingtransactions']"
             (click)="onNavigateToSection('Incoming Transactions', 'Search')"
             matomoClick="navigation-incoming-transactions"
@@ -25,6 +28,7 @@
           </mat-list-item>
 
           <mat-list-item
+            *ngIf="canViewTransfers()"
             [routerLink]="['outgoingtransactions']"
             (click)="onNavigateToSection('Outgoing Transactions', 'Search')"
             matomoClick="navigation-outgoing-transactions"
@@ -46,6 +50,7 @@
           </mat-list-item>
 
           <mat-list-item
+            *ngIf="canExportTransfers()"
             [routerLink]="['incomingtransactionexport']"
             (click)="onExportAction('Incoming Transactions')"
             matomoClick="export-incoming-transactions"
@@ -63,9 +68,12 @@
         </mat-nav-list>
       </div>
 
-      <div fxFlex="50%">
+      <div fxFlex="50%"
+      *ngIf="canViewTransactions() || canExportTransactions()"
+      >
         <mat-nav-list>
           <mat-list-item
+            *ngIf="canViewTransactions()"
             [routerLink]="['incomingrequesttopay']"
             (click)="onNavigateToSection('Incoming Request to Pay', 'Search')"
             matomoClick="navigation-incoming-rtp"
@@ -87,6 +95,7 @@
           </mat-list-item>
 
           <mat-list-item
+            *ngIf="canViewTransactions()"
             [routerLink]="['outgoingrequesttopay']"
             (click)="onNavigateToSection('Outgoing Request to Pay', 'Search')"
             matomoClick="navigation-outgoing-rtp"
@@ -108,6 +117,7 @@
           </mat-list-item>
 
           <mat-list-item
+            *ngIf="canExportTransactions()"
             [routerLink]="['incomingrequesttopayexport']"
             (click)="onExportAction('Incoming Request to Pay')"
             matomoClick="export-incoming-rtp"
