@@ -7,6 +7,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 /** rxjs Imports */
 import { of } from 'rxjs';
+import { UserPermissionsService } from 'app/core/authentication/user-permissions.service';
 
 /**
  * Roles and Permissions component.
@@ -35,7 +36,7 @@ export class RolesAndPermissionsComponent implements OnInit {
    * @param {ActivatedRoute} route Activated Route.
    * @param {Router} router Router for navigation.
    */
-  constructor(private route: ActivatedRoute, private router: Router) {
+  constructor(private route: ActivatedRoute, private router: Router, private userPermissionsService: UserPermissionsService) {
     this.route.data.subscribe(( data: { roles: any }) => {
       this.roleData = data.roles;
     });
@@ -79,6 +80,10 @@ export class RolesAndPermissionsComponent implements OnInit {
    */
   routeEdit(event: MouseEvent) {
     event.stopPropagation();
+  }
+
+  canCreateRoles(): boolean {
+    return this.userPermissionsService.hasPermission('CREATE_ROLE');
   }
 
 

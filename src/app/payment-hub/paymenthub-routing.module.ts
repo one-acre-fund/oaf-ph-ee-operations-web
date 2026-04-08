@@ -6,6 +6,7 @@ import { Routes, RouterModule } from "@angular/router";
 
 /** Routing Imports */
 import { Route } from "../core/route/route.service";
+import { PermissionGuard } from "../core/authentication/permission.guard";
 
 /** Translation Imports */
 import { extract } from "../core/i18n/i18n.service";
@@ -33,7 +34,8 @@ const routes: Routes = [
   Route.withShell([
     {
       path: "paymenthubee",
-      data: { title: extract("Payment Hub EE"), breadcrumb: "Payment Hub EE" },
+      canActivate: [PermissionGuard],
+      data: { title: extract("Payment Hub EE"), breadcrumb: "Payment Hub EE", permissions: ['ALL_FUNCTIONS', 'READ_TRANSFER', 'READ_TRANSACTION_REQUEST', 'EXPORT_TRANSACTION_REQUEST', 'EXPORT_TRANSFER'] },
       children: [
         {
           path: "",
@@ -41,9 +43,11 @@ const routes: Routes = [
         },
         {
           path: "incomingtransactions",
+          canActivate: [PermissionGuard],
           data: {
             title: extract("Search Incoming Transactions"),
             breadcrumb: "Incoming Transactions",
+            permissions: ['ALL_FUNCTIONS', 'READ_TRANSFER']
           },
           children: [
             {
@@ -70,9 +74,11 @@ const routes: Routes = [
         },
         {
           path: "outgoingtransactions",
+          canActivate: [PermissionGuard],
           data: {
             title: extract("Search Outgoing Transactions"),
             breadcrumb: "Outgoing Transactions",
+            permissions: ['ALL_FUNCTIONS', 'READ_TRANSFER']
           },
           children: [
             {
@@ -99,9 +105,11 @@ const routes: Routes = [
         },
         {
           path: "incomingrequesttopay",
+          canActivate: [PermissionGuard],
           data: {
             title: extract("Search Incoming Request To Pay"),
             breadcrumb: "Incoming Request To Pay",
+            permissions: ['ALL_FUNCTIONS', 'READ_TRANSACTION_REQUEST']
           },
           children: [
             {
@@ -128,9 +136,11 @@ const routes: Routes = [
         },
         {
           path: "outgoingrequesttopay",
+          canActivate: [PermissionGuard],
           data: {
             title: extract("Search Outgoing Request To Pay"),
             breadcrumb: "Outgoing Request To Pay",
+            permissions: ['ALL_FUNCTIONS', 'READ_TRANSACTION_REQUEST']
           },
           children: [
             {
@@ -158,9 +168,11 @@ const routes: Routes = [
         },
         {
           path: "incomingrequesttopayexport",
+          canActivate: [PermissionGuard],
           data: {
             title: extract(""),
             breadcrumb: "Export Incoming Request to Pay",
+            permissions: ['ALL_FUNCTIONS', 'EXPORT_TRANSACTION_REQUEST']
           },
           children: [
             {
@@ -171,9 +183,11 @@ const routes: Routes = [
         },
         {
           path: "incomingtransactionexport",
+          canActivate: [PermissionGuard],
           data: {
             title: extract(""),
             breadcrumb: "Export Incoming Transactions",
+            permissions: ['ALL_FUNCTIONS', 'EXPORT_TRANSFER']
           },
           children: [
             {

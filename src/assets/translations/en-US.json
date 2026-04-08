@@ -196,7 +196,9 @@
     "SYSTEM": "System",
     "SETTINGS": "Settings",
     "SIGN_OUT": "Sign Out",
-    "COUNTRY": "Country"
+    "COUNTRY": "Country",
+    "SWITCH_COUNTRY_TITLE": "Switch Country",
+    "SWITCH_COUNTRY_WARNING": "Switching to {{country}} will reset your current session and reload the page. Continue?"
   },
   "PAYMENT_HUB_ACTIONS": {
     "RETRY": "Retry",

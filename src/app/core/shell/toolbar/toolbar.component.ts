@@ -1,7 +1,8 @@
 /** Angular Imports */
 import { animate, style, transition, trigger } from '@angular/animations';
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, ChangeDetectorRef, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { MatSidenav } from '@angular/material/sidenav';
 import { Router } from '@angular/router';
 
@@ -10,8 +11,10 @@ import { Observable, BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 /** Custom Services */
+import { TranslateService } from '@ngx-translate/core';
 import { Credentials } from 'app/core/authentication/credentials.model';
 import { Utils } from 'app/core/utils/utils';
+import { ConfirmDialogComponent } from 'app/shared/confirm-dialog/confirm-dialog.component';
 import { MatomoService } from '../../analytics/matomo.service';
 import { AuthenticationService } from '../../authentication/authentication.service';
 import { KeycloakAuthService } from '../../authentication/keycloak.service';
@@ -73,7 +76,10 @@ export class ToolbarComponent implements OnInit {
     private utils: Utils,
     private authenticationService: AuthenticationService,
     private keycloakAuthService: KeycloakAuthService,
-    private matomoService: MatomoService
+    private matomoService: MatomoService,
+    private dialog: MatDialog,
+    private translateService: TranslateService,
+    private cdr: ChangeDetectorRef
   ) { }
 
   /**
@@ -158,14 +164,50 @@ export class ToolbarComponent implements OnInit {
       .subscribe(() => this.router.navigate(['/home'], { replaceUrl: true }));
   }
 
+  canViewUsers(): boolean {
+    return this.authenticationService.hasAccess('READ_USER');
+  }
+
+  canViewSystem(): boolean {
+    return this.authenticationService.hasAccess('READ_AUDIT')
+      || this.authenticationService.hasAccess('READ_ROLE');
+
+  }
+  canViewAdmin(): boolean {
+    return this.canViewUsers() || this.canViewSystem();
+  }
+
+  canViewPaymentHubMenu(): boolean {
+    return this.authenticationService.hasAccess('READ_TRANSACTION_REQUEST')
+      || this.authenticationService.hasAccess('EXPORT_TRANSACTION_REQUEST')
+      || this.authenticationService.hasAccess('READ_TRANSFER')
+      || this.authenticationService.hasAccess('EXPORT_TRANSFER');
+  }
+
   /**
    * Handles tenant selection change.
    */
   onTenantChange(tenant: string) {
     if (tenant === this.selectedTenant) { return; }
-    this.selectedTenant = tenant;
-    localStorage.setItem('selectedTenant', tenant);
-    window.location.reload();
+    const previousTenant = this.selectedTenant;
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        action: this.translateService.instant('TOOLBAR.SWITCH_COUNTRY_TITLE'),
+        message: this.translateService.instant('TOOLBAR.SWITCH_COUNTRY_WARNING', { country: tenant.toUpperCase() }),
+      },
+    });
+    dialogRef.afterClosed().subscribe((response: any) => {
+      if (response && response.delete) {
+        this.selectedTenant = tenant;
+        localStorage.setItem('selectedTenant', tenant);
+        window.location.reload();
+      } else {
+        this.selectedTenant = null;
+        this.cdr.detectChanges();
+        this.selectedTenant = previousTenant;
+        this.cdr.detectChanges();
+      }
+    });
   }
 
   /**

@@ -28,6 +28,7 @@ import { ProgressBarService } from './progress-bar/progress-bar.service';
 
 /** Custom Guards */
 import { AuthenticationGuard } from './authentication/authentication.guard';
+import { PermissionGuard } from './authentication/permission.guard';
 
 /** Custom Interceptors */
 import { AuthenticationInterceptor } from './authentication/authentication.interceptor';
@@ -82,6 +83,7 @@ import { ToolbarComponent } from './shell/toolbar/toolbar.component';
     AuthenticationService,
     KeycloakAuthService,
     AuthenticationGuard,
+    PermissionGuard,
     AuthenticationInterceptor,
     {
       provide: HTTP_INTERCEPTORS,

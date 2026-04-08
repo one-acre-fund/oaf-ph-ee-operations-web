@@ -55,7 +55,7 @@ export class AddRoleComponent implements OnInit {
   submit() {
     const roleData = {
     ...this.roleForm.value,
-    name: this.roleForm.value.name.trim().toLowerCase()
+    name: this.roleForm.value.name.trim()
   };
   
   this.systemService.createRole(roleData)

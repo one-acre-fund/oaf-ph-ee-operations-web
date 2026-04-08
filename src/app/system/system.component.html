@@ -1,7 +1,7 @@
 <div class="container">
   <mat-card>
     <div fxLayout="row" fxLayout.lt-md="column">
-      <div fxFlex="50%">
+      <div fxFlex="50%" *ngIf="canViewRoles()">
         <mat-nav-list>
           <mat-list-item [routerLink]="['roles-and-permissions']">
             <mat-icon matListIcon>
@@ -15,7 +15,7 @@
         </mat-nav-list>
       </div>
 
-      <div fxFlex="50%">
+      <div fxFlex="50%" *ngIf="canViewAudit()">
         <mat-nav-list>
           <mat-list-item [routerLink]="['audit-trails']">
             <mat-icon matListIcon>
