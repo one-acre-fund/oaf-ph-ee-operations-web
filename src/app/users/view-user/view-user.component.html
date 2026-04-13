@@ -118,7 +118,7 @@
 
         <div fxFlex="50%">
           <span *ngFor="let role of userRoles">
-            {{ role.name }}
+            {{ role }}
           </span>
         </div>
 
@@ -127,7 +127,7 @@
         </div>
 
         <div fxFlex="50%">
-          <span *ngFor="let currency of userData.currenciesList">
+          <span *ngFor="let currency of userData.currencies">
             {{ currency }}
           </span>
         </div>
@@ -148,7 +148,7 @@
         <div fxFlex="30%" class="mat-body-strong">Assigned AMS</div>
 
         <div fxFlex="50%">
-          <span *ngFor="let payeePartyIdType of userData.payeePartyIdTypesList">
+          <span *ngFor="let payeePartyIdType of userData.payeePartyIdTypes">
             {{ payeePartyIdType }}
           </span>
         </div>
@@ -169,7 +169,7 @@
         <div fxFlex="30%" class="mat-body-strong">Assigned Shop/Account ID</div>
 
         <div fxFlex="50%">
-          <span *ngFor="let payeePartyId of userData.payeePartyIdsList">
+          <span *ngFor="let payeePartyId of userData.payeePartyIds">
             {{ payeePartyId }}
           </span>
         </div>

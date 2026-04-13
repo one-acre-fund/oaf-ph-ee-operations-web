@@ -25,7 +25,7 @@ import { AuditTrailResolver } from './audit-trails/view-audit/audit-trail.resolv
 const routes: Routes = [
   Route.withShell([
     {
-      path: 'system/roles-and-permissions',
+      path: 'system',
       canActivate: [PermissionGuard],
       data: { title: extract('System'), breadcrumb: 'System', permissions: ['ALL_FUNCTIONS', 'READ_AUDIT', 'READ_ROLE'] },
       children: [
