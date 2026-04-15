@@ -495,148 +495,186 @@ export class ViewUserComponent implements OnInit {
       `User ID: ${this.userData.id}`,
       1
     );
-      this.usersService.getUsersTemplate().subscribe((roles) => {
-          this.rolesData = roles;
+    this.usersService.getUsersTemplate().subscribe((roles) => {
+      this.rolesData = roles;
+      const currentRoleIds = this.getCurrentRoleIds();
+      this.openEditAppUserDialog(currentRoleIds);
+    });
+  }
 
-          const currentRoleIds = this.rolesData
-              .filter(role => this.userRoles.includes(role.name))
-              .map(role => role.id);
+  private getCurrentRoleIds(): number[] {
+    return this.rolesData
+      .filter((role) => this.userRoles.includes(role.name))
+      .map((role) => role.id);
+  }
 
-          const formfields: FormfieldBase[] = [
-              new InputBase({
-                controlName: 'firstName',
-                label: 'First Name',
-                value: this.userData.firstname,
-                type: 'text',
-                required: true,
-              }),
-              new InputBase({
-                controlName: 'lastName',
-                label: 'Last Name',
-                value: this.userData.lastname,
-                type: 'text',
-                required: true,
-              }),
-              new SelectBase({
-                controlName: 'roles',
-                label: 'Roles',
-                value: currentRoleIds,
-                options: {
-                  label: 'name',
-                  value: 'id',
-                  data: this.rolesData || []
-                },
-                required: true,
-                multiple: true
-              })
-            ];
-          const data = {
-              title: 'Edit User Details',
-              layout: { addButtonText: 'Save' },
-              formfields: formfields,
-            };
-          const editFundDialogRef = this.dialog.open(FormDialogComponent, { data });
-          editFundDialogRef.afterClosed().subscribe((response: any) => {
-              if (response.data) {
-                // Track user details edit submission
-                this.matomoService.trackEvent(
-                  'User Management',
-                  'Update User Details',
-                  `User ID: ${this.userData.id}`,
-                  1
-                );
+  private openEditAppUserDialog(currentRoleIds: number[]) {
+    const data = {
+      title: 'Edit User Details',
+      layout: { addButtonText: 'Save' },
+      formfields: this.buildEditAppUserFormFields(currentRoleIds),
+    };
+    const editFundDialogRef = this.dialog.open(FormDialogComponent, { data });
+    editFundDialogRef.afterClosed().subscribe((response: any) => {
+      this.handleEditAppUserDialogResponse(response, currentRoleIds);
+    });
+  }
 
-                const appUser = {
-                  firstname: response.data.value.firstName,
-                  lastname: response.data.value.lastName,
-                };
+  private buildEditAppUserFormFields(currentRoleIds: number[]): FormfieldBase[] {
+    return [
+      new InputBase({
+        controlName: 'firstName',
+        label: 'First Name',
+        value: this.userData.firstname,
+        type: 'text',
+        required: true,
+      }),
+      new InputBase({
+        controlName: 'lastName',
+        label: 'Last Name',
+        value: this.userData.lastname,
+        type: 'text',
+        required: true,
+      }),
+      new SelectBase({
+        controlName: 'roles',
+        label: 'Roles',
+        value: currentRoleIds,
+        options: {
+          label: 'name',
+          value: 'id',
+          data: this.rolesData || [],
+        },
+        required: true,
+        multiple: true,
+      }),
+    ];
+  }
 
-                // Update user details
-                this.usersService.editUserDetails(this.userData.id, appUser).subscribe(
-                  (res) => {
-                    // Update roles if changed
-                    const newRoleIds: number[] = response.data.value.roles;
-                    const rolesToAssign = newRoleIds.filter((id: number) => !currentRoleIds.includes(id));
-                    const rolesToRevoke = currentRoleIds.filter((id: number) => !newRoleIds.includes(id));
+  private handleEditAppUserDialogResponse(response: any, currentRoleIds: number[]) {
+    if (!response.data) {
+      // Track user details edit cancellation
+      this.matomoService.trackEvent(
+        'User Management',
+        'Edit User Details Cancelled',
+        `User ID: ${this.userData.id}`,
+        1
+      );
+      return;
+    }
 
-                    if (rolesToAssign.length > 0 || rolesToRevoke.length > 0) {
-                      const rolePromises: Observable<any>[] = [];
+    // Track user details edit submission
+    this.matomoService.trackEvent(
+      'User Management',
+      'Update User Details',
+      `User ID: ${this.userData.id}`,
+      1
+    );
 
-                      if (rolesToAssign.length > 0) {
-                        rolePromises.push(this.usersService.assignRoles(this.userData.id, { entityIds: rolesToAssign }));
-                      }
-                      if (rolesToRevoke.length > 0) {
-                        rolePromises.push(this.usersService.revokeRoles(this.userData.id, { entityIds: rolesToRevoke }));
-                      }
+    const appUser = {
+      firstname: response.data.value.firstName,
+      lastname: response.data.value.lastName,
+    };
 
-                      forkJoin(rolePromises).subscribe(
-                        () => {
-                          this.matomoService.trackEvent(
-                            'User Management',
-                            'User Details and Roles Updated',
-                            `User ID: ${this.userData.id}`,
-                            1
-                          );
-                          this.alertService.alert({
-                            type: 'Edit Success',
-                            message: `Edit User Request was successful!`,
-                          });
-                          this.reloadCurrentUserData();
-                        },
-                        (roleError: any) => {
-                          this.matomoService.trackEvent(
-                            'User Management',
-                            'Role Assignment Failed',
-                            `User ID: ${this.userData.id}`,
-                            1
-                          );
-                          this.alertService.alert({
-                            type: 'Edit Error',
-                            message: `User updated but role changes failed`,
-                          });
-                          this.reloadCurrentUserData();
-                        }
-                      );
-                    } else {
-                      // Track successful user details update (no role change)
-                      this.matomoService.trackEvent(
-                        'User Management',
-                        'User Details Updated',
-                        `User ID: ${this.userData.id}`,
-                        1
-                      );
-                      this.alertService.alert({
-                        type: 'Edit Success',
-                        message: `Edit User Request was successful!`,
-                      });
-                      this.reloadCurrentUserData();
-                    }
-                  },
-                  (err) => {
-                    // Track user details update failure
-                    this.matomoService.trackEvent(
-                      'User Management',
-                      'User Details Update Failed',
-                      `User ID: ${this.userData.id}`,
-                      1
-                    );
-                    this.alertService.alert({
-                      type: 'Edit Error',
-                      message: `Edit User request failed`,
-                    });
-                  }
-                );
-              } else {
-                // Track user details edit cancellation
-                this.matomoService.trackEvent(
-                  'User Management',
-                  'Edit User Details Cancelled',
-                  `User ID: ${this.userData.id}`,
-                  1
-                );
-              }
-            });
-      });
+    this.usersService.editUserDetails(this.userData.id, appUser).subscribe(
+      () => this.handleUserUpdated(response.data.value.roles, currentRoleIds),
+      () => this.handleUserDetailsUpdateFailed()
+    );
+  }
+
+  private handleUserUpdated(newRoleIds: number[], currentRoleIds: number[]) {
+    const rolesToAssign = newRoleIds.filter(
+      (id: number) => !currentRoleIds.includes(id)
+    );
+    const rolesToRevoke = currentRoleIds.filter(
+      (id: number) => !newRoleIds.includes(id)
+    );
+
+    if (rolesToAssign.length === 0 && rolesToRevoke.length === 0) {
+      this.handleUserDetailsUpdatedWithoutRoleChanges();
+      return;
+    }
+
+    const roleRequests = this.buildRoleUpdateRequests(rolesToAssign, rolesToRevoke);
+    forkJoin(roleRequests).subscribe(
+      () => this.handleUserDetailsAndRolesUpdated(),
+      () => this.handleRoleAssignmentFailed()
+    );
+  }
+
+  private buildRoleUpdateRequests(
+    rolesToAssign: number[],
+    rolesToRevoke: number[]
+  ): Observable<any>[] {
+    const roleRequests: Observable<any>[] = [];
+    if (rolesToAssign.length > 0) {
+      roleRequests.push(
+        this.usersService.assignRoles(this.userData.id, { entityIds: rolesToAssign })
+      );
+    }
+    if (rolesToRevoke.length > 0) {
+      roleRequests.push(
+        this.usersService.revokeRoles(this.userData.id, { entityIds: rolesToRevoke })
+      );
+    }
+    return roleRequests;
+  }
+
+  private handleUserDetailsAndRolesUpdated() {
+    this.matomoService.trackEvent(
+      'User Management',
+      'User Details and Roles Updated',
+      `User ID: ${this.userData.id}`,
+      1
+    );
+    this.alertService.alert({
+      type: 'Edit Success',
+      message: `Edit User Request was successful!`,
+    });
+    this.reloadCurrentUserData();
+  }
+
+  private handleRoleAssignmentFailed() {
+    this.matomoService.trackEvent(
+      'User Management',
+      'Role Assignment Failed',
+      `User ID: ${this.userData.id}`,
+      1
+    );
+    this.alertService.alert({
+      type: 'Edit Error',
+      message: `User updated but role changes failed`,
+    });
+    this.reloadCurrentUserData();
+  }
+
+  private handleUserDetailsUpdatedWithoutRoleChanges() {
+    // Track successful user details update (no role change)
+    this.matomoService.trackEvent(
+      'User Management',
+      'User Details Updated',
+      `User ID: ${this.userData.id}`,
+      1
+    );
+    this.alertService.alert({
+      type: 'Edit Success',
+      message: `Edit User Request was successful!`,
+    });
+    this.reloadCurrentUserData();
+  }
+
+  private handleUserDetailsUpdateFailed() {
+    // Track user details update failure
+    this.matomoService.trackEvent(
+      'User Management',
+      'User Details Update Failed',
+      `User ID: ${this.userData.id}`,
+      1
+    );
+    this.alertService.alert({
+      type: 'Edit Error',
+      message: `Edit User request failed`,
+    });
   }
 
   reloadCurrentUserData() {
