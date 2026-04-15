@@ -5,6 +5,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 
 /** Custom Services */
 import { SystemService } from '../../system.service';
+import { Utils } from '../../../core/utils/utils';
 
 /**
  * Add Role Component.
@@ -24,11 +25,13 @@ export class AddRoleComponent implements OnInit {
    * @param {SystemService} systemService System Service.
    * @param {ActivatedRoute} route Activated Route.
    * @param {Router} router Router for navigation.
+   * @param {Utils} utils Utility service.
    */
   constructor(private formBuilder: UntypedFormBuilder,
               private systemService: SystemService,
               private route: ActivatedRoute,
-              private router: Router) { }
+              private router: Router,
+              private utils: Utils) { }
 
   /**
    * Creates the role form.
@@ -42,7 +45,7 @@ export class AddRoleComponent implements OnInit {
    */
   createRoleForm() {
     this.roleForm = this.formBuilder.group({
-      'name': ['', Validators.required],
+      'name': ['', [Validators.required, this.utils.noSpacesValidator.bind(this.utils)]],
       'description': ['', Validators.required],
       'disabled': false
     });
@@ -55,7 +58,7 @@ export class AddRoleComponent implements OnInit {
   submit() {
     const roleData = {
     ...this.roleForm.value,
-    name: this.roleForm.value.name.trim()
+    name: this.roleForm.value.name.trim().toLowerCase().replace(/\s+/g, '')
   };
   
   this.systemService.createRole(roleData)

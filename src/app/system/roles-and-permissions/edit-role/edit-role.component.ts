@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 /** Custom Services */
 import { SystemService } from '../../system.service';
+import { Utils } from '../../../core/utils/utils';
 
 /**
  * Edit Role Description Component.
@@ -26,12 +27,14 @@ export class EditRoleComponent implements OnInit {
    * @param {SystemService} systemService System Service.
    * @param {ActivatedRoute} route Activated Route.
    * @param {Router} router Router for navigation.
+   * @param {Utils} utils Utility service.
    */
   constructor(
     private formBuilder: UntypedFormBuilder,
     private systemService: SystemService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private utils: Utils
   ) {
     this.route.data.subscribe((data: { role: any }) => {
       this.roleData = data.role;
@@ -50,7 +53,7 @@ export class EditRoleComponent implements OnInit {
    */
   createRoleForm() {
     this.roleForm = this.formBuilder.group({
-      name: [this.roleData.name, Validators.required],
+      name: [this.roleData.name, [Validators.required, this.utils.noSpacesValidator.bind(this.utils)]],
       description: [this.roleData.description, Validators.required],
       disabled: [{ value: this.roleData.disabled, disabled: true }]
     });
@@ -62,7 +65,7 @@ export class EditRoleComponent implements OnInit {
    */
   submit() {
     const updatedRole = {
-      name: this.roleForm.get('name').value.trim(),
+      name: this.roleForm.get('name').value.trim().toLowerCase().replace(/\s+/g, ''),
       description: this.roleForm.get('description').value,
       disabled: this.roleData.disabled
     };

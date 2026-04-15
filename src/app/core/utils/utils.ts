@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { AbstractControl, ValidationErrors } from '@angular/forms';
 
 @Injectable({
     providedIn: 'root'
@@ -12,5 +13,19 @@ export class Utils {
         }).join(''));
 
         return JSON.parse(jsonPayload);
+    }
+
+    /**
+     * Validator to check for spaces in a form control value.
+     * @param control The form control to validate.
+     * @returns Validation error object or null if valid.
+     */
+    noSpacesValidator(control: AbstractControl): ValidationErrors | null {
+        const value = control.value;
+        if (!value) {
+            return null;
+        }
+        const hasSpaces = /\s/.test(value);
+        return hasSpaces ? { 'spaces': { value: control.value } } : null;
     }
 }
