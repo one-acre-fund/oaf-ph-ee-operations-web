@@ -52,7 +52,8 @@ export class ViewUserComponent implements OnInit {
     private matomoService: MatomoService
   ) {
     this.route.data.subscribe((data: { user: any }) => {
-      this.userData = data.user;
+        this.userRoles = data.user.roles;
+        this.userData = data.user;
     });
   }
 
@@ -78,15 +79,6 @@ export class ViewUserComponent implements OnInit {
 
     this.usersService.fetchAmsList().subscribe((res) => {
       this.amsList = res;
-    });
-
-    // Fetch roles data
-    this.usersService.getUsersTemplate().subscribe((roles) => {
-      this.rolesData = roles;
-    });
-
-    this.usersService.getUserRoles(this.userData.id).subscribe((roles) => {
-      this.userRoles = roles;
     });
   }
 
@@ -503,11 +495,33 @@ export class ViewUserComponent implements OnInit {
       `User ID: ${this.userData.id}`,
       1
     );
+    this.usersService.getUsersTemplate().subscribe((roles) => {
+      this.rolesData = roles;
+      const currentRoleIds = this.getCurrentRoleIds();
+      this.openEditAppUserDialog(currentRoleIds);
+    });
+  }
 
-    // Get current role IDs for pre-population
-    const currentRoleIds = this.userRoles ? this.userRoles.map((role: any) => role.id) : [];
+  private getCurrentRoleIds(): number[] {
+    return this.rolesData
+      .filter((role) => this.userRoles.includes(role.name))
+      .map((role) => role.id);
+  }
 
-    const formfields: FormfieldBase[] = [
+  private openEditAppUserDialog(currentRoleIds: number[]) {
+    const data = {
+      title: 'Edit User Details',
+      layout: { addButtonText: 'Save' },
+      formfields: this.buildEditAppUserFormFields(currentRoleIds),
+    };
+    const editFundDialogRef = this.dialog.open(FormDialogComponent, { data });
+    editFundDialogRef.afterClosed().subscribe((response: any) => {
+      this.handleEditAppUserDialogResponse(response, currentRoleIds);
+    });
+  }
+
+  private buildEditAppUserFormFields(currentRoleIds: number[]): FormfieldBase[] {
+    return [
       new InputBase({
         controlName: 'firstName',
         label: 'First Name',
@@ -529,118 +543,137 @@ export class ViewUserComponent implements OnInit {
         options: {
           label: 'name',
           value: 'id',
-          data: this.rolesData || []
+          data: this.rolesData || [],
         },
         required: true,
-        multiple: true
-      })
+        multiple: true,
+      }),
     ];
-    const data = {
-      title: 'Edit User Details',
-      layout: { addButtonText: 'Save' },
-      formfields: formfields,
+  }
+
+  private handleEditAppUserDialogResponse(response: any, currentRoleIds: number[]) {
+    if (!response.data) {
+      // Track user details edit cancellation
+      this.matomoService.trackEvent(
+        'User Management',
+        'Edit User Details Cancelled',
+        `User ID: ${this.userData.id}`,
+        1
+      );
+      return;
+    }
+
+    // Track user details edit submission
+    this.matomoService.trackEvent(
+      'User Management',
+      'Update User Details',
+      `User ID: ${this.userData.id}`,
+      1
+    );
+
+    const appUser = {
+      firstname: response.data.value.firstName,
+      lastname: response.data.value.lastName,
     };
-    const editFundDialogRef = this.dialog.open(FormDialogComponent, { data });
-    editFundDialogRef.afterClosed().subscribe((response: any) => {
-      if (response.data) {
-        // Track user details edit submission
-        this.matomoService.trackEvent(
-          'User Management',
-          'Update User Details',
-          `User ID: ${this.userData.id}`,
-          1
-        );
 
-        const appUser = {
-          ...this.userData,
-          firstname: response.data.value.firstName,
-          lastname: response.data.value.lastName,
-        };
-        
-        // Update user details
-        this.usersService.editUserDetails(this.userData.id, appUser).subscribe(
-          (res) => {
-            // Update roles if changed
-            const newRoleIds: number[] = response.data.value.roles;
-            const rolesToAssign = newRoleIds.filter((id: number) => !currentRoleIds.includes(id));
-            const rolesToRevoke = currentRoleIds.filter((id: number) => !newRoleIds.includes(id));
+    this.usersService.editUserDetails(this.userData.id, appUser).subscribe(
+      () => this.handleUserUpdated(response.data.value.roles, currentRoleIds),
+      () => this.handleUserDetailsUpdateFailed()
+    );
+  }
 
-            if (rolesToAssign.length > 0 || rolesToRevoke.length > 0) {
-              const rolePromises: Observable<any>[] = [];
+  private handleUserUpdated(newRoleIds: number[], currentRoleIds: number[]) {
+    const rolesToAssign = newRoleIds.filter(
+      (id: number) => !currentRoleIds.includes(id)
+    );
+    const rolesToRevoke = currentRoleIds.filter(
+      (id: number) => !newRoleIds.includes(id)
+    );
 
-              if (rolesToAssign.length > 0) {
-                rolePromises.push(this.usersService.assignRoles(this.userData.id, { entityIds: rolesToAssign }));
-              }
-              if (rolesToRevoke.length > 0) {
-                rolePromises.push(this.usersService.revokeRoles(this.userData.id, { entityIds: rolesToRevoke }));
-              }
+    if (rolesToAssign.length === 0 && rolesToRevoke.length === 0) {
+      this.handleUserDetailsUpdatedWithoutRoleChanges();
+      return;
+    }
 
-              forkJoin(rolePromises).subscribe(
-                () => {
-                  this.matomoService.trackEvent(
-                    'User Management',
-                    'User Details and Roles Updated',
-                    `User ID: ${this.userData.id}`,
-                    1
-                  );
-                  this.alertService.alert({
-                    type: 'Edit Success',
-                    message: `Edit User Request was successful!`,
-                  });
-                  this.reloadCurrentUserData();
-                },
-                (roleError: any) => {
-                  this.matomoService.trackEvent(
-                    'User Management',
-                    'Role Assignment Failed',
-                    `User ID: ${this.userData.id}`,
-                    1
-                  );
-                  this.alertService.alert({
-                    type: 'Edit Error',
-                    message: `User updated but role changes failed`,
-                  });
-                  this.reloadCurrentUserData();
-                }
-              );
-            } else {
-              // Track successful user details update (no role change)
-              this.matomoService.trackEvent(
-                'User Management',
-                'User Details Updated',
-                `User ID: ${this.userData.id}`,
-                1
-              );
-              this.alertService.alert({
-                type: 'Edit Success',
-                message: `Edit User Request was successful!`,
-              });
-              this.reloadCurrentUserData();
-            }
-          },
-          (err) => {
-            // Track user details update failure
-            this.matomoService.trackEvent(
-              'User Management',
-              'User Details Update Failed',
-              `User ID: ${this.userData.id}`,
-              1
-            );
-            this.alertService.alert({
-              type: 'Edit Error',
-              message: `Edit User request failed`,
-            });
-          }
-        );
-      } else {
-        // Track user details edit cancellation
-        this.matomoService.trackEvent(
-          'User Management',
-          'Edit User Details Cancelled',
-          `User ID: ${this.userData.id}`,
-          1
-        );
-      }
+    const roleRequests = this.buildRoleUpdateRequests(rolesToAssign, rolesToRevoke);
+    forkJoin(roleRequests).subscribe(
+      () => this.handleUserDetailsAndRolesUpdated(),
+      () => this.handleRoleAssignmentFailed()
+    );
+  }
+
+  private buildRoleUpdateRequests(
+    rolesToAssign: number[],
+    rolesToRevoke: number[]
+  ): Observable<any>[] {
+    const roleRequests: Observable<any>[] = [];
+    if (rolesToAssign.length > 0) {
+      roleRequests.push(
+        this.usersService.assignRoles(this.userData.id, { entityIds: rolesToAssign })
+      );
+    }
+    if (rolesToRevoke.length > 0) {
+      roleRequests.push(
+        this.usersService.revokeRoles(this.userData.id, { entityIds: rolesToRevoke })
+      );
+    }
+    return roleRequests;
+  }
+
+  private handleUserDetailsAndRolesUpdated() {
+    this.matomoService.trackEvent(
+      'User Management',
+      'User Details and Roles Updated',
+      `User ID: ${this.userData.id}`,
+      1
+    );
+    this.alertService.alert({
+      type: 'Edit Success',
+      message: `Edit User Request was successful!`,
+    });
+    this.reloadCurrentUserData();
+  }
+
+  private handleRoleAssignmentFailed() {
+    this.matomoService.trackEvent(
+      'User Management',
+      'Role Assignment Failed',
+      `User ID: ${this.userData.id}`,
+      1
+    );
+    this.alertService.alert({
+      type: 'Edit Error',
+      message: `User updated but role changes failed`,
+    });
+    this.reloadCurrentUserData();
+  }
+
+  private handleUserDetailsUpdatedWithoutRoleChanges() {
+    // Track successful user details update (no role change)
+    this.matomoService.trackEvent(
+      'User Management',
+      'User Details Updated',
+      `User ID: ${this.userData.id}`,
+      1
+    );
+    this.alertService.alert({
+      type: 'Edit Success',
+      message: `Edit User Request was successful!`,
+    });
+    this.reloadCurrentUserData();
+  }
+
+  private handleUserDetailsUpdateFailed() {
+    // Track user details update failure
+    this.matomoService.trackEvent(
+      'User Management',
+      'User Details Update Failed',
+      `User ID: ${this.userData.id}`,
+      1
+    );
+    this.alertService.alert({
+      type: 'Edit Error',
+      message: `Edit User request failed`,
     });
   }
 
@@ -655,9 +688,7 @@ export class ViewUserComponent implements OnInit {
 
     this.usersService.getUser(this.userData.id).subscribe((res) => {
       this.userData = res;
-      this.usersService.getUserRoles(this.userData.id).subscribe((roles) => {
-        this.userRoles = roles;
-      });
+      this.userRoles = res.roles;
     });
   }
 
