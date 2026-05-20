@@ -48,12 +48,13 @@ import { AppRoutingModule } from './app-routing.module';
 import { DatePipe } from '@angular/common';
 import { SentryHttpInterceptor } from './core/interceptors/sentry-http.interceptor';
 
-export function initConfig(config: AppConfig) {
-  return () => config.load();
-}
-
-export function initKeycloak(keycloakAuthService: KeycloakAuthService) {
+/** Load configuration.properties before Keycloak so oauth.* overrides apply. */
+export function initConfigAndKeycloak(
+  config: AppConfig,
+  keycloakAuthService: KeycloakAuthService
+) {
   return async () => {
+    await config.load();
     try {
       await keycloakAuthService.initKeycloak();
     } catch (error) {
@@ -90,14 +91,8 @@ export function initKeycloak(keycloakAuthService: KeycloakAuthService) {
     AppConfig,
     {
       provide: APP_INITIALIZER,
-      useFactory: initConfig,
-      deps: [AppConfig],
-      multi: true
-    },
-    {
-      provide: APP_INITIALIZER,
-      useFactory: initKeycloak,
-      deps: [KeycloakAuthService],
+      useFactory: initConfigAndKeycloak,
+      deps: [AppConfig, KeycloakAuthService],
       multi: true
     },
     // Sentry Error Handler
