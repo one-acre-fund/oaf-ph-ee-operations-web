@@ -15,6 +15,9 @@ on:
       - release/*
       - hotfix/*
 
+permissions:
+  contents: read
+
 env:
   # Publish on push to protected branches (PR refs are refs/pull/*/merge, so they won't match).
   SHOULD_PUBLISH: ${{ (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop' || startsWith(github.ref, 'refs/heads/release/') || startsWith(github.ref, 'refs/heads/hotfix/')) && github.event_name != 'schedule' }}
