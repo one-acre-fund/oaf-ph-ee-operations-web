@@ -1,0 +1,139 @@
+name: ph-ee-operations-web
+run-name: ph-ee-operations-web-${{ github.ref_name }}-${{ github.run_number }}
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+      - release/*
+      - hotfix/*
+  pull_request:
+    branches:
+      - main
+      - develop
+      - release/*
+      - hotfix/*
+
+permissions:
+  contents: read
+
+env:
+  # Publish on push to protected branches (PR refs are refs/pull/*/merge, so they won't match).
+  SHOULD_PUBLISH: ${{ (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop' || startsWith(github.ref, 'refs/heads/release/') || startsWith(github.ref, 'refs/heads/hotfix/')) && github.event_name != 'schedule' }}
+  IMAGE_REPOSITORY: oneacrefund/ph-ee-operations-web
+  REGISTRY_PROVIDER: ${{ vars.REGISTRY_PROVIDER != '' && vars.REGISTRY_PROVIDER || 'acr' }}
+  AWS_REGION: ${{ vars.AWS_REGION || 'eu-west-1' }}
+
+jobs:
+  Build:
+    name: Build And Publish Image
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+    outputs:
+      PH_EE_OPERATIONS_WEB_IMAGE_TAG: ${{ steps.set-image-tag.outputs.IMAGE_TAG }}
+    steps:
+      - name: Check out source code
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+          show-progress: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@1d0ff469b7ec7b3cb9d8673fde0c81c44821de2a # v4.2.0
+        with:
+          node-version: 18
+
+      - name: Get Revision and Set Image Tag
+        id: set-image-tag
+        shell: bash
+        env:
+          RUN_NUMBER: ${{ github.run_number }}
+        run: |
+          VERSION_TAG=$(npm pkg get version | tr -d '"')
+          IMAGE_TAG="${VERSION_TAG}.$(date '+%Y.%m.%d').${RUN_NUMBER}"
+
+          echo "VERSION_TAG=${VERSION_TAG}"
+          echo "IMAGE_SEMANTIC_HASH=${IMAGE_TAG}"
+          echo "Tags: ${IMAGE_TAG}"
+          echo "Registry provider: ${REGISTRY_PROVIDER}"
+
+          echo "VERSION_TAG=${VERSION_TAG}" >> "${GITHUB_OUTPUT}"
+          echo "IMAGE_SEMANTIC_HASH=${IMAGE_TAG}" >> "${GITHUB_OUTPUT}"
+          echo "IMAGE_TAG=${IMAGE_TAG}" >> "${GITHUB_OUTPUT}"
+
+      - name: Login to Azure Container Registry
+        if: ${{ env.SHOULD_PUBLISH == 'true' && env.REGISTRY_PROVIDER == 'acr' }}
+        uses: docker/login-action@184bdaa0721073962dff0199f1fb9940f07167d1 # v3.5.0
+        with:
+          registry: ${{ vars.ACR_REGISTRY }}
+          username: ${{ vars.ACR_PULL_USERNAME }}
+          password: ${{ secrets.ACR_PULL_PASSWORD }}
+
+      - name: Configure AWS credentials
+        if: ${{ env.SHOULD_PUBLISH == 'true' && env.REGISTRY_PROVIDER == 'ecr' }}
+        uses: aws-actions/configure-aws-credentials@d979d5b3a71173a29b74b5b88418bfda9437d885 # v6.1.1
+        with:
+          role-to-assume: ${{ vars.ECR_REGISTRY_ROLE }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        if: ${{ env.SHOULD_PUBLISH == 'true' && env.REGISTRY_PROVIDER == 'ecr' }}
+        uses: aws-actions/amazon-ecr-login@fa648b43de3d4d023bcb3f89ed6940096949c419 # v2.1.5
+
+      - name: Resolve container registry host
+        id: registry
+        shell: bash
+        env:
+          ECR_LOGIN_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REGISTRY: ${{ vars.ECR_REGISTRY }}
+          ACR_REGISTRY: ${{ vars.ACR_REGISTRY }}
+        run: |
+          if [[ "${REGISTRY_PROVIDER}" == "ecr" ]]; then
+            REGISTRY="${ECR_LOGIN_REGISTRY}"
+            if [[ -z "${REGISTRY}" ]]; then
+              REGISTRY="${ECR_REGISTRY}"
+            fi
+          else
+            REGISTRY="${ACR_REGISTRY}"
+          fi
+
+          if [[ -z "${REGISTRY}" ]]; then
+            REGISTRY="localhost"
+          fi
+
+          echo "Using registry: ${REGISTRY}"
+          echo "REGISTRY=${REGISTRY}" >> "${GITHUB_OUTPUT}"
+
+      - name: Build Docker image
+        shell: bash
+        env:
+          REGISTRY: ${{ steps.registry.outputs.REGISTRY }}
+          IMAGE_TAG: ${{ steps.set-image-tag.outputs.IMAGE_TAG }}
+        run: |
+          docker build . -t "${REGISTRY}/${IMAGE_REPOSITORY}:${IMAGE_TAG}"
+
+      - name: Push image to registry
+        if: ${{ env.SHOULD_PUBLISH == 'true' }}
+        shell: bash
+        env:
+          REGISTRY: ${{ steps.registry.outputs.REGISTRY }}
+          IMAGE_TAG: ${{ steps.set-image-tag.outputs.IMAGE_TAG }}
+          VERSION_TAG: ${{ steps.set-image-tag.outputs.VERSION_TAG }}
+          GITHUB_REF: ${{ github.ref }}
+        run: |
+          IMAGE="${REGISTRY}/${IMAGE_REPOSITORY}"
+
+          docker push "${IMAGE}:${IMAGE_TAG}"
+
+          # On main, also publish version + latest tags (matches previous Azure pipeline).
+          if [[ "${GITHUB_REF}" == "refs/heads/main" ]]; then
+            docker tag "${IMAGE}:${IMAGE_TAG}" "${IMAGE}:${VERSION_TAG}"
+            docker tag "${IMAGE}:${IMAGE_TAG}" "${IMAGE}:latest"
+            docker push "${IMAGE}:${VERSION_TAG}"
+            docker push "${IMAGE}:latest"
+          fi
