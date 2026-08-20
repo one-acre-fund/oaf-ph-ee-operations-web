@@ -32,7 +32,7 @@ metadata:
     - url: https://analytics.oneacrefund.org/
       title: Matomo
       icon: globe
-    - url: https://github.com/one-acre-fund/oaf-ph-ee-operations-web/blob/develop/.github/workflows/build-and-publish.yml
+    - url: https://github.com/one-acre-fund/oaf-ph-ee-operations-web/actions/workflows/build-and-publish.yml
       title: Build Pipeline
       icon: build
 spec:
