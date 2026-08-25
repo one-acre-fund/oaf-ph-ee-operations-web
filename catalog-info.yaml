@@ -1,0 +1,46 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: ph-ee-operations-web
+  title: PH Operations Web
+  description: Angular UI for PaymentHub EE operations — transaction monitoring, request-to-pay, and operations workflows
+  annotations:
+    github.com/project-slug: one-acre-fund/oaf-ph-ee-operations-web
+    backstage.io/techdocs-ref: dir:.
+    sonarqube.org/project-key: one-acre-fund_oaf-ph-ee-operations-web
+    backstage.io/code-coverage: sonarqube
+  tags:
+    - microfinance
+    - financial-services
+    - payments
+    - paymenthub
+    - operations-web
+    - angular
+    - frontend
+    - typescript
+    - one-acre-fund
+  links:
+    - url: https://sonarcloud.io/project/overview?id=one-acre-fund_oaf-ph-ee-operations-web
+      title: Code Quality Dashboard
+      icon: dashboard
+    - url: https://ph-web.oneacrefund.org
+      title: Production Environment
+      icon: globe
+    - url: https://one-acre-fund.sentry.io/projects/paymenthub-ui/?project=4509881008455680
+      title: Sentry
+      icon: globe
+    - url: https://analytics.oneacrefund.org/
+      title: Matomo
+      icon: globe
+    - url: https://github.com/one-acre-fund/oaf-ph-ee-operations-web/actions/workflows/build-and-publish.yml
+      title: Build Pipeline
+      icon: build
+spec:
+  type: website
+  lifecycle: production
+  owner: group:one-acre-fund/credits-and-payments
+  consumesApis:
+    - operations-transaction-api
+  system: operations
+  dependsOn:
+    - component:ph-ee-operations-app
