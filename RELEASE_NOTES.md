@@ -1,5 +1,8 @@
 # Release Notes
 
+## Version 1.1.9.2
+        * [CP-4011] - Fix matomo site-id for production
+
 ## Version 1.1.9.1
         * [CP-4069] - Fix redirection issue to ph-web.qa.oneacrefund
 
