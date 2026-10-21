@@ -221,7 +221,9 @@
         "STATUS_FAILED": "ÉCHOUÉ",
         "STATUS_PENDING_INCOMPLETE": "EN ATTENTE/INCOMPLET",
         "ERROR_DESCRIPTION": "Description d'Erreur",
-        "EXPORT_CSV": "Exporter CSV"
+        "EXPORT_CSV": "Exporter CSV",
+        "PREPARING": "Préparation de l'export…",
+        "PREPARING_RESTARTED": "Préparation de l'export… (relancé après une interruption)"
     },
     "TRANSACTIONS": {
         "TRANSACTION_ID": "ID de Transaction",

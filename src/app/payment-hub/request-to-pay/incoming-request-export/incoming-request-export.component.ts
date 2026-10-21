@@ -12,6 +12,8 @@ export class IncomingRequestExportComponent implements OnInit {
   amsCodes = amsShortCodes('TILL');
   csvExport: [];
   csvName: string;
+  exporting = false;
+  restarted = false;
 
   constructor(
     private requestToPayService: RequestToPayService,
@@ -135,40 +137,46 @@ export class IncomingRequestExportComponent implements OnInit {
     // Track form data for business intelligence
     this.trackExportFilters(filterBy);
 
-    try {
-      this.requestToPayService.exportCSV(filterBy);
-
-      // Track successful export
-      const endTime = performance.now();
-      const duration = Math.round(endTime - startTime);
-
-      this.matomoService.trackEvent(
-        'Export',
-        'Success',
-        'Request to Pay CSV Export',
-        1
-      );
-      this.trackBusinessMetric('request_csv_exports_completed', 1, 'exports');
-      this.trackBusinessMetric('export_duration', duration, 'milliseconds');
-
-      // Track performance metrics
-      if (duration > 5000) {
+    this.exporting = true;
+    this.requestToPayService.exportCSV(filterBy).subscribe({
+      next: (job) => (this.restarted = job.attempts > 1),
+      error: () => {
+        this.exporting = false;
+        this.restarted = false;
         this.matomoService.trackEvent(
-          'Performance',
-          'Slow Export',
+          'Export',
+          'Error',
           'Request to Pay CSV Export',
-          duration
+          1
         );
-      }
-    } catch (error) {
-      this.matomoService.trackEvent(
-        'Export',
-        'Error',
-        'Request to Pay CSV Export',
-        1
-      );
-      this.trackBusinessMetric('request_export_errors', 1, 'errors');
-    }
+        this.trackBusinessMetric('request_export_errors', 1, 'errors');
+      },
+      complete: () => {
+        this.exporting = false;
+        this.restarted = false;
+
+        // Track successful export
+        const duration = Math.round(performance.now() - startTime);
+        this.matomoService.trackEvent(
+          'Export',
+          'Success',
+          'Request to Pay CSV Export',
+          1
+        );
+        this.trackBusinessMetric('request_csv_exports_completed', 1, 'exports');
+        this.trackBusinessMetric('export_duration', duration, 'milliseconds');
+
+        // Track performance metrics
+        if (duration > 5000) {
+          this.matomoService.trackEvent(
+            'Performance',
+            'Slow Export',
+            'Request to Pay CSV Export',
+            duration
+          );
+        }
+      },
+    });
   }
 
   /**

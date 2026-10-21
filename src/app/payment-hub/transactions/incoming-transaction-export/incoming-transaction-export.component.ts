@@ -9,9 +9,10 @@ import { MatomoService } from 'app/core/analytics/matomo.service';
   styleUrls: ['./incoming-transaction-export.component.scss'],
 })
 export class IncomingTransactionExportComponent implements OnInit {
-  private readonly exportUrl = '/api/v1/transfers/export';
   private readonly fileNamePrefix = 'TRANSFERS';
   amsCodes = amsShortCodes('PAYBILL');
+  exporting = false;
+  restarted = false;
 
   constructor(
     private paymenthubService: PaymenthubService,
@@ -58,34 +59,38 @@ export class IncomingTransactionExportComponent implements OnInit {
     // Track form data for business intelligence
     this.trackExportFilters(filterBy);
 
-    try {
-      this.paymenthubService.exportCSV(
-        filterBy,
-        this.exportUrl,
-        this.fileNamePrefix
-      );
+    this.exporting = true;
+    this.paymenthubService
+      .exportCSV(filterBy, 'TRANSFERS', this.fileNamePrefix)
+      .subscribe({
+        next: (job) => (this.restarted = job.attempts > 1),
+        error: () => {
+          this.exporting = false;
+          this.restarted = false;
+          this.matomoService.trackEvent('Export', 'Error', 'CSV Export', 1);
+          this.trackBusinessMetric('export_errors', 1, 'errors');
+        },
+        complete: () => {
+          this.exporting = false;
+          this.restarted = false;
 
-      // Track successful export
-      const endTime = performance.now();
-      const duration = Math.round(endTime - startTime);
+          // Track successful export
+          const duration = Math.round(performance.now() - startTime);
+          this.matomoService.trackEvent('Export', 'Success', 'CSV Export', 1);
+          this.trackBusinessMetric('csv_exports_completed', 1, 'exports');
+          this.trackBusinessMetric('export_duration', duration, 'milliseconds');
 
-      this.matomoService.trackEvent('Export', 'Success', 'CSV Export', 1);
-      this.trackBusinessMetric('csv_exports_completed', 1, 'exports');
-      this.trackBusinessMetric('export_duration', duration, 'milliseconds');
-
-      // Track performance metrics
-      if (duration > 5000) {
-        this.matomoService.trackEvent(
-          'Performance',
-          'Slow Export',
-          'CSV Export',
-          duration
-        );
-      }
-    } catch (error) {
-      this.matomoService.trackEvent('Export', 'Error', 'CSV Export', 1);
-      this.trackBusinessMetric('export_errors', 1, 'errors');
-    }
+          // Track performance metrics
+          if (duration > 5000) {
+            this.matomoService.trackEvent(
+              'Performance',
+              'Slow Export',
+              'CSV Export',
+              duration
+            );
+          }
+        },
+      });
   }
 
   /**

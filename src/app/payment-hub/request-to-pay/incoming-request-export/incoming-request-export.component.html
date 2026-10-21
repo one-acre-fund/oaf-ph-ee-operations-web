@@ -228,11 +228,11 @@
     <button
       mat-stroked-button
       type="submit"
-      [disabled]="!postForm.valid"
+      [disabled]="!postForm.valid || exporting"
       matomoClick="request-export-csv-button"
       (click)="onFormValidationChange(postForm.valid)"
     >
-      {{ "EXPORT.EXPORT_CSV" | translate }}
+      {{ (exporting ? (restarted ? "EXPORT.PREPARING_RESTARTED" : "EXPORT.PREPARING") : "EXPORT.EXPORT_CSV") | translate }}
     </button>
   </form>
 </div>
