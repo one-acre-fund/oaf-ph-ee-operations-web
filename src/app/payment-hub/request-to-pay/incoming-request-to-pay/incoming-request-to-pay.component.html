@@ -344,8 +344,8 @@
       </mat-form-field>
     </div>
 
-    <button mat-stroked-button type="submit" [disabled]="!postForm.valid">
-      Export CSV
+    <button mat-stroked-button type="submit" [disabled]="!postForm.valid || exporting">
+      {{ (exporting ? (restarted ? "EXPORT.PREPARING_RESTARTED" : "EXPORT.PREPARING") : "EXPORT.EXPORT_CSV") | translate }}
     </button>
   </form>
 </div>

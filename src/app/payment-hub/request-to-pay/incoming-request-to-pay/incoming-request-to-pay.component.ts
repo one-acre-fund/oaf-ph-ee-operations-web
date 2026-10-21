@@ -57,6 +57,8 @@ export class IncomingRequestToPayComponent implements OnInit, AfterViewInit {
   externalId = new UntypedFormControl();
   csvExport: [];
   csvName: string;
+  exporting = false;
+  restarted = false;
 
   /** Columns to be displayed in request to pay table. */
   displayedColumns: string[] = [
@@ -451,28 +453,35 @@ export class IncomingRequestToPayComponent implements OnInit, AfterViewInit {
   exportCSV(filterBy: any) {
     const startTime = performance.now();
 
-    try {
-      filterBy[filterBy.cars] = filterBy.val;
+    filterBy[filterBy.cars] = filterBy.val;
 
-      // Track export usage
-      this.onExportUsed(filterBy.cars, filterBy.val);
+    // Track export usage
+    this.onExportUsed(filterBy.cars, filterBy.val);
 
-      this.requestToPayService.exportCSV(filterBy);
+    this.exporting = true;
+    this.requestToPayService.exportCSV(filterBy).subscribe({
+      next: (job) => (this.restarted = job.attempts > 1),
+      error: () => {
+        this.exporting = false;
+        this.restarted = false;
+        this.matomoService.trackEvent('Export', 'Error', 'Request to Pay CSV', 1);
+        this.trackBusinessMetric('export_errors', 1, 'errors');
+      },
+      complete: () => {
+        this.exporting = false;
+        this.restarted = false;
 
-      // Track successful export
-      const endTime = performance.now();
-      const duration = Math.round(endTime - startTime);
-      this.matomoService.trackEvent(
-        'Export',
-        'Success',
-        'Request to Pay CSV',
-        1
-      );
-      this.trackPerformanceMetric('CSV Export', duration);
-    } catch (error) {
-      this.matomoService.trackEvent('Export', 'Error', 'Request to Pay CSV', 1);
-      this.trackBusinessMetric('export_errors', 1, 'errors');
-    }
+        // Track successful export
+        const duration = Math.round(performance.now() - startTime);
+        this.matomoService.trackEvent(
+          'Export',
+          'Success',
+          'Request to Pay CSV',
+          1
+        );
+        this.trackPerformanceMetric('CSV Export', duration);
+      },
+    });
   }
   /**
    * Displays office name in form control input.
