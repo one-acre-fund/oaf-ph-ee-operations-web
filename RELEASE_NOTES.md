@@ -1,5 +1,8 @@
 # Release Notes
 
+## Version 1.1.10
+        * [FD-1929] - Exports use the background export API: the button shows progress and the CSV downloads when ready; server errors are shown
+
 ## Version 1.1.9.1
         * [CP-4069] - Fix redirection issue to ph-web.qa.oneacrefund
 
